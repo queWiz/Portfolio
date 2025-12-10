@@ -50,5 +50,6 @@ src/
 ├── components/       # Reusable UI components
 │   └── ui/           # Complex animated components (Spotlight, Meteors, etc.)
 └── lib/              # Utility functions (Tailwind merger)
+```
 
 *Designed & Engineered by [Uwais Alqarni]*
