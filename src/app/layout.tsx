@@ -10,7 +10,7 @@ const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
   title: "Uwais Alqarni | Data Engineer",
-  description: "Portfolio of a Full Stack Data Engineer specializing in Kafka, RAG, and AI.",
+  description: "Portfolio of a SIT Student specializing in Python, ML, and Edge AI.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         {/* FIXED RESUME BUTTON */}
         {/* Ensure you put your resume.pdf in the 'public' folder */}
-        <ShimmerButton href="/resume.pdf" />
+        <ShimmerButton href="/Resume.pdf" />
         
         {children}
         <Footer />
