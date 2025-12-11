@@ -21,6 +21,7 @@ const config: Config = {
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "meteor-effect": "meteor 5s linear infinite",
         "scroll": "scroll 40s linear infinite",
+        "shimmer": "shimmer 2s linear infinite",
       },
       keyframes: {
         "border-beam": {
@@ -41,6 +42,15 @@ const config: Config = {
         scroll: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
+        },
+
+        shimmer: {
+          from: {
+            backgroundPosition: "0 0",
+          },
+          to: {
+            backgroundPosition: "-200% 0",
+          },
         },
       },
     },

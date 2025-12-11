@@ -2,14 +2,19 @@ import { Github, Linkedin, Mail } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="w-full border-t border-neutral-900 bg-black py-12 text-center z-10 relative">
+    <footer className="w-full border-t border-neutral-900 bg-black pt-12 pb-32 text-center z-10 relative">
+      {/* 
+         pb-32 (Padding Bottom 8rem) ensures content is well above the Floating Dock.
+      */}
+      
       <div className="flex justify-center gap-8 mb-8">
-        <SocialLink href="https://github.com/YOUR_GITHUB" icon={<Github size={20} />} label="GitHub" />
-        <SocialLink href="https://linkedin.com/in/YOUR_LINKEDIN" icon={<Linkedin size={20} />} label="LinkedIn" />
+        <SocialLink href="https://github.com/queWiz" icon={<Github size={20} />} label="GitHub" />
+        <SocialLink href="https://linkedin.com/in/ualqarni" icon={<Linkedin size={20} />} label="LinkedIn" />
         <SocialLink href="mailto:your.email@example.com" icon={<Mail size={20} />} label="Email" />
       </div>
-      <p className="text-neutral-600 text-sm font-mono">
-        © {new Date().getFullYear()} System Offline.
+      
+      <p className="text-neutral-700 text-xs font-mono uppercase tracking-widest">
+        © {new Date().getFullYear()} System Online.
       </p>
     </footer>
   );

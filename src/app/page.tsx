@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { Terminal, Database, Cpu, Globe } from "lucide-react"; 
 import { BorderBeam } from "@/components/ui/BorderBeam";
 import { Meteors } from "@/components/ui/Meteors";
+import { TrophyList } from "@/components/ui/TrophyList";
 
 export default function Home() {
   return (
@@ -56,14 +57,17 @@ export default function Home() {
                 transition={{ delay: 0.1 }}
                 className="text-neutral-400 text-xl leading-relaxed mb-8"
               >
-                Data Engineer. System Architect.<br/>
-                Specializing in <span className="text-white font-medium">Kafka</span>, <span className="text-white font-medium">RAG</span>, and <span className="text-white font-medium">Edge AI</span>.
+                Software Engineering Student at <span className="text-white font-medium">SIT</span>.<br/>
+                Specializing in <span className="text-white font-medium">Python</span>, <span className="text-white font-medium">ML</span>, and <span className="text-white font-medium">Edge AI</span>.
               </motion.p>
 
               <div className="flex flex-wrap gap-3">
                 <TechBadge icon={<Terminal size={16}/>} label="Python" />
                 <TechBadge icon={<Database size={16}/>} label="PostgreSQL" />
                 <TechBadge icon={<Cpu size={16}/>} label="TensorFlow" />
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-neutral-900 border border-neutral-800 rounded-md text-sm text-neutral-500 font-mono">
+                  🏃‍♂️ 21km Finisher
+                </div>
               </div>
             </div>
 
@@ -86,27 +90,41 @@ export default function Home() {
       <AboutSection />
 
       {/* 6. EXPERIENCE */}
-      <div className="max-w-4xl w-full my-32 px-4 z-10">
+      <div className="max-w-4xl w-full mb-32 px-4 z-10">
         <h2 className="text-3xl font-bold text-white mb-12 flex items-center gap-4">
           <span className="w-8 h-[1px] bg-neutral-800"></span>
-          Experience
+          Timeline
           <span className="w-full h-[1px] bg-neutral-800"></span>
         </h2>
+        
         <div className="relative">
+          {/* Item 1: Current Education */}
           <TimelineItem 
-            year="2024 - Present"
-            title="Software Engineering Intern"
-            company="Company Name"
-            description="Built scalable data pipelines using Kafka. Optimized API latency by 40% using Redis caching."
+            year="2022 - Present"
+            title="Bachelor of ICT (Software Engineering)"
+            company="Singapore Institute of Technology"
+            description="Specializing in Software Engineering."
           />
+          
+          {/* Item 2: The Internship */}
           <TimelineItem 
-            year="2023 - 2024"
-            title="Research Assistant"
-            company="University Lab"
-            description="Developed NLP models for sentiment analysis on financial datasets using PyTorch."
+            year="Sep 2021 - Nov 2021"
+            title="Software Engineer Intern"
+            company="Aktus MU Kreativ"
+            description="Built an offline-first PWA attendance system. Deployed a pricing forecast ML model that increased revenue by 15%."
+          />
+
+          {/* Item 3: Diploma */}
+          <TimelineItem 
+            year="2018 - 2021" // Assuming 3 years based on grad date
+            title="Diploma in Information Technology"
+            company="Nanyang Polytechnic"
+            description="Distinctions in UX Design and Networking Technology. Director's List (Top 15%)"
           />
         </div>
       </div>
+
+      <TrophyList />
 
       {/* 7. PROJECTS */}
       <div id="work" className="max-w-6xl w-full mb-32 px-4 z-10">
