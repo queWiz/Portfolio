@@ -3,45 +3,77 @@ import { useEffect, useState } from 'react';
 
 const PRAYERS = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'] as const;
 
-export function GitHubFeed({ username = 'queWiz' }) {
-  const [repos, setRepos] = useState<any[]>([]);
+type GitHubEvent = {
+  type?: string;
+  repo?: { name?: string };
+  created_at?: string;
+  payload?: {
+    commits?: Array<{ message?: string }>;
+  };
+};
+
+export function GitHubFeed({ username = "queWiz" }) {
+  const [commits, setCommits] = useState<
+    { repo: string; message: string; url: string; time: Date }[]
+  >([]);
+  const [nowMs, setNowMs] = useState<number>(() => Date.now());
 
   useEffect(() => {
-    // Fetch recently updated repositories instead of events (much more reliable)
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=3`)
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          const recentRepos = data.map((r: any) => ({
-            name: r.name,
-            lang: r.language || 'Code',
-            url: r.html_url,
-            time: new Date(r.updated_at),
-          }));
-          setRepos(recentRepos);
-        }
-      }).catch(() => {});
+    const timer = window.setInterval(() => setNowMs(Date.now()), 60000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    fetch(`https://api.github.com/users/${username}/events/public`)
+      .then((r) => r.json())
+      .then((data: unknown) => {
+        if (!Array.isArray(data)) return;
+        const pushes = data
+          .filter((e): e is GitHubEvent => typeof e === 'object' && e !== null)
+          .filter((e) => e.type === "PushEvent" && typeof e.repo?.name === 'string')
+          .flatMap((e) =>
+            (e.payload?.commits ?? []).map((c) => ({
+              repo: e.repo?.name?.split("/")[1] ?? 'repo',
+              message: (c.message ?? 'commit').split("\n")[0].slice(0, 60),
+              url: `https://github.com/${e.repo?.name ?? username}`,
+              time: new Date(e.created_at ?? Date.now()),
+            }))
+          )
+          .slice(0, 3);
+        setCommits(pushes);
+      })
+      .catch(() => {});
   }, [username]);
 
   const timeAgo = (d: Date) => {
-    const mins = Math.floor((Date.now() - d.getTime()) / 60000);
+    const mins = Math.floor((nowMs - d.getTime()) / 60000);
     if (mins < 60) return `${mins}m ago`;
-    if (mins < 1440) return `${Math.floor(mins/60)}h ago`;
-    return `${Math.floor(mins/1440)}d ago`;
+    if (mins < 1440) return `${Math.floor(mins / 60)}h ago`;
+    return `${Math.floor(mins / 1440)}d ago`;
   };
 
-  if (!repos.length) return null;
+  if (!commits.length) return null;
 
   return (
-    <div className="flex flex-col gap-2 max-w-xs text-left z-50">
-      <span className="text-[14px] font-mono text-muted uppercase tracking-widest mb-1">Recent Commits</span>
-      {repos.map((r, i) => (
-        <a key={i} href={r.url} target="_blank" className="flex items-start gap-3 p-3 bg-surface border border-borderWarm rounded-lg hover:border-accent-lavender/50 transition-colors">
+    <div className="flex flex-col gap-2 text-left z-50">
+      <span className="text-[14px] font-mono text-muted uppercase tracking-widest mb-1">
+        Recent Commits
+      </span>
+      {commits.map((c, i) => (
+        <a
+          key={i}
+          href={c.url}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-start gap-3 p-3 bg-surface border border-borderWarm rounded-lg hover:border-accent-lavender/50 transition-colors"
+        >
           <span className="text-accent-lavender text-[10px] mt-1">✦</span>
-          <div>
-            <div className="text-[14px] text-cream font-bold leading-tight">{r.name}</div>
-            <div className="text-[12px] text-muted font-mono mt-1">
-              {r.lang} · Updated {timeAgo(r.time)}
+          <div className="min-w-0">
+            <div className="text-[13px] text-cream font-bold leading-tight truncate">
+              {c.message}
+            </div>
+            <div className="text-[11px] text-muted font-mono mt-1">
+              {c.repo} · {timeAgo(c.time)}
             </div>
           </div>
         </a>

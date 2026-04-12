@@ -10,7 +10,7 @@ export const Footer = () => {
       <div className="flex justify-center gap-8 mb-8">
         <SocialLink href="https://github.com/queWiz" icon={<Github size={20} />} label="GitHub" />
         <SocialLink href="https://linkedin.com/in/ualqarni" icon={<Linkedin size={20} />} label="LinkedIn" />
-        <SocialLink href="mailto:your.email@example.com" icon={<Mail size={20} />} label="Email" />
+        <SocialLink href="ualqarni70@gmail.com" icon={<Mail size={20} />} label="Email" />
       </div>
       
       <p className="text-neutral-700 text-xs font-mono uppercase tracking-widest">

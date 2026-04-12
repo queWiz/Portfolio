@@ -11,7 +11,6 @@ import { TopNavbar } from "@/components/ui/LayoutFeatures";
 import { useReveal } from "@/hooks/useReveal";
 import { motion } from "framer-motion";
 import { TrophyList } from "@/components/ui/TrophyList";
-import { Terminal, Database, Cpu } from "lucide-react"; 
 
 export default function Home() {
   const terminalRef = useReveal({ delay: 0 });
@@ -82,7 +81,7 @@ export default function Home() {
       </section>
 
       {/* --- ABOUT & PHILOSOPHY --- */}
-      <section ref={terminalRef} id="about" className="w-full max-w-[90rem] px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 my-32 z-10">
+      <section ref={terminalRef} id="about" className="w-full max-w-[90rem] px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16 mb-24 z-10">
         <InteractiveTerminal />
         <TabayyunCard />
       </section>
@@ -90,7 +89,7 @@ export default function Home() {
       <SectionDivider />
 
       {/* --- PROJECTS SLIDESHOW --- */}
-      <section ref={workRef} id="work" className="w-full bg-[rgba(245,240,232,0.02)] py-32 px-6 md:px-12 mb-32 z-10 flex justify-center">
+      <section ref={workRef} id="work" className="w-full bg-[rgba(245,240,232,0.02)] py-20 px-6 md:px-12 mb-20 z-10 flex justify-center">
         <div className="max-w-[90rem] w-full">
           <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
             <span className="w-12 h-px bg-borderWarm"></span> Selected Works
@@ -100,7 +99,7 @@ export default function Home() {
       </section>
 
       {/* --- EXPERIENCE & ACTIVITY (Side by Side) --- */}
-      <section ref={experienceRef} className="w-full max-w-[90rem] px-6 md:px-12 mb-32 z-10 grid grid-cols-1 lg:grid-cols-3 gap-16">
+      <section ref={experienceRef} className="w-full max-w-[90rem] px-6 md:px-12 mb-20 z-10 grid grid-cols-1 lg:grid-cols-3 gap-16">
         
         {/* Left: Experience Timeline (Takes up 2 columns) */}
         <div className="lg:col-span-2">
@@ -149,7 +148,7 @@ export default function Home() {
 
       <SectionDivider />
 
-      <section ref={trophyRef} className="w-full bg-[rgba(245,240,232,0.02)] py-32 px-6 md:px-12 mb-32 z-10 flex justify-center">
+      <section ref={trophyRef} className="w-full bg-[rgba(245,240,232,0.02)] py-16 px-6 md:px-12 mb-16 z-10 flex justify-center">
         <TrophyList />
       </section>
 

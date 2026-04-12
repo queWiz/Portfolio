@@ -69,6 +69,7 @@ export function TopNavbar() {
         <div className="hidden md:flex gap-8 text-sm font-mono text-muted font-medium absolute left-1/2 -translate-x-1/2">
           <a href="#about" className="hover:text-cream transition-colors">/about</a>
           <a href="#work" className="hover:text-cream transition-colors">/work</a>
+          <a href="mailto:ualqarni70@gmail.com" className="hover:text-cream transition-colors">/contact</a>
         </div>
         
         <div className="flex items-center gap-4">

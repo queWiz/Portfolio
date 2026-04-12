@@ -14,8 +14,9 @@ const config: Config = {
         cream: "#f5f0e8",
         // The exact tokens from your markdown:
         sectionBg: "rgba(245, 240, 232, 0.03)", 
-        surface: "rgba(245, 240, 232, 0.06)",
-        borderWarm: "rgba(245, 240, 232, 0.12)",
+        surface: "rgba(245, 240, 232, 0.09)", 
+        // Increase border opacity from 0.12 to 0.20 to define the edges
+        borderWarm: "rgba(245, 240, 232, 0.20)", 
         muted: "rgba(245, 240, 232, 0.45)",
         accent: {
           green: "#86efac",
