@@ -9,7 +9,7 @@ const inter = Inter({ subsets:["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Uwais Alqarni | Data Engineer",
+  title: "Uwais Alqarni | Software Engineer",
   description: "Portfolio of Uwais Alqarni, Software Engineering Student at SIT.",
 };
 
