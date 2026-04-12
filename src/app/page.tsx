@@ -1,217 +1,171 @@
 "use client";
-import { StarsCanvas } from "@/components/ui/StarBackground"; // 3D Stars
-import { SpotlightCard } from "@/components/ui/Spotlight";
-import { ProjectCard } from "@/components/ui/ProjectCard";
+import { StarsCanvas } from "@/components/ui/StarBackground"; 
+import { HeroCanvas } from "@/components/ui/HeroCanvas";
 import { CodeWindow } from "@/components/ui/CodeWindow";
+import { ProjectSlideshow } from "@/components/ui/ProjectSlideshow";
+import { InteractiveTerminal } from "@/components/ui/Terminal";
+import { TabayyunCard } from "@/components/ui/TabayyunCard";
+import { GitHubFeed } from "@/components/ui/StatusWidgets";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
-import { AboutSection } from "@/components/ui/AboutSection";
-import { FloatingDock } from "@/components/ui/FloatingDock";
+import { TopNavbar } from "@/components/ui/LayoutFeatures";
+import { useReveal } from "@/hooks/useReveal";
 import { motion } from "framer-motion";
-import { Terminal, Database, Cpu, Globe } from "lucide-react"; 
-import { BorderBeam } from "@/components/ui/BorderBeam";
-import { Meteors } from "@/components/ui/Meteors";
 import { TrophyList } from "@/components/ui/TrophyList";
+import { Terminal, Database, Cpu } from "lucide-react"; 
 
 export default function Home() {
+  const terminalRef = useReveal({ delay: 0 });
+  const workRef = useReveal({ delay: 0 });
+  const experienceRef = useReveal({ delay: 0 });
+  const trophyRef = useReveal({ delay: 0 });
+
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center relative overflow-x-hidden">
-      
-      {/* 1. 3D Background */}
-      <StarsCanvas />
-      
-      {/* 2. Floating Navbar */}
-      <FloatingDock />
+    <main className="min-h-screen bg-base flex flex-col items-center relative overflow-x-hidden selection:bg-accent-green selection:text-black">
+      <TopNavbar />
 
-      {/* 3. HERO SECTION */}
-      <div id="home" className="flex items-center justify-center min-h-screen w-full p-4">
-        <SpotlightCard className="max-w-5xl w-full p-8 md:p-12 z-10 relative overflow-hidden bg-black/40 backdrop-blur-sm border-neutral-800">
+      {/* --- HERO SECTION --- */}
+      <section id="home" className="relative w-full min-h-screen flex items-center justify-center pt-20">
+        <div className="absolute inset-0 z-0">
+          <StarsCanvas />
+        </div>
+        
+        <HeroCanvas />
+
+        <div className="max-w-[90rem] w-full grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 md:px-12 relative z-10 pointer-events-none">
           
-          <div className="absolute inset-0 h-full w-full overflow-hidden pointer-events-none">
-             <Meteors number={20} className="-left-20" />
-          </div>
-          <BorderBeam size={300} duration={10} delay={5} colorFrom="#007AFF" colorTo="#00FFFF" />
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center relative z-20">
-            {/* Left */}
-            <div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="w-24 h-24 rounded-full overflow-hidden border-2 border-neutral-800 mb-8 grayscale hover:grayscale-0 transition-all duration-500"
-              >
-                {/* <Image src="/me.jpg" alt="Me" width={96} height={96} /> */}
-                <div className="w-full h-full bg-neutral-900 animate-pulse"></div>
-              </motion.div>
-
-              <motion.h1 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-5xl md:text-6xl font-bold text-white mb-6"
-              >
-                Uwais Alqarni
-              </motion.h1>
-              
-              <motion.p 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-neutral-400 text-xl leading-relaxed mb-8"
-              >
-                Software Engineering Student at <span className="text-white font-medium">SIT</span>.<br/>
-                Specializing in <span className="text-white font-medium">Python</span>, <span className="text-white font-medium">ML</span>, and <span className="text-white font-medium">Edge AI</span>.
-              </motion.p>
-
-              <div className="flex flex-wrap gap-3">
-                <TechBadge icon={<Terminal size={16}/>} label="Python" />
-                <TechBadge icon={<Database size={16}/>} label="PostgreSQL" />
-                <TechBadge icon={<Cpu size={16}/>} label="TensorFlow" />
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-neutral-900 border border-neutral-800 rounded-md text-sm text-neutral-500 font-mono">
-                  🏃‍♂️ 21km Finisher
-                </div>
+          <div className="flex flex-col justify-center max-w-2xl pointer-events-auto">
+            <div className="flex items-center gap-6 mb-8">
+              <div className="inline-flex items-center gap-2 bg-accent-green/10 border border-accent-green/30 rounded-full px-4 py-2 shadow-[0_0_15px_rgba(134,239,172,0.15)]">
+                <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-accent-green">Open to Work</span>
               </div>
             </div>
 
-            {/* Right */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-6xl lg:text-8xl font-bold text-cream mb-6 tracking-tighter"
+              style={{ textShadow: "0 10px 30px rgba(0,0,0,0.8)" }}
             >
-              <CodeWindow />
-            </motion.div>
+              Uwais Alqarni
+            </motion.h1>
+            
+            <p className="text-sm font-mono text-accent-lavender font-bold mb-8 uppercase tracking-[0.3em]">
+              Data Engineer · Software Engineer · SIT
+            </p>
+            
+            <p className="text-muted text-xl leading-relaxed mb-10 font-medium">
+              I build resilient backend systems and AI tools that solve real-world problems, bridging the gap between raw data pipelines and human experience.
+            </p>
+
+            <div className="flex gap-4 mb-12">
+              <a href="#work" className="px-8 py-3 bg-cream text-base font-bold text-black rounded-lg hover:bg-white transition-colors shadow-lg">
+                View Work
+              </a>
+              <a href="mailto:ualqarni70@gmail.com" className="px-8 py-3 border border-borderWarm text-cream font-bold rounded-lg hover:bg-surface transition-colors">
+                Get in Touch
+              </a>
+            </div>
+
+            <div className="max-w-md hidden md:block">
+               <CodeWindow />
+            </div>
           </div>
-        </SpotlightCard>
-      </div>
-
-      {/* 4. MARQUEE (Tech Stack) */}
-      <InfiniteMarquee />
-
-      {/* 5. ABOUT / PHILOSOPHY */}
-      <AboutSection />
-
-      {/* 6. EXPERIENCE */}
-      <div className="max-w-4xl w-full mb-32 px-4 z-10">
-        <h2 className="text-3xl font-bold text-white mb-12 flex items-center gap-4">
-          <span className="w-8 h-[1px] bg-neutral-800"></span>
-          Timeline
-          <span className="w-full h-[1px] bg-neutral-800"></span>
-        </h2>
-        
-        <div className="relative">
-          {/* Item 1: Current Education */}
-          <TimelineItem 
-            year="2022 - Present"
-            title="Bachelor of ICT (Software Engineering)"
-            company="Singapore Institute of Technology"
-            description="Specializing in Software Engineering."
-          />
           
-          {/* Item 2: The Internship */}
-          <TimelineItem 
-            year="Sep 2021 - Nov 2021"
-            title="Software Engineer Intern"
-            company="Aktus MU Kreativ"
-            description="Built an offline-first PWA attendance system. Deployed a pricing forecast ML model that increased revenue by 15%."
-          />
-
-          {/* Item 3: Diploma */}
-          <TimelineItem 
-            year="2018 - 2021" // Assuming 3 years based on grad date
-            title="Diploma in Information Technology"
-            company="Nanyang Polytechnic"
-            description="Distinctions in UX Design and Networking Technology. Director's List (Top 15%)"
-          />
+          {/* We removed the right-side grid column div for the canvas, because HeroCanvas is now absolute over everything */}
         </div>
-      </div>
+      </section>
 
-      <TrophyList />
+      {/* --- INFINITE MARQUEE --- */}
+      <section className="w-full bg-[rgba(245,240,232,0.02)] z-10">
+         <InfiniteMarquee />
+      </section>
 
-      {/* 7. PROJECTS */}
-      <div id="work" className="max-w-6xl w-full mb-32 px-4 z-10">
-        <h2 className="text-3xl font-bold text-white mb-12 flex items-center gap-4">
-          <span className="w-8 h-[1px] bg-neutral-800"></span>
-          Selected Works
-          <span className="w-full h-[1px] bg-neutral-800"></span>
-        </h2>
+      {/* --- ABOUT & PHILOSOPHY --- */}
+      <section ref={terminalRef} id="about" className="w-full max-w-[90rem] px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 my-32 z-10">
+        <InteractiveTerminal />
+        <TabayyunCard />
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <ScrollReveal>
-            <ProjectCard 
-              title="Tabayyun"
-              description="Offline-first Hybrid AI scanner for Muslim travelers in Korea. Runs YOLOv8 and Tesseract OCR entirely in the browser."
-              tags={["React PWA", "TensorFlow.js", "Edge AI"]}
-              repoLink="https://github.com/queWiz/Tabayyun"
-              demoLink="https://tabayyun-six.vercel.app"
-              color="#10b981"
-            />
-          </ScrollReveal>
+      <SectionDivider />
 
-          <ScrollReveal delay={0.1}>
-            <ProjectCard 
-              title="Drama Discovery"
-              description="AI-powered RAG search engine with ChromaDB and LangChain to find content based on narrative vibes."
-              tags={["RAG", "LangChain", "FastAPI"]}
-              repoLink="https://github.com/queWiz/drama-discovery-engine"
-              demoLink="https://drama-discovery-engine.vercel.app"
-              color="#8b5cf6"
-            />
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.2}>
-            <ProjectCard 
-              title="Project Sentinel"
-              description="Real-time anomaly detection engine processing 50+ events/sec using Isolation Forest models."
-              tags={["Kafka", "Scikit-Learn", "Docker"]}
-              repoLink="https://github.com/queWiz/kafka-telemetry-anomaly-detection"
-              color="#f97316"
-            />
-          </ScrollReveal>
+      {/* --- PROJECTS SLIDESHOW --- */}
+      <section ref={workRef} id="work" className="w-full bg-[rgba(245,240,232,0.02)] py-32 px-6 md:px-12 mb-32 z-10 flex justify-center">
+        <div className="max-w-[90rem] w-full">
+          <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
+            <span className="w-12 h-px bg-borderWarm"></span> Selected Works
+          </h2>
+          <ProjectSlideshow />
         </div>
-      </div>
+      </section>
 
-      {/* Footer is handled by layout.tsx, but we add an ID here for the scroll anchor */}
-      <div id="contact" className="h-10"></div>
+      {/* --- EXPERIENCE & ACTIVITY (Side by Side) --- */}
+      <section ref={experienceRef} className="w-full max-w-[90rem] px-6 md:px-12 mb-32 z-10 grid grid-cols-1 lg:grid-cols-3 gap-16">
+        
+        {/* Left: Experience Timeline (Takes up 2 columns) */}
+        <div className="lg:col-span-2">
+          <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
+            <span className="w-12 h-px bg-borderWarm"></span> Experience
+          </h2>
+          
+          <div className="space-y-12 border-l border-borderWarm ml-3 pl-10 relative">
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 bg-base border-2 border-accent-lavender rounded-full" />
+              <div className="text-xs font-mono text-accent-lavender font-bold tracking-widest uppercase mb-2">2024 — Present</div>
+              <h3 className="text-xl font-bold text-cream">Bachelor of ICT (Software Engineering)</h3>
+              <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Singapore Institute of Technology</div>
+              <p className="text-muted text-base leading-relaxed">Specializing in Software Engineering.</p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 bg-base border-2 border-borderWarm rounded-full" />
+              <div className="text-xs font-mono text-muted font-bold tracking-widest uppercase mb-2">Sep 2021 — Nov 2021</div>
+              <h3 className="text-xl font-bold text-cream">Software Engineer Intern</h3>
+              <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Aktus MU Kreativ</div>
+              <p className="text-muted text-base leading-relaxed">Built an offline-first PWA attendance system. Deployed a pricing forecast ML model that increased revenue by 15% through smarter pricing strategies.</p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -left-[45px] top-1.5 w-3 h-3 bg-base border-2 border-borderWarm rounded-full" />
+              <div className="text-xs font-mono text-muted font-bold tracking-widest uppercase mb-2">2018 - 2021</div>
+              <h3 className="text-xl font-bold text-cream">Diploma in Information Technology</h3>
+              <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Nanyang Polytechnic</div>
+              <p className="text-muted text-base leading-relaxed">Distinctions in UX Design and Networking Technology. Director's List (Top 15%)</p>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right: GitHub Activity Feed (Visible!) */}
+        <div className="lg:col-span-1">
+          <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
+            <span className="w-12 h-px bg-borderWarm"></span> Activity
+          </h2>
+
+          <GitHubFeed username="queWiz" />
+        </div>
+
+      </section>
+
+      <SectionDivider />
+
+      <section ref={trophyRef} className="w-full bg-[rgba(245,240,232,0.02)] py-32 px-6 md:px-12 mb-32 z-10 flex justify-center">
+        <TrophyList />
+      </section>
 
     </main>
   );
 }
 
-// --- HELPERS ---
-function TechBadge({ icon, label }: { icon: any, label: string }) {
+// --- ELEGANT SECTION DIVIDER ---
+function SectionDivider() {
   return (
-    <div className="flex items-center gap-2 px-3 py-1.5 bg-neutral-900 border border-neutral-800 rounded-md text-sm text-neutral-300 font-mono hover:bg-neutral-800 transition-colors cursor-default">
-      {icon}
-      {label}
+    <div className="w-full flex justify-center py-16 z-10 pointer-events-none">
+      {/* 
+        max-w-5xl ensures it doesn't stretch too far.
+        bg-gradient-to-r creates the fade effect: transparent -> solid -> transparent 
+      */}
+      <div className="w-full max-w-7xl h-[3px] bg-gradient-to-r from-transparent via-borderWarm to-transparent opacity-90" />
     </div>
-  );
-}
-
-const TimelineItem = ({ year, title, company, description }: any) => (
-  <div className="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-10 group">
-    <div className="absolute left-0 top-0 h-full w-[1px] bg-neutral-800 md:left-auto md:right-0 md:col-start-2 md:col-end-3 md:mx-auto">
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-neutral-900 border border-neutral-700 group-hover:border-white transition-colors" />
-    </div>
-    <div className="hidden md:block md:col-span-2 md:text-right pt-5 pr-12">
-      <span className="font-mono text-sm text-neutral-500">{year}</span>
-    </div>
-    <div className="md:col-span-3 pt-4 pb-12">
-      <div className="md:hidden font-mono text-xs text-neutral-500 mb-1">{year}</div>
-      <h3 className="text-xl font-bold text-white">{title}</h3>
-      <div className="text-sm font-mono text-blue-400 mb-4">{company}</div>
-      <p className="text-neutral-400 text-sm leading-relaxed max-w-md">{description}</p>
-    </div>
-  </div>
-);
-
-function ScrollReveal({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay }}
-    >
-      {children}
-    </motion.div>
   );
 }

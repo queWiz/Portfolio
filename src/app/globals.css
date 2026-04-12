@@ -9,20 +9,16 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: #0a0a0f;
+  color: #f5f0e8;
+  cursor: none; /* Hides default cursor for our custom CursorTrail */
+  overflow-x: hidden;
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
 }
 
 /* Custom Scrollbar (Optional but looks pro) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #000;
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: rgba(245, 240, 232, 0.2); border-radius: 4px; }

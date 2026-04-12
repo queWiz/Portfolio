@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1 -p 3457",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 127.0.0.1 -p 3457",
     "lint": "eslint"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.22",
+    "baseline-browser-mapping": "^2.10.18",
     "eslint": "^9",
     "eslint-config-next": "16.0.8",
     "postcss": "^8.5.6",

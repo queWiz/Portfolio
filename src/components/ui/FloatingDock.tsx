@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Home, User, Briefcase, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const NAV_ITEMS = [
@@ -11,8 +12,16 @@ const NAV_ITEMS = [
 ];
 
 export const FloatingDock = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setVisible(window.scrollY > 300); // Show after 300px
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  },[]);
+
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
+    <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}>
       <div className="flex gap-2 items-end rounded-full border border-neutral-800 bg-black/80 p-3 backdrop-blur-md shadow-2xl">
         {NAV_ITEMS.map((item) => (
           <Link key={item.name} href={item.href}>

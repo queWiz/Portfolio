@@ -1,12 +1,10 @@
-import { Trophy, Award, Medal } from "lucide-react";
+import { Trophy, Award } from "lucide-react";
 
 export const TrophyList = () => {
   return (
     <section className="max-w-4xl w-full mb-32 px-4 z-10">
-      <h2 className="text-3xl font-bold text-white mb-12 flex items-center gap-4">
-        <span className="w-8 h-[1px] bg-neutral-800"></span>
-        Achievements
-        <span className="w-full h-[1px] bg-neutral-800"></span>
+      <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
+        <span className="w-12 h-px bg-borderWarm"></span> Achievements
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
