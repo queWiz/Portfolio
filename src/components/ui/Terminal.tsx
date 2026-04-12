@@ -3,7 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 
 const COMMANDS: Record<string, string> = {
   help: '> available: about · skills · contact · projects · clear',
-  about: '> Uwais Alqarni — SIT Software Engineering student.\n> Specializing in Python, ML, and Edge AI.\n> Guided by the principle of Tabayyun (تبيّن) — verify before you act.',
+  // about: '> Uwais Alqarni — SIT Software Engineering student.\n> Specializing in Python, ML, and Edge AI.\n> Guided by the principle of Tabayyun (تبيّن) — verify before you act.',
+  about: '> Hi, I\'m Uwais, a Software & Data Engineer based in Singapore.\n> I specialize in bridging the gap between heavy backend systems (Kafka, PostgreSQL, AI) and seamless frontends (React, Next.js).\n> I am a language-agnostic problem solver. I don\'t just stick to one stack. I learn whatever tool best solves the problem, from configuring Docker containers to crafting pixel-perfect UIs.',
   skills: '> Python · Kafka · TensorFlow · PostgreSQL · Docker · FastAPI · Next.js · TypeScript',
   contact: '> github.com/queWiz\n> linkedin.com/in/ualqarni\n> ualqarni70@gmail.com',
   projects: '> Tabayyun — Edge AI halal scanner\n> Drama Discovery — RAG vibe search\n> Project Sentinel — Kafka anomaly engine\n> Codex — Video Analytics engine',
@@ -25,7 +26,7 @@ export function InteractiveTerminal() {
     const bootSequence =[
       "init_sys --mode=portfolio",
       "loading modules: [Python, Kafka, Edge_AI]... OK",
-      "establishing secure connection... OK",
+      "establishing About Page... OK",
       "> welcome. type 'help' for commands."
     ];
     

@@ -106,9 +106,7 @@ export function HeroCanvas() {
   },[]);
 
   return (
-    // FIX 2: Make container cover the WHOLE absolute screen space.
-    // Z-20 pushes it OVER the text, but pointer-events-none lets you click "through" it!
-    <div ref={containerRef} className="absolute inset-0 w-full h-full z-20 pointer-events-none overflow-hidden">
+    <div ref={containerRef} className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
       <canvas ref={canvasRef} className="w-full h-full" />
     </div>
   );

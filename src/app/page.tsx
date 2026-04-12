@@ -23,7 +23,7 @@ export default function Home() {
       <TopNavbar />
 
       {/* --- HERO SECTION --- */}
-      <section id="home" className="relative w-full min-h-screen flex items-center justify-center pt-20">
+      <section id="home" className="relative isolate w-full min-h-screen flex items-center justify-center pt-20">
         <div className="absolute inset-0 z-0">
           <StarsCanvas />
         </div>
@@ -50,11 +50,11 @@ export default function Home() {
             </motion.h1>
             
             <p className="text-sm font-mono text-accent-lavender font-bold mb-8 uppercase tracking-[0.3em]">
-              Data Engineer · Software Engineer · SIT
+              Software Engineer · Data Engineer · SIT
             </p>
             
             <p className="text-muted text-xl leading-relaxed mb-10 font-medium">
-              I build resilient backend systems and AI tools that solve real-world problems, bridging the gap between raw data pipelines and human experience.
+              I am a Software Engineer who builds end-to-end systems. From architecting high-throughput data pipelines to crafting seamless, AI-driven user experiences, I solve complex problems across the entire stack.
             </p>
 
             <div className="flex gap-4 mb-12">
@@ -81,9 +81,15 @@ export default function Home() {
       </section>
 
       {/* --- ABOUT & PHILOSOPHY --- */}
-      <section ref={terminalRef} id="about" className="w-full max-w-[90rem] px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16 mb-24 z-10">
-        <InteractiveTerminal />
-        <TabayyunCard />
+      <section ref={terminalRef} id="about" className="w-full max-w-[90rem] px-6 md:px-12 mt-16 mb-24 z-10">
+        <h2 className="text-m font-mono text-muted font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
+          <span className="w-12 h-px bg-borderWarm"></span> About & Philosophy
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <InteractiveTerminal />
+          <TabayyunCard />
+        </div>
       </section>
 
       <SectionDivider />
@@ -129,7 +135,7 @@ export default function Home() {
               <div className="text-xs font-mono text-muted font-bold tracking-widest uppercase mb-2">2018 - 2021</div>
               <h3 className="text-xl font-bold text-cream">Diploma in Information Technology</h3>
               <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Nanyang Polytechnic</div>
-              <p className="text-muted text-base leading-relaxed">Distinctions in UX Design and Networking Technology. Director's List (Top 15%)</p>
+              <p className="text-muted text-base leading-relaxed">Distinctions in UX Design and Networking Technology. Director&apos;s List (Top 15%)</p>
             </div>
 
           </div>

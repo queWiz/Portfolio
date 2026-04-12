@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Github, Linkedin, Mail } from "lucide-react";
 
 export const Footer = () => {
@@ -10,7 +11,7 @@ export const Footer = () => {
       <div className="flex justify-center gap-8 mb-8">
         <SocialLink href="https://github.com/queWiz" icon={<Github size={20} />} label="GitHub" />
         <SocialLink href="https://linkedin.com/in/ualqarni" icon={<Linkedin size={20} />} label="LinkedIn" />
-        <SocialLink href="ualqarni70@gmail.com" icon={<Mail size={20} />} label="Email" />
+        <SocialLink href="mailto:ualqarni70@gmail.com" icon={<Mail size={20} />} label="Email" />
       </div>
       
       <p className="text-neutral-700 text-xs font-mono uppercase tracking-widest">
@@ -20,10 +21,11 @@ export const Footer = () => {
   );
 };
 
-const SocialLink = ({ href, icon, label }: { href: string; icon: any; label: string }) => (
+const SocialLink = ({ href, icon, label }: { href: string; icon: ReactNode; label: string }) => (
   <a 
     href={href} 
-    target="_blank" 
+    target={href.startsWith("mailto:") ? undefined : "_blank"}
+    rel={href.startsWith("mailto:") ? undefined : "noreferrer"}
     className="text-neutral-500 hover:text-white transition-colors flex flex-col items-center gap-2 group"
   >
     <div className="p-3 rounded-full bg-neutral-900 border border-neutral-800 group-hover:border-neutral-600 transition-colors">

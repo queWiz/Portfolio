@@ -75,7 +75,7 @@ export function TopNavbar() {
         <div className="flex items-center gap-4">
 
           <a
-            href="/resume.pdf"
+            href="/Resume.pdf"
             target="_blank"
             className="inline-flex h-10 animate-shimmer items-center justify-center rounded-full border border-accent-green/30 bg-[linear-gradient(110deg,#0a0a0f,45%,#1c2620,55%,#0a0a0f)] bg-[length:200%_100%] px-6 font-medium text-accent-green transition-colors hover:text-white hover:border-accent-green"
           >

@@ -14,14 +14,15 @@ export function TabayyunCard() {
     >
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent-green/10 rounded-full blur-[80px] pointer-events-none" />
 
-      <div className="text-xs tracking-[0.3em] text-accent-green/80 mb-4 font-mono font-bold uppercase">Core Principle</div>
+      <div className="text-xs tracking-[0.3em] text-accent-green/80 mb-4 font-mono font-bold uppercase">My Guiding Principle</div>
       <h3 className="text-3xl font-bold text-cream mb-6 flex items-center gap-4">
         Tabayyun <span className="text-4xl text-accent-green/40 font-serif font-normal">تبيّن</span>
       </h3>
       
-      <p className="text-muted text-base leading-relaxed">
-        Technology should clarify, not confuse. Whether validating a high-velocity Kafka stream or shipping an ML model to production, I build systems grounded in verification and data integrity.
+      <p className="text-muted text-base leading-relaxed mb-8">
+        An Islamic principle meaning <strong className="text-cream font-medium">to verify and ascertain before acting</strong>. 
         <br/><br/>
+        This isn't just a life value; it's my engineering baseline. Whether I am validating a high-velocity Kafka stream, sanitizing messy datasets, or pushing code to production; I believe technology should clarify, not confuse. I build systems grounded in truth and data integrity.
       </p>
 
       <div className="mt-auto border-l-2 border-accent-green/50 pl-4 py-1">

@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/ui/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { SideHUD } from "@/components/ui/SideHUD";
 // import { ShimmerButton } from "@/components/ui/ShimmerButton";
 
 const inter = Inter({ subsets:["latin"], variable: "--font-inter" });
@@ -21,8 +22,8 @@ export default function RootLayout({
       <body className={`${inter.variable} ${mono.variable} font-sans bg-base text-cream antialiased`}>
         <CustomCursor />
         {/* <ShimmerButton href="/resume.pdf" /> */}
+        <SideHUD /> 
         {children}
-        {/* Make sure Footer has bg-base instead of black in its own CSS! */}
         <Footer /> 
       </body>
     </html>
