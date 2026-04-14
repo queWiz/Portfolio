@@ -6,7 +6,7 @@
 ![3D Graphics](https://img.shields.io/badge/3D-React_Three_Fiber-blue)
 ![Deploy](https://img.shields.io/badge/Deploy-Vercel-success)
 
-🌐 **[View Live Site](https://your-deployment-link.vercel.app)**
+🌐 **[View Live Site](portfolio-indol-eight-45.vercel.app)**
 
 ## 💡 The Philosophy: Tabayyun (تبيّن)
 The design and engineering of this site—and my work in general—is guided by the Islamic principle of **Tabayyun**: *"to verify, ascertain, and seek clarity before acting."* 
