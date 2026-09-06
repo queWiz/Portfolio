@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 
 const COMMANDS: Record<string, string> = {
   help: '> available: about · skills · contact · projects · clear',
-  // about: '> Uwais Alqarni — SIT Software Engineering student.\n> Specializing in Python, ML, and Edge AI.\n> Guided by the principle of Tabayyun (تبيّن) — verify before you act.',
   about: '> Hi, I\'m Uwais, a Software & Data Engineer based in Singapore.\n> I specialize in bridging the gap between heavy backend systems (Kafka, PostgreSQL, AI) and seamless frontends (React, Next.js).\n> I am a language-agnostic problem solver. I don\'t just stick to one stack. I learn whatever tool best solves the problem, from configuring Docker containers to crafting pixel-perfect UIs.',
   skills: '> Python · Kafka · TensorFlow · PostgreSQL · Docker · FastAPI · Next.js · TypeScript',
   contact: '> github.com/queWiz\n> linkedin.com/in/ualqarni\n> ualqarni70@gmail.com',
@@ -79,8 +78,9 @@ export function InteractiveTerminal() {
           onChange={e => setInput(e.target.value)}
           onKeyDown={run}
           disabled={isBooting}
-          className="bg-transparent border-none outline-none text-cream flex-1 font-mono"
-          autoFocus
+          aria-label="Interactive terminal command input"
+          placeholder={isBooting ? "Booting system..." : "Type 'help' for commands..."}
+          className="bg-transparent border-none outline-none text-cream flex-1 font-mono placeholder:text-muted/40"
           spellCheck={false}
         />
       </div>

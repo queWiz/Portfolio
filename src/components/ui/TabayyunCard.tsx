@@ -22,12 +22,12 @@ export function TabayyunCard() {
       <p className="text-muted text-base leading-relaxed mb-8">
         An Islamic principle meaning <strong className="text-cream font-medium">to verify and ascertain before acting</strong>. 
         <br/><br/>
-        This isn't just a life value; it's my engineering baseline. Whether I am validating a high-velocity Kafka stream, sanitizing messy datasets, or pushing code to production; I believe technology should clarify, not confuse. I build systems grounded in truth and data integrity.
+        This isn&apos;t just a life value; it&apos;s my engineering baseline. Whether I am validating a high-velocity Kafka stream, sanitizing messy datasets, or pushing code to production; I believe technology should clarify, not confuse. I build systems grounded in truth and data integrity.
       </p>
 
       <div className="mt-auto border-l-2 border-accent-green/50 pl-4 py-1">
         <p className="text-sm text-cream font-serif italic tracking-wide">
-          "Verify it, lest you harm people in ignorance..."
+          &ldquo;Verify it, lest you harm people in ignorance...&rdquo;
         </p>
         <p className="text-xs text-accent-green/60 font-mono mt-2">— Quran 49:6</p>
       </div>

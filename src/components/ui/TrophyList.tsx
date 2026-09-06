@@ -13,9 +13,9 @@ export const TrophyList = () => {
             <Trophy size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">Director's List</h3>
-            <p className="text-sm text-neutral-400 mb-1">Singapore Institute of Technology</p>
-            <p className="text-xs font-mono text-neutral-500">Top 15% of Cohort (2021, 2022)</p>
+            <h3 className="text-lg font-bold text-white">Director&apos;s List</h3>
+            <p className="text-sm text-neutral-400 mb-1">Nanyang Polytechnic</p>
+            <p className="text-xs font-mono text-neutral-500">Top 15% of Cohort (2019 — 2021)</p>
           </div>
         </div>
 

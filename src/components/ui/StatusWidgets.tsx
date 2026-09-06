@@ -142,6 +142,7 @@ export function GitHubFeed({ username = 'queWiz' }) {
             href={commit.url}
             target="_blank"
             rel="noreferrer"
+            aria-label={`View commit "${commit.message}" on GitHub`}
             className="flex items-start gap-3 p-3 bg-surface border border-borderWarm rounded-lg hover:border-accent-lavender/50 transition-colors"
           >
             <span className="text-accent-lavender text-[10px] mt-1">✦</span>

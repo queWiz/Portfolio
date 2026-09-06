@@ -1,8 +1,7 @@
 "use client";
-import { StarsCanvas } from "@/components/ui/StarBackground"; 
 import { HeroCanvas } from "@/components/ui/HeroCanvas";
-import { CodeWindow } from "@/components/ui/CodeWindow";
-import { ProjectSlideshow } from "@/components/ui/ProjectSlideshow";
+import { TelemetryStream } from "@/components/ui/TelemetryStream";
+import { ProjectGrid } from "@/components/ui/ProjectGrid";
 import { InteractiveTerminal } from "@/components/ui/Terminal";
 import { TabayyunCard } from "@/components/ui/TabayyunCard";
 import { GitHubFeed } from "@/components/ui/StatusWidgets";
@@ -24,10 +23,6 @@ export default function Home() {
 
       {/* --- HERO SECTION --- */}
       <section id="home" className="relative isolate w-full min-h-screen flex items-center justify-center pt-20">
-        <div className="absolute inset-0 z-0">
-          <StarsCanvas />
-        </div>
-        
         <HeroCanvas />
 
         <div className="max-w-[90rem] w-full grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 md:px-12 relative z-10 pointer-events-none">
@@ -66,8 +61,8 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="max-w-md hidden md:block">
-               <CodeWindow />
+            <div className="max-w-lg hidden md:block">
+               <TelemetryStream />
             </div>
           </div>
           
@@ -100,7 +95,7 @@ export default function Home() {
           <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
             <span className="w-12 h-px bg-borderWarm"></span> Selected Works
           </h2>
-          <ProjectSlideshow />
+          <ProjectGrid />
         </div>
       </section>
 

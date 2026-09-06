@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-export function useReveal({ delay = 0 }: { delay?: number } = {}) {
-  const ref = useRef<any>(null);
+export function useReveal<T extends HTMLElement = HTMLDivElement>({
+  delay = 0,
+}: { delay?: number } = {}) {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const el = ref.current;

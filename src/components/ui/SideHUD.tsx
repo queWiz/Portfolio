@@ -29,9 +29,9 @@ export function SideHUD() {
       {/* LEFT HUD - Branding & Coordinates */}
       <div className="fixed left-8 bottom-0 z-50 hidden xl:flex flex-col items-center gap-6 opacity-40 hover:opacity-100 transition-opacity duration-500">
         
-        {/* Quirky Personality Stat */}
-        <div style={{ writingMode: 'vertical-rl' }} className="font-mono text-[10px] tracking-[0.3em] text-accent-lavender rotate-180">
-          SYS.FUEL = "KOPI_O_KOSONG"
+        {/* Engineering Status Telemetry */}
+        <div style={{ writingMode: 'vertical-rl' }} className="font-mono text-[10px] tracking-[0.3em] text-accent-green rotate-180">
+          SYS.STATUS = &quot;ALL_SYSTEMS_NOMINAL&quot;
         </div>
 
         <div className="w-[1px] h-12 bg-borderWarm" />
