@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Cpu } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function ArchitectureLoopSection() {
   const [activeStep, setActiveStep] = useState<number | null>(null);
@@ -17,7 +18,13 @@ export function ArchitectureLoopSection() {
   return (
     <div className="w-full">
       {/* Section Header: Merging Tabayyun Philosophy with Verified Engineering */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
+      <motion.div
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]"
+      >
         <div>
           <div className="flex items-center gap-3 mb-2.5">
             <span className="w-8 h-0.5 bg-cobalt" />
@@ -36,10 +43,16 @@ export function ArchitectureLoopSection() {
             zero blind trust in client inputs, deterministic regression testing, and PDPA privacy compliance.
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main 3-Column Diagram Stage */}
-      <div className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-5 sm:p-8 lg:p-10 shadow-[0_10px_40px_-10px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_50px_rgba(0,0,0,0.5)]">
+      <motion.div
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-5 sm:p-8 lg:p-10 shadow-[0_10px_40px_-10px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_50px_rgba(0,0,0,0.5)]"
+      >
         {/* Unified Top Header Baseline for all 3 columns */}
         <div className="hidden lg:grid grid-cols-12 gap-8 border-b border-slate-200/80 dark:border-white/[0.06] pb-3 mb-6">
           <div className="col-span-4">
@@ -61,7 +74,13 @@ export function ArchitectureLoopSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Column 1: 01 — ACTORS (4 cols) */}
-          <div className="lg:col-span-4 flex flex-col space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-4 flex flex-col space-y-4"
+          >
             <div className="lg:hidden border-b border-slate-200/80 dark:border-white/[0.06] pb-2 mb-2">
               <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
                 01 — ACTORS
@@ -144,10 +163,16 @@ export function ArchitectureLoopSection() {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Column 2: 02 — TABAYYUN OPERATING LOOP (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center my-4 lg:my-0">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-5 flex flex-col items-center justify-center my-4 lg:my-0"
+          >
             <div className="lg:hidden w-full text-center border-b border-slate-200/80 dark:border-white/[0.06] pb-2 mb-4">
               <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
                 02 — TABAYYUN OPERATING LOOP
@@ -222,10 +247,16 @@ export function ArchitectureLoopSection() {
                   : "Hover any orbit node to inspect verified pipeline stage"}
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Column 3: 03 — ACCUMULATION (3 cols) */}
-          <div className="lg:col-span-3 flex flex-col space-y-3.5">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="lg:col-span-3 flex flex-col space-y-3.5"
+          >
             <div className="lg:hidden border-b border-slate-200/80 dark:border-white/[0.06] pb-2 mb-2">
               <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
                 03 — ACCUMULATION
@@ -297,9 +328,9 @@ export function ArchitectureLoopSection() {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { InteractiveTerminal } from "@/components/ui/Terminal";
 import { GitHubFeed } from "@/components/ui/StatusWidgets";
 import { PublicationsSection } from "@/components/ui/PublicationsSection";
 import { TrophyList } from "@/components/ui/TrophyList";
+import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
 import { Footer } from "@/components/ui/Footer";
 import {
   GraduationCap,
@@ -139,16 +140,18 @@ export default function Home() {
       </section>
 
       {/* --- FLAGSHIP PROJECTS: VERTICAL STAGGERED DEEP-DIVES --- */}
-      <motion.section
+      <section
         id="projects"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-24 z-10"
       >
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200/80 dark:border-white/[0.08]">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200/80 dark:border-white/[0.08]"
+        >
           <div>
             <div className="flex items-center gap-3 mb-2.5">
               <span className="w-8 h-0.5 bg-cobalt" />
@@ -164,7 +167,7 @@ export default function Home() {
             Four production architectures delivered for real-world Singapore clients,
             offline-first edge devices, and event-driven data streaming.
           </p>
-        </div>
+        </motion.div>
 
         {/* Vertical Staggered Case Studies */}
         <ProjectShowcase />
@@ -173,18 +176,20 @@ export default function Home() {
         <div className="mt-24">
           <ArchitectureLoopSection />
         </div>
-      </motion.section>
+      </section>
 
       {/* --- CANDIDATE INTERACTIVE TERMINAL (CLI) --- */}
-      <motion.section
+      <section
         id="terminal"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]"
+        >
           <div>
             <div className="flex items-center gap-3 mb-2.5">
               <span className="w-8 h-0.5 bg-cobalt" />
@@ -200,21 +205,30 @@ export default function Home() {
             Direct CLI access to candidate background, stack proficiencies, target roles,
             and verification standards.
           </p>
-        </div>
+        </motion.div>
 
-        <InteractiveTerminal />
-      </motion.section>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <InteractiveTerminal />
+        </motion.div>
+      </section>
 
       {/* --- EXPERIENCE TIMELINE & LIVE ACTIVITY --- */}
-      <motion.section
+      <section
         id="experience"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]"
+        >
           <div>
             <div className="flex items-center gap-3 mb-2.5">
               <span className="w-8 h-0.5 bg-cobalt" />
@@ -230,13 +244,19 @@ export default function Home() {
             Continuous engineering progression across computer science degrees, production
             internships, and real-time open-source commits.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
           {/* Left: 2 Columns for Experience Timeline */}
           <div className="lg:col-span-2 space-y-5">
             {/* Experience Item 01 */}
-            <div className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300"
+            >
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
                   <GraduationCap size={13} /> 2024 — Present
@@ -254,10 +274,16 @@ export default function Home() {
                 microservices, and relational schema engineering. Delivering client-verified
                 systems and automated Playwright regression testing suites.
               </p>
-            </div>
+            </motion.div>
 
             {/* Experience Item 02 */}
-            <div className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300"
+            >
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
                   <Briefcase size={13} /> Sep 2021 — Nov 2021
@@ -275,10 +301,16 @@ export default function Home() {
                 Trained and deployed a machine learning pricing forecast model that boosted operational
                 revenue by 15% through algorithmic dynamic pricing.
               </p>
-            </div>
+            </motion.div>
 
             {/* Experience Item 03 */}
-            <div className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300"
+            >
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
                   <BookOpen size={13} /> 2018 — 2021
@@ -297,45 +329,54 @@ export default function Home() {
                 Awarded Director&apos;s List honors for graduating in the top 15% of the cohort.
                 Distinctions in UX Design and Networking Technology.
               </p>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right: 1 Column for Live GitHub Commit Feed */}
-          <div className="lg:col-span-1">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-1"
+          >
             <GitHubFeed defaultUsername="queWiz" />
-          </div>
+          </motion.div>
         </div>
-      </motion.section>
+      </section>
 
       {/* --- PEER-REVIEWED PUBLICATIONS --- */}
-      <motion.section
+      <section
         id="publications"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-16 z-10"
       >
         <PublicationsSection />
-      </motion.section>
+      </section>
 
       {/* --- HONORS & CREDENTIALS --- */}
-      <motion.section
+      <section
         id="honors"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 pb-24 z-10"
       >
-        <div className="flex items-center gap-3 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-3 mb-6"
+        >
           <span className="w-8 h-0.5 bg-cobalt" />
           <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
             CREDENTIALS &amp; DISTINCTIONS
           </span>
-        </div>
+        </motion.div>
         <TrophyList />
-      </motion.section>
+      </section>
+
+      {/* --- HAVU-STYLE INTERACTIVE PIXEL BREAKOUT GAME --- */}
+      <section className="w-full z-10">
+        <PixelBreakoutGame />
+      </section>
 
       {/* --- FOOTER --- */}
       <Footer />
