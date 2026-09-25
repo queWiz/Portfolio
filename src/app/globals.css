@@ -3,20 +3,116 @@
 @tailwind utilities;
 
 :root {
-  --background: #050505; /* Deep Black */
-  --foreground: #ededed; /* Off-white text */
-  --accent: #262626;     /* Dark Gray borders */
+  --bg: #F8F9FA;
+  --bg-subtle: #F1F3F5;
+  --surface: #FFFFFF;
+  --surface-card: #FFFFFF;
+  --border: #E2E8F0;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --cobalt: #2563EB;
+  --cobalt-soft: rgba(37, 99, 235, 0.08);
+  --cobalt-glow: rgba(37, 99, 235, 0.25);
+  --dot-color: rgba(15, 23, 42, 0.07);
+  --shadow-tactile: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+}
+
+.dark {
+  --bg: #080C14;
+  --bg-subtle: #101520;
+  --surface: #111622;
+  --surface-card: #111622;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --text-primary: #EFF3F8;
+  --text-secondary: #94A3B8;
+  --text-muted: #8C9BAE;
+  --cobalt: #3B82F6;
+  --cobalt-soft: rgba(59, 130, 246, 0.12);
+  --cobalt-glow: rgba(59, 130, 246, 0.35);
+  --dot-color: rgba(255, 255, 255, 0.06);
+  --shadow-tactile: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #0a0a0f;
-  color: #f5f0e8;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Custom Scrollbar (Optional but looks pro) */
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: rgba(245, 240, 232, 0.2); border-radius: 4px; }
+/* Subtle Isometric Technical Dot/Line Grid */
+.isometric-grid-bg {
+  background-size: 28px 28px;
+  background-image: 
+    radial-gradient(circle, var(--dot-color) 1.25px, transparent 1.25px);
+  mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+}
+
+/* Tactile Glass Pill */
+.glass-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-tactile);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Nordic Double-Layer Button Hover Text Swapper */
+.btn-nordic {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cobalt);
+  color: #ffffff;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.btn-nordic:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px -4px var(--cobalt-glow);
+}
+
+.btn-nordic .bl {
+  display: flex;
+  flex-direction: column;
+  height: 1.25em;
+  line-height: 1.25em;
+  overflow: hidden;
+}
+
+.btn-nordic .bl > span {
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-nordic:hover .bl > span {
+  transform: translateY(-100%);
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

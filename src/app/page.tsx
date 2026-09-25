@@ -1,171 +1,344 @@
 "use client";
-import { HeroCanvas } from "@/components/ui/HeroCanvas";
-import { TelemetryStream } from "@/components/ui/TelemetryStream";
-import { ProjectGrid } from "@/components/ui/ProjectGrid";
-import { InteractiveTerminal } from "@/components/ui/Terminal";
-import { TabayyunCard } from "@/components/ui/TabayyunCard";
-import { GitHubFeed } from "@/components/ui/StatusWidgets";
-import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
-import { TopNavbar } from "@/components/ui/LayoutFeatures";
-import { useReveal } from "@/hooks/useReveal";
+
 import { motion } from "framer-motion";
+import { TopNavbar } from "@/components/ui/LayoutFeatures";
+import { HeroPixelDrone, HeroPixelBaseline } from "@/components/ui/HeroPixelStage";
+import { HeroStatusStrip } from "@/components/ui/HeroStatusStrip";
+import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
+import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
+import { ArchitectureLoopSection } from "@/components/ui/ArchitectureLoopSection";
+import { InteractiveTerminal } from "@/components/ui/Terminal";
+import { GitHubFeed } from "@/components/ui/StatusWidgets";
+import { PublicationsSection } from "@/components/ui/PublicationsSection";
 import { TrophyList } from "@/components/ui/TrophyList";
+import { Footer } from "@/components/ui/Footer";
+import {
+  GraduationCap,
+  Briefcase,
+  BookOpen,
+  Terminal as TerminalIcon,
+} from "lucide-react";
 
 export default function Home() {
-  const terminalRef = useReveal({ delay: 0 });
-  const workRef = useReveal({ delay: 0 });
-  const experienceRef = useReveal({ delay: 0 });
-  const trophyRef = useReveal({ delay: 0 });
-
   return (
-    <main className="min-h-screen bg-base flex flex-col items-center relative overflow-x-hidden selection:bg-accent-green selection:text-black">
+    <main className="min-h-screen bg-[#F8F9FA] dark:bg-[#080C14] text-slate-900 dark:text-[#EFF3F8] flex flex-col items-center relative overflow-x-hidden transition-colors duration-300">
+      {/* Floating Glass Pill Header */}
       <TopNavbar />
 
       {/* --- HERO SECTION --- */}
-      <section id="home" className="relative isolate w-full min-h-screen flex items-center justify-center pt-20">
-        <HeroCanvas />
+      <section
+        id="home"
+        className="relative w-full min-h-[90vh] flex flex-col items-center justify-between pt-28 pb-8 px-4 sm:px-10 lg:px-16 isolate"
+      >
+        {/* Subtle Radial Gradient + Isometric Dot Grid */}
+        <div className="absolute inset-0 isometric-grid-bg pointer-events-none -z-10" />
 
-        <div className="max-w-[90rem] w-full grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 md:px-12 relative z-10 pointer-events-none">
-          
-          <div className="flex flex-col justify-center max-w-2xl pointer-events-auto">
-            <div className="flex items-center gap-6 mb-8">
-              <div className="inline-flex items-center gap-2 bg-accent-green/10 border border-accent-green/30 rounded-full px-4 py-2 shadow-[0_0_15px_rgba(134,239,172,0.15)]">
-                <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-                <span className="text-xs font-mono font-bold uppercase tracking-widest text-accent-green">Open to Work</span>
-              </div>
-            </div>
+        {/* Hero Ambient Radial Glow */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-cobalt/5 dark:bg-cobalt/[0.08] blur-3xl pointer-events-none -z-10 rounded-full" />
 
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
+        {/* Unified Main Hero Content Row */}
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center my-auto">
+          {/* Left Column: Typographic Identity & CTAs (7 cols) */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
+            {/* Kicker Overline */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-6xl lg:text-8xl font-bold text-cream mb-6 tracking-tighter"
-              style={{ textShadow: "0 10px 30px rgba(0,0,0,0.8)" }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#111622]/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm mb-6 backdrop-blur-md"
             >
-              Uwais Alqarni
+              <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
+              <span className="text-[11px] font-mono font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300">
+                Software &amp; Data Engineer · SIT Singapore
+              </span>
+            </motion.div>
+
+            {/* Oversized Brandmark Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl sm:text-6xl lg:text-7xl font-heading font-extrabold tracking-[-0.04em] text-slate-950 dark:text-white leading-[1.06] mb-6"
+            >
+              UWAIS ALQARNI
+              <span className="text-cobalt drop-shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                .
+              </span>
             </motion.h1>
-            
-            <p className="text-sm font-mono text-accent-lavender font-bold mb-8 uppercase tracking-[0.3em]">
-              Software Engineer · Data Engineer · SIT
-            </p>
-            
-            <p className="text-muted text-xl leading-relaxed mb-10 font-medium">
-              I am a Software Engineer who builds end-to-end systems. From architecting high-throughput data pipelines to crafting seamless, AI-driven user experiences, I solve complex problems across the entire stack.
-            </p>
 
-            <div className="flex gap-4 mb-12">
-              <a href="#work" className="px-8 py-3 bg-cream text-base font-bold text-black rounded-lg hover:bg-white transition-colors shadow-lg">
-                View Work
-              </a>
-              <a href="mailto:ualqarni70@gmail.com" className="px-8 py-3 border border-borderWarm text-cream font-bold rounded-lg hover:bg-surface transition-colors">
-                Get in Touch
-              </a>
-            </div>
+            {/* Lede Paragraph */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-normal leading-relaxed mb-8"
+            >
+              Architecting resilient distributed pipelines, edge AI inference engines,
+              and verified full-stack platforms with uncompromising engineering discipline.
+            </motion.p>
 
-            <div className="max-w-lg hidden md:block">
-               <TelemetryStream />
-            </div>
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-wrap items-center gap-3.5 mb-10"
+            >
+              <a
+                href="#projects"
+                className="btn-nordic px-7 py-3 font-mono text-xs font-bold tracking-wider uppercase shadow-[0_4px_16px_rgba(37,99,235,0.25)]"
+              >
+                <span className="bl">
+                  <span>EXPLORE CASE STUDIES ↓</span>
+                  <span>VIEW ARCHITECTURE</span>
+                </span>
+              </a>
+
+              <a
+                href="#terminal"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] text-xs font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-400 transition-all shadow-sm"
+              >
+                <TerminalIcon size={14} className="text-cobalt" />
+                <span>LAUNCH CLI ⌁</span>
+              </a>
+
+              <a
+                href="mailto:ualqarni70@gmail.com"
+                className="inline-flex items-center gap-1.5 px-5 py-3 rounded-full text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 hover:text-cobalt transition-colors"
+              >
+                <span>Get in Touch ↗</span>
+              </a>
+            </motion.div>
+
+            {/* Real Engineering Status Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="w-full"
+            >
+              <HeroStatusStrip />
+            </motion.div>
           </div>
-          
-          {/* We removed the right-side grid column div for the canvas, because HeroCanvas is now absolute over everything */}
-        </div>
-      </section>
 
-      {/* --- INFINITE MARQUEE --- */}
-      <section className="w-full bg-[rgba(245,240,232,0.02)] z-10">
-         <InfiniteMarquee />
-      </section>
-
-      {/* --- ABOUT & PHILOSOPHY --- */}
-      <section ref={terminalRef} id="about" className="w-full max-w-[90rem] px-6 md:px-12 mt-16 mb-24 z-10">
-        <h2 className="text-m font-mono text-muted font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
-          <span className="w-12 h-px bg-borderWarm"></span> About & Philosophy
-        </h2>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <InteractiveTerminal />
-          <TabayyunCard />
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* --- PROJECTS SLIDESHOW --- */}
-      <section ref={workRef} id="work" className="w-full bg-[rgba(245,240,232,0.02)] py-20 px-6 md:px-12 mb-20 z-10 flex justify-center">
-        <div className="max-w-[90rem] w-full">
-          <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
-            <span className="w-12 h-px bg-borderWarm"></span> Selected Works
-          </h2>
-          <ProjectGrid />
-        </div>
-      </section>
-
-      {/* --- EXPERIENCE & ACTIVITY (Side by Side) --- */}
-      <section ref={experienceRef} className="w-full max-w-[90rem] px-6 md:px-12 mb-20 z-10 grid grid-cols-1 lg:grid-cols-3 gap-16">
-        
-        {/* Left: Experience Timeline (Takes up 2 columns) */}
-        <div className="lg:col-span-2">
-          <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
-            <span className="w-12 h-px bg-borderWarm"></span> Experience
-          </h2>
-          
-          <div className="space-y-12 border-l border-borderWarm ml-3 pl-10 relative">
-            <div className="relative">
-              <div className="absolute -left-[45px] top-1.5 w-3 h-3 bg-base border-2 border-accent-lavender rounded-full" />
-              <div className="text-xs font-mono text-accent-lavender font-bold tracking-widest uppercase mb-2">2024 — Present</div>
-              <h3 className="text-xl font-bold text-cream">Bachelor of ICT (Software Engineering)</h3>
-              <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Singapore Institute of Technology</div>
-              <p className="text-muted text-base leading-relaxed">Specializing in Software Engineering.</p>
-            </div>
-
-            <div className="relative">
-              <div className="absolute -left-[45px] top-1.5 w-3 h-3 bg-base border-2 border-borderWarm rounded-full" />
-              <div className="text-xs font-mono text-muted font-bold tracking-widest uppercase mb-2">Sep 2021 — Nov 2021</div>
-              <h3 className="text-xl font-bold text-cream">Software Engineer Intern</h3>
-              <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Aktus MU Kreativ</div>
-              <p className="text-muted text-base leading-relaxed">Built an offline-first PWA attendance system. Deployed a pricing forecast ML model that increased revenue by 15% through smarter pricing strategies.</p>
-            </div>
-
-            <div className="relative">
-              <div className="absolute -left-[45px] top-1.5 w-3 h-3 bg-base border-2 border-borderWarm rounded-full" />
-              <div className="text-xs font-mono text-muted font-bold tracking-widest uppercase mb-2">2018 - 2021</div>
-              <h3 className="text-xl font-bold text-cream">Diploma in Information Technology</h3>
-              <div className="text-sm text-accent-amber font-mono mt-1 mb-4">Nanyang Polytechnic</div>
-              <p className="text-muted text-base leading-relaxed">Distinctions in UX Design and Networking Technology. Director&apos;s List (Top 15%)</p>
-            </div>
-
+          {/* Right Column: Open Floating Havu-Style Pixel Drone (5 cols, seamless in open sky) */}
+          <div className="lg:col-span-5 w-full flex items-center justify-center">
+            <HeroPixelDrone />
           </div>
         </div>
 
-        {/* Right: GitHub Activity Feed (Visible!) */}
-        <div className="lg:col-span-1">
-          <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
-            <span className="w-12 h-px bg-borderWarm"></span> Activity
-          </h2>
-
-          <GitHubFeed username="queWiz" />
+        {/* Full-width continuous baseline spanning bottom of entire Hero */}
+        <div className="w-full max-w-7xl mt-6">
+          <HeroPixelBaseline />
         </div>
-
       </section>
 
-      <SectionDivider />
+      {/* --- RUNTIME CAPABILITIES MARQUEE --- */}
+      <section className="w-full z-10">
+        <InfiniteMarquee />
+      </section>
 
-      <section ref={trophyRef} className="w-full bg-[rgba(245,240,232,0.02)] py-16 px-6 md:px-12 mb-16 z-10 flex justify-center">
+      {/* --- FLAGSHIP PROJECTS: VERTICAL STAGGERED DEEP-DIVES --- */}
+      <motion.section
+        id="projects"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-24 z-10"
+      >
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200/80 dark:border-white/[0.08]">
+          <div>
+            <div className="flex items-center gap-3 mb-2.5">
+              <span className="w-8 h-0.5 bg-cobalt" />
+              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
+                SELECTED WORKS · 2024 — 2026
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
+              Engineered Systems &amp;<br />Client Platforms.
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
+            Four production architectures delivered for real-world Singapore clients,
+            offline-first edge devices, and event-driven data streaming.
+          </p>
+        </div>
+
+        {/* Vertical Staggered Case Studies */}
+        <ProjectShowcase />
+
+        {/* Tabayyun Verification Methodology & Operating Loop */}
+        <div className="mt-24">
+          <ArchitectureLoopSection />
+        </div>
+      </motion.section>
+
+      {/* --- CANDIDATE INTERACTIVE TERMINAL (CLI) --- */}
+      <motion.section
+        id="terminal"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
+      >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
+          <div>
+            <div className="flex items-center gap-3 mb-2.5">
+              <span className="w-8 h-0.5 bg-cobalt" />
+              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
+                DEVELOPER CONSOLE
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
+              Interactive Candidate Terminal.
+            </h2>
+          </div>
+          <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
+            Direct CLI access to candidate background, stack proficiencies, target roles,
+            and verification standards.
+          </p>
+        </div>
+
+        <InteractiveTerminal />
+      </motion.section>
+
+      {/* --- EXPERIENCE TIMELINE & LIVE ACTIVITY --- */}
+      <motion.section
+        id="experience"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
+      >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
+          <div>
+            <div className="flex items-center gap-3 mb-2.5">
+              <span className="w-8 h-0.5 bg-cobalt" />
+              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
+                ACADEMIC &amp; INDUSTRY TRACK
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
+              Experience &amp; Live Activity.
+            </h2>
+          </div>
+          <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
+            Continuous engineering progression across computer science degrees, production
+            internships, and real-time open-source commits.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+          {/* Left: 2 Columns for Experience Timeline */}
+          <div className="lg:col-span-2 space-y-5">
+            {/* Experience Item 01 */}
+            <div className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
+                  <GraduationCap size={13} /> 2024 — Present
+                </span>
+                <span className="text-xs font-mono text-slate-400">Undergraduate</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
+                Bachelor of ICT (Software Engineering)
+              </h3>
+              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
+                Singapore Institute of Technology (SIT)
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                Focused on distributed systems, enterprise software architecture, cloud-native
+                microservices, and relational schema engineering. Delivering client-verified
+                systems and automated Playwright regression testing suites.
+              </p>
+            </div>
+
+            {/* Experience Item 02 */}
+            <div className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
+                  <Briefcase size={13} /> Sep 2021 — Nov 2021
+                </span>
+                <span className="text-xs font-mono text-slate-400">Internship</span>
+              </div>
+              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
+                Software Engineer Intern
+              </h3>
+              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
+                Aktus MU Kreativ
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                Engineered an offline-first Progressive Web App (PWA) attendance tracking system.
+                Trained and deployed a machine learning pricing forecast model that boosted operational
+                revenue by 15% through algorithmic dynamic pricing.
+              </p>
+            </div>
+
+            {/* Experience Item 03 */}
+            <div className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
+                  <BookOpen size={13} /> 2018 — 2021
+                </span>
+                <span className="text-xs font-mono text-amber-600 dark:text-amber-400 font-semibold">
+                  Director&apos;s List (Top 15%)
+                </span>
+              </div>
+              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
+                Diploma in Information Technology
+              </h3>
+              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
+                Nanyang Polytechnic (NYP)
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                Awarded Director&apos;s List honors for graduating in the top 15% of the cohort.
+                Distinctions in UX Design and Networking Technology.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: 1 Column for Live GitHub Commit Feed */}
+          <div className="lg:col-span-1">
+            <GitHubFeed defaultUsername="queWiz" />
+          </div>
+        </div>
+      </motion.section>
+
+      {/* --- PEER-REVIEWED PUBLICATIONS --- */}
+      <motion.section
+        id="publications"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-16 z-10"
+      >
+        <PublicationsSection />
+      </motion.section>
+
+      {/* --- HONORS & CREDENTIALS --- */}
+      <motion.section
+        id="honors"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 pb-24 z-10"
+      >
+        <div className="flex items-center gap-3 mb-6">
+          <span className="w-8 h-0.5 bg-cobalt" />
+          <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
+            CREDENTIALS &amp; DISTINCTIONS
+          </span>
+        </div>
         <TrophyList />
-      </section>
+      </motion.section>
 
+      {/* --- FOOTER --- */}
+      <Footer />
     </main>
-  );
-}
-
-// --- ELEGANT SECTION DIVIDER ---
-function SectionDivider() {
-  return (
-    <div className="w-full flex justify-center py-16 z-10 pointer-events-none">
-      {/* 
-        max-w-5xl ensures it doesn't stretch too far.
-        bg-gradient-to-r creates the fade effect: transparent -> solid -> transparent 
-      */}
-      <div className="w-full max-w-7xl h-[3px] bg-gradient-to-r from-transparent via-borderWarm to-transparent opacity-90" />
-    </div>
   );
 }

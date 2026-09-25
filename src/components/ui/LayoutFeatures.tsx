@@ -1,113 +1,113 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { PrayerTime } from "./StatusWidgets";
-import { Menu, X } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
+import { Sun, Moon, ArrowUpRight } from "lucide-react";
 
 export function TopNavbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const [sgtTime, setSgtTime] = useState("");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const updateTime = () => {
+      const now = new Date();
+      // Format time in Singapore (Asia/Singapore)
+      const formatted = new Intl.DateTimeFormat("en-SG", {
+        timeZone: "Asia/Singapore",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }).format(now);
+      setSgtTime(formatted);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0a0a0f]/85 backdrop-blur-md border-b border-borderWarm/70 py-3.5 shadow-xl"
-          : "bg-transparent py-5"
-      }`}
-    >
-      <div className="max-w-[90rem] mx-auto px-6 md:px-12 flex justify-between items-center">
-        {/* Brand Logo */}
+    <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      <nav
+        aria-label="Main Navigation"
+        className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 py-2.5 rounded-full bg-white/80 dark:bg-[#101520]/80 border border-slate-200/80 dark:border-white/[0.08] shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 max-w-5xl w-full"
+      >
+        {/* Brandmark */}
         <a
           href="#home"
-          aria-label="Uwais Alqarni Home"
-          className="font-mono font-bold text-cream text-lg tracking-tighter hover:text-accent-green transition-colors"
+          className="font-heading font-extrabold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white flex items-center gap-0.5 group"
         >
-          UA<span className="text-accent-green">.</span>
+          ALQARNI
+          <span className="text-cobalt group-hover:scale-125 transition-transform duration-200">
+            .
+          </span>
         </a>
 
-        {/* Desktop Nav Links */}
-        <nav
-          aria-label="Main Navigation"
-          className="hidden md:flex items-center gap-8 text-xs font-mono text-muted font-semibold absolute left-1/2 -translate-x-1/2"
-        >
-          <a href="#about" className="hover:text-cream transition-colors">
-            /about
-          </a>
-          <a href="#work" className="hover:text-cream transition-colors">
-            /work
-          </a>
-          <a href="mailto:ualqarni70@gmail.com" className="hover:text-cream transition-colors">
-            /contact
-          </a>
-        </nav>
+        {/* Center Live Badges (Hidden on small mobile) */}
+        <div className="hidden md:flex items-center gap-4 text-[11px] font-mono">
+          {/* Live Singapore Clock */}
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/80 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06] text-slate-600 dark:text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-cobalt animate-pulse" />
+            <span>SGT {sgtTime || "UTC+8"}</span>
+          </div>
 
-        {/* Action Group */}
-        <div className="flex items-center gap-3 md:gap-4">
+          {/* Availability Status */}
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>OPEN TO SWE INTERNSHIP</span>
+          </div>
+        </div>
+
+        {/* Right Navigation & Actions */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href="#projects"
+            className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-cobalt transition-colors px-2 py-1"
+          >
+            /projects
+          </a>
+
+          <a
+            href="#terminal"
+            className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-cobalt transition-colors px-2 py-1 hidden sm:inline-block"
+          >
+            /cli
+          </a>
+
+          <a
+            href="#experience"
+            className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-cobalt transition-colors px-2 py-1 hidden sm:inline-block"
+          >
+            /track
+          </a>
+
+          {/* Dual Mode Theme Toggle Switch */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle Light Ceramic and Dark Obsidian Theme"
+            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
+          >
+            {theme === "light" ? (
+              <Moon size={15} className="text-slate-700" />
+            ) : (
+              <Sun size={15} className="text-amber-400" />
+            )}
+          </button>
+
+          {/* Resume CTA */}
           <a
             href="/Resume.pdf"
             target="_blank"
             rel="noreferrer"
-            aria-label="Download Uwais Alqarni Resume PDF"
-            className="inline-flex h-9 items-center justify-center rounded-full border border-accent-green/40 bg-accent-green/10 px-5 font-mono text-xs font-bold tracking-widest text-accent-green hover:bg-accent-green hover:text-black transition-all"
+            download="Uwais_Alqarni_Resume.pdf"
+            title="Download / View Uwais Alqarni's Resume (PDF)"
+            className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-cobalt text-white text-xs font-mono font-semibold hover:bg-cobalt-dark shadow-[0_2px_10px_rgba(37,99,235,0.3)] transition-all"
           >
-            RESUME
+            <span>RESUME</span>
+            <ArrowUpRight size={12} />
           </a>
-
-          {/* Sticky Animated Prayer Time */}
-          <div className="hidden sm:block">
-            <PrayerTime />
-          </div>
-
-          {/* Mobile Hamburger Toggle */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((o) => !o)}
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={mobileMenuOpen}
-            className="p-2 md:hidden text-muted hover:text-cream rounded-lg border border-borderWarm/60 bg-black/40"
-          >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
         </div>
-      </div>
-
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-borderWarm bg-[#0a0a0f]/95 backdrop-blur-xl px-6 py-6 transition-all">
-          <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 font-mono text-sm">
-            <a
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-muted hover:text-cream transition-colors py-1"
-            >
-              /about
-            </a>
-            <a
-              href="#work"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-muted hover:text-cream transition-colors py-1"
-            >
-              /work
-            </a>
-            <a
-              href="mailto:ualqarni70@gmail.com"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-muted hover:text-cream transition-colors py-1"
-            >
-              /contact
-            </a>
-            <div className="pt-2 sm:hidden border-t border-borderWarm/40">
-              <PrayerTime />
-            </div>
-          </nav>
-        </div>
-      )}
+      </nav>
     </header>
   );
 }

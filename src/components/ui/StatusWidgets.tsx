@@ -4,11 +4,15 @@ import { useEffect, useState } from 'react';
 const PRAYERS = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'] as const;
 
 type Commit = { repo: string; message: string; url: string; time: Date };
-type GitHubPushEvent = {
+type GitHubEvent = {
   type: string;
   repo?: { name?: string };
   created_at?: string;
-  payload?: { commits?: Array<{ message?: string }> };
+  payload?: {
+    action?: string;
+    commits?: Array<{ message?: string }>;
+    pull_request?: { title?: string; html_url?: string };
+  };
 };
 type GitHubRepo = {
   name?: string;
@@ -18,7 +22,10 @@ type GitHubRepo = {
   updated_at?: string | null;
 };
 
-export function GitHubFeed({ username = 'queWiz' }) {
+export function GitHubFeed({ defaultUsername = 'queWiz' }: { defaultUsername?: string }) {
+  const [selectedUser, setSelectedUser] = useState<'queWiz' | 'ooWise'>(
+    defaultUsername as 'queWiz' | 'ooWise'
+  );
   const [commits, setCommits] = useState<Commit[]>([]);
   const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading');
   const [nowMs, setNowMs] = useState(() => Date.now());
@@ -30,50 +37,68 @@ export function GitHubFeed({ username = 'queWiz' }) {
 
   useEffect(() => {
     async function load() {
+      setStatus('loading');
       try {
-        const eventsRes = await fetch(`https://api.github.com/users/${username}/events/public`);
+        const eventsRes = await fetch(`https://api.github.com/users/${selectedUser}/events/public`);
         const events: unknown = await eventsRes.json();
 
         if (Array.isArray(events)) {
-          const pushCommits: Commit[] = events
-            .filter((event): event is GitHubPushEvent => {
+          const publicActivity: Commit[] = events
+            .filter((event): event is GitHubEvent => {
               return (
                 typeof event === 'object' &&
                 event !== null &&
                 'type' in event &&
-                (event as GitHubPushEvent).type === 'PushEvent'
+                ((event as GitHubEvent).type === 'PushEvent' ||
+                  (event as GitHubEvent).type === 'PullRequestEvent')
               );
             })
-            .flatMap((event) =>
-              (event.payload?.commits ?? []).map((commit) => ({
-                repo: (event.repo?.name ?? '').split('/')[1] ?? username,
-                message: (commit.message ?? 'commit').split('\n')[0].slice(0, 60),
-                url: `https://github.com/${event.repo?.name ?? username}`,
-                time: new Date(event.created_at ?? Date.now()),
-              }))
-            )
-            .slice(0, 3);
+            .flatMap((event) => {
+              const fullRepo = event.repo?.name ?? selectedUser;
+              if (event.type === 'PushEvent') {
+                return (event.payload?.commits ?? []).map((commit) => ({
+                  repo: fullRepo,
+                  message: (commit.message ?? 'commit').split('\n')[0].slice(0, 60),
+                  url: `https://github.com/${fullRepo}`,
+                  time: new Date(event.created_at ?? Date.now()),
+                }));
+              }
+              if (event.type === 'PullRequestEvent') {
+                const pr = event.payload?.pull_request;
+                const action = event.payload?.action ?? 'updated';
+                return [
+                  {
+                    repo: fullRepo,
+                    message: `[PR ${action}] ${pr?.title ?? 'Contribution'}`.slice(0, 60),
+                    url: pr?.html_url ?? `https://github.com/${fullRepo}`,
+                    time: new Date(event.created_at ?? Date.now()),
+                  },
+                ];
+              }
+              return [];
+            })
+            .slice(0, 4);
 
-          if (pushCommits.length > 0) {
-            setCommits(pushCommits);
+          if (publicActivity.length > 0) {
+            setCommits(publicActivity);
             setStatus('ok');
             return;
           }
         }
 
-        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=3`);
+        const reposRes = await fetch(`https://api.github.com/users/${selectedUser}/repos?sort=updated&per_page=4`);
         const repos: unknown = await reposRes.json();
 
         if (Array.isArray(repos) && repos.length > 0) {
           const repoCommits: Commit[] = repos
             .filter((repo): repo is GitHubRepo => typeof repo === 'object' && repo !== null)
             .map((repo) => ({
-              repo: repo.name ?? username,
-              message: repo.description ?? 'No description',
-              url: repo.html_url ?? `https://github.com/${username}`,
+              repo: repo.name ?? selectedUser,
+              message: repo.description ?? 'Active repository commit',
+              url: repo.html_url ?? `https://github.com/${selectedUser}`,
               time: new Date(repo.pushed_at ?? repo.updated_at ?? Date.now()),
             }))
-            .slice(0, 3);
+            .slice(0, 4);
 
           setCommits(repoCommits);
           setStatus('ok');
@@ -87,7 +112,7 @@ export function GitHubFeed({ username = 'queWiz' }) {
     }
 
     void load();
-  }, [username]);
+  }, [selectedUser]);
 
   const timeAgo = (d: Date) => {
     const mins = Math.floor((nowMs - d.getTime()) / 60000);
@@ -97,65 +122,107 @@ export function GitHubFeed({ username = 'queWiz' }) {
   };
 
   return (
-    <div className="flex flex-col gap-2 text-left z-50">
-      <span className="text-[14px] font-mono text-muted uppercase tracking-widest mb-1">
-        Recent Commits
-      </span>
+    <div className="flex flex-col gap-3 text-left">
+      <div className="flex items-center justify-between pb-1">
+        <span className="text-xs font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-cobalt animate-pulse" />
+          Live Git Commits
+        </span>
 
-      {status === 'loading' && (
-        <>
+        {/* Account Selector Switch */}
+        <div className="flex items-center gap-1.5 p-0.5 rounded-full bg-slate-100 dark:bg-[#141B28] border border-slate-200 dark:border-white/10 text-[11px] font-mono">
+          <button
+            onClick={() => setSelectedUser('queWiz')}
+            className={`px-2.5 py-0.5 rounded-full transition-all ${
+              selectedUser === 'queWiz'
+                ? 'bg-cobalt text-white font-bold shadow-sm'
+                : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            @queWiz
+          </button>
+          <button
+            onClick={() => setSelectedUser('ooWise')}
+            className={`px-2.5 py-0.5 rounded-full transition-all ${
+              selectedUser === 'ooWise'
+                ? 'bg-cobalt text-white font-bold shadow-sm'
+                : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            @ooWise
+          </button>
+        </div>
+      </div>
+
+      {status === "loading" && (
+        <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="flex items-start gap-3 p-3 bg-surface border border-borderWarm rounded-lg animate-pulse"
+              className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] animate-pulse flex items-start gap-3"
             >
-              <span className="text-accent-lavender text-[10px] mt-1 opacity-30">✦</span>
-              <div className="min-w-0 flex-1">
-                <div className="h-3 bg-borderWarm rounded w-3/4 mb-2" />
-                <div className="h-2 bg-borderWarm rounded w-1/2 opacity-50" />
+              <div className="w-2 h-2 rounded-full bg-cobalt/40 mt-1" />
+              <div className="flex-1 space-y-2">
+                <div className="h-3 bg-slate-200 dark:bg-white/10 rounded w-3/4" />
+                <div className="h-2 bg-slate-100 dark:bg-white/5 rounded w-1/2" />
               </div>
             </div>
           ))}
-        </>
+        </div>
       )}
 
-      {status === 'error' && (
-        <div className="p-3 bg-surface border border-borderWarm rounded-lg">
-          <p className="text-[12px] text-muted font-mono">
-            Could not load activity.{' '}
+      {status === "error" && (
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06]">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            Direct feed offline.{" "}
             <a
-              href={`https://github.com/${username}`}
+              href={`https://github.com/${selectedUser}`}
               target="_blank"
               rel="noreferrer"
-              className="text-accent-lavender hover:underline"
+              className="text-cobalt hover:underline"
             >
-              View on GitHub ↗
+              View profile on GitHub ↗
             </a>
           </p>
         </div>
       )}
 
-      {status === 'ok' &&
-        commits.map((commit, i) => (
-          <a
-            key={i}
-            href={commit.url}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`View commit "${commit.message}" on GitHub`}
-            className="flex items-start gap-3 p-3 bg-surface border border-borderWarm rounded-lg hover:border-accent-lavender/50 transition-colors"
-          >
-            <span className="text-accent-lavender text-[10px] mt-1">✦</span>
-            <div className="min-w-0">
-              <div className="text-[13px] text-cream font-bold leading-tight truncate">
-                {commit.message}
+      {status === "ok" && (
+        <div className="space-y-2.5">
+          {commits.map((commit, i) => (
+            <a
+              key={i}
+              href={commit.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View commit "${commit.message}" on GitHub`}
+              className="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-[#111622] border border-slate-200/80 dark:border-white/[0.08] hover:border-cobalt/50 hover:shadow-sm transition-all duration-200 group"
+            >
+              <span className="text-cobalt text-xs mt-0.5 group-hover:scale-125 transition-transform">
+                ✦
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-snug truncate group-hover:text-cobalt transition-colors">
+                  {commit.message}
+                </div>
+                <div className="text-[11px] text-slate-400 dark:text-slate-500 font-mono mt-1 flex items-center justify-between">
+                  <span className="font-semibold text-slate-600 dark:text-slate-300 truncate max-w-[140px] sm:max-w-none">
+                    {commit.repo}
+                  </span>
+                  <span>{timeAgo(commit.time)}</span>
+                </div>
               </div>
-              <div className="text-[11px] text-muted font-mono mt-1">
-                {commit.repo} · {timeAgo(commit.time)}
-              </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          ))}
+
+          <div className="text-[10px] font-mono text-slate-400 dark:text-slate-500 pt-1 flex items-center justify-between">
+            <span>Public commits &amp; PRs</span>
+            <span title="Private school/client repos are protected by GitHub privacy rules">
+              Private repos shielded
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

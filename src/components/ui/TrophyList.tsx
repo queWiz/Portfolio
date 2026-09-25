@@ -1,35 +1,55 @@
-import { Trophy, Award } from "lucide-react";
+import { Trophy, Award, CheckCircle2 } from "lucide-react";
 
 export const TrophyList = () => {
   return (
-    <section className="max-w-4xl w-full mb-32 px-4 z-10">
-      <h2 className="text-m font-mono text-accent-green font-bold mb-12 uppercase tracking-[0.3em] flex items-center gap-4">
-        <span className="w-12 h-px bg-borderWarm"></span> Achievements
-      </h2>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="p-6 rounded-xl border border-neutral-800 bg-neutral-900/50 flex items-start gap-4 hover:border-yellow-600/50 transition-colors group">
-          <div className="p-3 bg-yellow-500/10 rounded-lg text-yellow-500 group-hover:text-yellow-400">
-            <Trophy size={24} />
+    <div className="w-full">
+      <div className="grid md:grid-cols-2 gap-5">
+        {/* Award 1 */}
+        <div className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-amber-400/50 hover:shadow-md transition-all group">
+          <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 group-hover:scale-105 transition-transform">
+            <Trophy size={22} />
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-white">Director&apos;s List</h3>
-            <p className="text-sm text-neutral-400 mb-1">Nanyang Polytechnic</p>
-            <p className="text-xs font-mono text-neutral-500">Top 15% of Cohort (2019 — 2021)</p>
+          <div className="flex-1">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <h4 className="text-base font-heading font-bold text-slate-900 dark:text-white">
+                Director&apos;s List (Top 15%)
+              </h4>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold border border-amber-500/20">
+                Academic Distinction
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+              Nanyang Polytechnic · Diploma in IT (2019 — 2021)
+            </p>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Awarded for graduating in the top 15% of the cohort, with distinctions in UX Design and Networking Architecture.
+            </p>
           </div>
         </div>
 
-        <div className="p-6 rounded-xl border border-neutral-800 bg-neutral-900/50 flex items-start gap-4 hover:border-blue-600/50 transition-colors group">
-          <div className="p-3 bg-blue-500/10 rounded-lg text-blue-500 group-hover:text-blue-400">
-            <Award size={24} />
+        {/* Award 2 */}
+        <div className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-cobalt/50 hover:shadow-md transition-all group">
+          <div className="p-3 bg-cobalt/10 border border-cobalt/20 rounded-xl text-cobalt group-hover:scale-105 transition-transform">
+            <Award size={22} />
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-white">Google Data Analytics</h3>
-            <p className="text-sm text-neutral-400 mb-1">Professional Certificate</p>
-            <p className="text-xs font-mono text-neutral-500">Data Cleaning, R, Visualization (2022)</p>
+          <div className="flex-1">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <h4 className="text-base font-heading font-bold text-slate-900 dark:text-white">
+                Google Data Analytics
+              </h4>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cobalt/10 text-cobalt font-semibold border border-cobalt/20 flex items-center gap-1">
+                <CheckCircle2 size={10} /> Professional
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+              Google Professional Certification (2022)
+            </p>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Rigorous data processing, exploratory SQL pipelines, R statistical modeling, and interactive visualization frameworks.
+            </p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
