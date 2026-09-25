@@ -8,17 +8,12 @@ import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
 import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
 import { ArchitectureLoopSection } from "@/components/ui/ArchitectureLoopSection";
 import { InteractiveTerminal } from "@/components/ui/Terminal";
-import { GitHubFeed } from "@/components/ui/StatusWidgets";
 import { PublicationsSection } from "@/components/ui/PublicationsSection";
 import { TrophyList } from "@/components/ui/TrophyList";
 import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
+import { HavuExperienceSection } from "@/components/ui/HavuExperienceSection";
 import { Footer } from "@/components/ui/Footer";
-import {
-  GraduationCap,
-  Briefcase,
-  BookOpen,
-  Terminal as TerminalIcon,
-} from "lucide-react";
+import { Terminal as TerminalIcon } from "lucide-react";
 
 export default function Home() {
   return (
@@ -145,13 +140,7 @@ export default function Home() {
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-24 z-10"
       >
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200/80 dark:border-white/[0.08]"
-        >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200/80 dark:border-white/[0.08]">
           <div>
             <div className="flex items-center gap-3 mb-2.5">
               <span className="w-8 h-0.5 bg-cobalt" />
@@ -167,7 +156,7 @@ export default function Home() {
             Four production architectures delivered for real-world Singapore clients,
             offline-first edge devices, and event-driven data streaming.
           </p>
-        </motion.div>
+        </div>
 
         {/* Vertical Staggered Case Studies */}
         <ProjectShowcase />
@@ -183,13 +172,7 @@ export default function Home() {
         id="terminal"
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
       >
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]"
-        >
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
           <div>
             <div className="flex items-center gap-3 mb-2.5">
               <span className="w-8 h-0.5 bg-cobalt" />
@@ -205,145 +188,13 @@ export default function Home() {
             Direct CLI access to candidate background, stack proficiencies, target roles,
             and verification standards.
           </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <InteractiveTerminal />
-        </motion.div>
-      </section>
-
-      {/* --- EXPERIENCE TIMELINE & LIVE ACTIVITY --- */}
-      <section
-        id="experience"
-        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]"
-        >
-          <div>
-            <div className="flex items-center gap-3 mb-2.5">
-              <span className="w-8 h-0.5 bg-cobalt" />
-              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
-                ACADEMIC &amp; INDUSTRY TRACK
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
-              Experience &amp; Live Activity.
-            </h2>
-          </div>
-          <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
-            Continuous engineering progression across computer science degrees, production
-            internships, and real-time open-source commits.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-          {/* Left: 2 Columns for Experience Timeline */}
-          <div className="lg:col-span-2 space-y-5">
-            {/* Experience Item 01 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
-                  <GraduationCap size={13} /> 2024 — Present
-                </span>
-                <span className="text-xs font-mono text-slate-400">Undergraduate</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
-                Bachelor of ICT (Software Engineering)
-              </h3>
-              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
-                Singapore Institute of Technology (SIT)
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                Focused on distributed systems, enterprise software architecture, cloud-native
-                microservices, and relational schema engineering. Delivering client-verified
-                systems and automated Playwright regression testing suites.
-              </p>
-            </motion.div>
-
-            {/* Experience Item 02 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
-                  <Briefcase size={13} /> Sep 2021 — Nov 2021
-                </span>
-                <span className="text-xs font-mono text-slate-400">Internship</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
-                Software Engineer Intern
-              </h3>
-              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
-                Aktus MU Kreativ
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                Engineered an offline-first Progressive Web App (PWA) attendance tracking system.
-                Trained and deployed a machine learning pricing forecast model that boosted operational
-                revenue by 15% through algorithmic dynamic pricing.
-              </p>
-            </motion.div>
-
-            {/* Experience Item 03 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="p-5 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] hover:border-cobalt/40 shadow-sm transition-all duration-300"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span className="text-[11px] font-mono text-cobalt uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20 flex items-center gap-1.5">
-                  <BookOpen size={13} /> 2018 — 2021
-                </span>
-                <span className="text-xs font-mono text-amber-600 dark:text-amber-400 font-semibold">
-                  Director&apos;s List (Top 15%)
-                </span>
-              </div>
-              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
-                Diploma in Information Technology
-              </h3>
-              <div className="text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
-                Nanyang Polytechnic (NYP)
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                Awarded Director&apos;s List honors for graduating in the top 15% of the cohort.
-                Distinctions in UX Design and Networking Technology.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Right: 1 Column for Live GitHub Commit Feed */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-1"
-          >
-            <GitHubFeed defaultUsername="queWiz" />
-          </motion.div>
         </div>
+
+        <InteractiveTerminal />
       </section>
+
+      {/* --- HAVU-STYLE STICKY EXPERIENCE TIMELINE & LIVE ACTIVITY --- */}
+      <HavuExperienceSection />
 
       {/* --- PEER-REVIEWED PUBLICATIONS --- */}
       <section
@@ -358,18 +209,12 @@ export default function Home() {
         id="honors"
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 pb-24 z-10"
       >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-3 mb-6"
-        >
+        <div className="flex items-center gap-3 mb-6">
           <span className="w-8 h-0.5 bg-cobalt" />
           <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
             CREDENTIALS &amp; DISTINCTIONS
           </span>
-        </motion.div>
+        </div>
         <TrophyList />
       </section>
 

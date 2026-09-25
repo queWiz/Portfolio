@@ -1,18 +1,11 @@
 import { Trophy, Award, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
 
 export const TrophyList = () => {
   return (
     <div className="w-full">
       <div className="grid md:grid-cols-2 gap-5">
         {/* Award 1 */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-amber-400/50 hover:shadow-md transition-all group"
-        >
+        <div className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-amber-400/50 hover:shadow-md transition-all group">
           <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 group-hover:scale-105 transition-transform">
             <Trophy size={22} />
           </div>
@@ -32,16 +25,10 @@ export const TrophyList = () => {
               Awarded for graduating in the top 15% of the cohort, with distinctions in UX Design and Networking Architecture.
             </p>
           </div>
-        </motion.div>
+        </div>
 
         {/* Award 2 */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-cobalt/50 hover:shadow-md transition-all group"
-        >
+        <div className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-cobalt/50 hover:shadow-md transition-all group">
           <div className="p-3 bg-cobalt/10 border border-cobalt/20 rounded-xl text-cobalt group-hover:scale-105 transition-transform">
             <Award size={22} />
           </div>
@@ -61,7 +48,7 @@ export const TrophyList = () => {
               Rigorous data processing, exploratory SQL pipelines, R statistical modeling, and interactive visualization frameworks.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

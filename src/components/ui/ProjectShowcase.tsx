@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   ShieldCheck,
   Cpu,
@@ -240,13 +239,7 @@ export function ProjectShowcase() {
       </div>
 
       {/* Tabs list: Horizontal scroll on mobile, 5-col grid on tablet/desktop */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex sm:grid sm:grid-cols-5 gap-2 sm:gap-3 overflow-x-auto snap-x scrollbar-none pb-2 -mx-1 px-1"
-      >
+      <div className="flex sm:grid sm:grid-cols-5 gap-2 sm:gap-3 overflow-x-auto snap-x scrollbar-none pb-2 -mx-1 px-1">
         {PROJECTS.map((proj, idx) => {
           const isActive = idx === currentIndex;
           return (
@@ -300,20 +293,14 @@ export function ProjectShowcase() {
             </button>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* 
         MAIN SHOWCASE STAGE:
         Left Column: Deep Architecture Breakdown & Metrics
         Right Column: Dual Desktop / Mobile Mockup Frames (Image 3) + Simulator Toggle
       */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-4 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_50px_rgba(0,0,0,0.5)] transition-all"
-      >
+      <div className="w-full rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-4 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_50px_rgba(0,0,0,0.5)] transition-all">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Left Column: Project Info & Tradeoffs (6 cols) */}
           <div className="lg:col-span-6 flex flex-col gap-5 sm:gap-6">
@@ -470,7 +457,7 @@ export function ProjectShowcase() {
             )}
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

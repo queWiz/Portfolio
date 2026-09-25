@@ -1,7 +1,6 @@
 "use client";
 
 import { ExternalLink, ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
 
 interface Publication {
   id: string;
@@ -50,13 +49,7 @@ const PUBLICATIONS: Publication[] = [
 export function PublicationsSection() {
   return (
     <div className="w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]"
-      >
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
         <div>
           <div className="flex items-center gap-3 mb-2.5">
             <span className="w-8 h-0.5 bg-cobalt" />
@@ -80,16 +73,12 @@ export function PublicationsSection() {
             <ArrowUpRight size={12} />
           </a>
         </div>
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {PUBLICATIONS.map((pub, idx) => (
-          <motion.div
+        {PUBLICATIONS.map((pub) => (
+          <div
             key={pub.id}
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-cobalt/40 hover:shadow-md transition-all duration-300 group"
           >
             <div>
@@ -145,7 +134,7 @@ export function PublicationsSection() {
                 <ExternalLink size={11} />
               </a>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
