@@ -82,7 +82,7 @@ export function HavuExperienceSection() {
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
         {/* 
-          LEFT COLUMN: STICKY EDITORIAL SECTION (Havu Inspiration - Screenshots 3 & 4)
+          LEFT COLUMN: STICKY EDITORIAL SECTION (Havu Inspiration)
           Pins neatly at eye level on desktop as user scrolls through the timeline milestones.
         */}
         <div className="lg:col-span-5 lg:sticky lg:top-28 self-start flex flex-col gap-6">
@@ -119,12 +119,12 @@ export function HavuExperienceSection() {
         </div>
 
         {/* 
-          RIGHT COLUMN: TIMELINE WITH CONTINUOUS SCROLL-LINKED FILL LINE (Screenshot 1)
-          AND BI-DIRECTIONAL STACKING CARDS (Screenshot 2)
+          RIGHT COLUMN: CONTINUOUS TIMELINE WITH CLEAN, NATURAL SPACING
+          Close and neat layout without awkward large gaps.
         */}
-        <div className="lg:col-span-7 relative pl-6 sm:pl-10">
+        <div className="lg:col-span-7 relative flex flex-col gap-6 sm:gap-8 pl-6 sm:pl-10">
           {/* Vertical Track Background Line */}
-          <div className="absolute left-2 sm:left-3.5 top-6 bottom-16 w-[2px] bg-slate-200 dark:bg-white/[0.08] rounded-full" />
+          <div className="absolute left-2 sm:left-3.5 top-6 bottom-8 w-[2px] bg-slate-200 dark:bg-white/[0.08] rounded-full" />
 
           {/* Bi-Directional Animated Fill Line (Cobalt) */}
           <motion.div
@@ -132,23 +132,14 @@ export function HavuExperienceSection() {
             className="absolute left-2 sm:left-3.5 top-6 w-[2px] bg-gradient-to-b from-cobalt via-cobalt to-cyan-400 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.7)] origin-top pointer-events-none"
           />
 
-          {/* Stacking Milestone Cards */}
-          {MILESTONES.map((item, idx) => {
+          {/* Milestone Cards */}
+          {MILESTONES.map((item) => {
             const Icon = item.icon;
-            // Progressive sticky offsets leave prior card's header visible at the top
-            const stickyTop = 110 + idx * 38;
-            const isLast = idx === MILESTONES.length - 1;
 
             return (
               <div
                 key={item.step}
-                style={{
-                  top: `${stickyTop}px`,
-                  zIndex: 10 + idx,
-                }}
-                className={`sticky rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_16px_40px_-12px_rgba(15,23,42,0.12)] dark:shadow-[0_24px_50px_rgba(0,0,0,0.8)] relative transition-shadow duration-300 ${
-                  isLast ? "mb-12" : "mb-36 sm:mb-48"
-                }`}
+                className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_8px_30px_-8px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)] relative hover:border-cobalt/30 transition-colors duration-200"
               >
                 {/* Stable Milestone Node on the Timeline Track (Crisp, steady, no hover jitter) */}
                 <div className="absolute -left-[30px] sm:-left-[46px] top-7 -translate-y-1/2 flex items-center justify-center pointer-events-none">
@@ -157,7 +148,7 @@ export function HavuExperienceSection() {
                   </div>
                 </div>
 
-                {/* Card Header (Remains visible as a tab when stacked) */}
+                {/* Card Header */}
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100 dark:border-white/[0.06]">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono font-extrabold text-cobalt tracking-wider">
