@@ -20,14 +20,15 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     step: "01",
-    period: "2024 — Present",
-    roleType: "Undergraduate Degree",
-    title: "Bachelor of ICT (Software Engineering)",
-    institution: "Singapore Institute of Technology (SIT)",
+    period: "2018 — 2021",
+    roleType: "Academic Distinction",
+    title: "Diploma in Information Technology",
+    institution: "Nanyang Polytechnic (NYP)",
     description:
-      "Specializing in distributed systems architecture, enterprise cloud-native microservices, relational schema design, and deterministic automated testing. Authoring client-verified production systems with 100% Playwright test pass rates.",
-    icon: GraduationCap,
-    tags: ["Distributed Systems", "PostgreSQL", "Next.js SSR", "Playwright", "PDPA Compliance"],
+      "Graduated in the top 15% of cohort and awarded Director's List honors. Achieved distinctions across Software Engineering, Relational Database Systems, and Network Architecture.",
+    icon: BookOpen,
+    highlight: "Director's List (Top 15%)",
+    tags: ["Director's List", "Top 15% Cohort", "Software Engineering", "Relational DBs", "Network Architecture"],
   },
   {
     step: "02",
@@ -42,15 +43,15 @@ const MILESTONES: Milestone[] = [
   },
   {
     step: "03",
-    period: "2018 — 2021",
-    roleType: "Academic Distinction",
-    title: "Diploma in Information Technology",
-    institution: "Nanyang Polytechnic (NYP)",
+    period: "2024 — Present",
+    roleType: "Undergraduate Degree",
+    title: "Bachelor of ICT (Software Engineering)",
+    institution: "Singapore Institute of Technology (SIT)",
     description:
-      "Graduated in the top 15% of cohort and awarded Director's List honors. Achieved distinctions across UX Design, Relational Database Systems, and Network Architecture.",
-    icon: BookOpen,
-    highlight: "Director's List (Top 15%)",
-    tags: ["Director's List", "Top 15% Cohort", "UX Design", "Network Architecture", "Relational DBs"],
+      "Specializing in enterprise software engineering, scalable distributed architectures, and advanced data analytics. Designing high-throughput data processing pipelines, predictive analytical models, and robust cloud services with quantitative algorithmic discipline.",
+    icon: GraduationCap,
+    highlight: "Current Degree",
+    tags: ["Software Engineering", "Data Analytics", "Distributed Systems", "Predictive Modeling", "PostgreSQL", "Next.js"],
   },
 ];
 
@@ -98,16 +99,16 @@ export function HavuExperienceSection() {
           </div>
 
           <p className="text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-400 leading-relaxed">
-            Continuous progression across computer science degrees, production internships,
-            and real-time open-source commits. Grounded in deterministic regression testing,
-            relational schemas, and verified delivery.
+            Chronological progression across computer science foundations, enterprise software
+            engineering internships, and advanced data analytics at SIT. Grounded in distributed
+            systems, predictive modeling, and verified production delivery.
           </p>
 
           {/* Quick Active Milestone Indicator */}
           <div className="hidden lg:flex items-center gap-3 p-3 rounded-2xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] shadow-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-cobalt animate-ping" />
             <div className="text-xs font-mono text-slate-700 dark:text-slate-300">
-              <strong className="text-cobalt">LIVE TRACK:</strong> 3 Progressive Milestones
+              <strong className="text-cobalt">CURRENT SUMMIT:</strong> SIT Software Engineering &amp; Data Analytics
             </div>
           </div>
 
@@ -121,9 +122,9 @@ export function HavuExperienceSection() {
           RIGHT COLUMN: TIMELINE WITH CONTINUOUS SCROLL-LINKED FILL LINE (Screenshot 1)
           AND BI-DIRECTIONAL STACKING CARDS (Screenshot 2)
         */}
-        <div className="lg:col-span-7 relative flex flex-col gap-8 sm:gap-10 pl-6 sm:pl-10">
+        <div className="lg:col-span-7 relative pl-6 sm:pl-10">
           {/* Vertical Track Background Line */}
-          <div className="absolute left-2 sm:left-3.5 top-6 bottom-12 w-[2px] bg-slate-200 dark:bg-white/[0.08] rounded-full" />
+          <div className="absolute left-2 sm:left-3.5 top-6 bottom-16 w-[2px] bg-slate-200 dark:bg-white/[0.08] rounded-full" />
 
           {/* Bi-Directional Animated Fill Line (Cobalt) */}
           <motion.div
@@ -134,23 +135,29 @@ export function HavuExperienceSection() {
           {/* Stacking Milestone Cards */}
           {MILESTONES.map((item, idx) => {
             const Icon = item.icon;
-            // Sticky top offsets create the seamless deck-of-cards stacking effect from Screenshot 2
-            const stickyTop = 110 + idx * 24;
+            // Progressive sticky offsets leave prior card's header visible at the top
+            const stickyTop = 110 + idx * 38;
+            const isLast = idx === MILESTONES.length - 1;
 
             return (
               <div
                 key={item.step}
-                style={{ top: `${stickyTop}px` }}
-                className="sticky rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_8px_30px_-8px_rgba(15,23,42,0.08)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)] transition-shadow duration-300 relative group hover:border-cobalt/40"
+                style={{
+                  top: `${stickyTop}px`,
+                  zIndex: 10 + idx,
+                }}
+                className={`sticky rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_16px_40px_-12px_rgba(15,23,42,0.12)] dark:shadow-[0_24px_50px_rgba(0,0,0,0.8)] relative transition-shadow duration-300 ${
+                  isLast ? "mb-12" : "mb-36 sm:mb-48"
+                }`}
               >
-                {/* Milestone Node on the Timeline Track (Screenshot 1) */}
-                <div className="absolute -left-[30px] sm:-left-[46px] top-7 -translate-y-1/2 flex items-center justify-center">
-                  <div className="w-4 h-4 rounded-full bg-white dark:bg-[#080C14] border-2 border-cobalt flex items-center justify-center shadow-[0_0_12px_rgba(37,99,235,0.5)] group-hover:scale-125 transition-transform duration-300">
+                {/* Stable Milestone Node on the Timeline Track (Crisp, steady, no hover jitter) */}
+                <div className="absolute -left-[30px] sm:-left-[46px] top-7 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+                  <div className="w-4 h-4 rounded-full bg-white dark:bg-[#080C14] border-2 border-cobalt flex items-center justify-center shadow-[0_0_8px_rgba(37,99,235,0.5)]">
                     <span className="w-1.5 h-1.5 rounded-full bg-cobalt" />
                   </div>
                 </div>
 
-                {/* Card Header */}
+                {/* Card Header (Remains visible as a tab when stacked) */}
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100 dark:border-white/[0.06]">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono font-extrabold text-cobalt tracking-wider">

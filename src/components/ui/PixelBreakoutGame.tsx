@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { X, RotateCcw, Trophy, Sparkles } from "lucide-react";
+import { X, RotateCcw, Trophy, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // 7x5 pixel glyph definitions for retro typography
@@ -137,12 +137,12 @@ interface Particle {
 }
 
 // -------------------------------------------------------------
-// EASTER EGG PIXEL MASCOT (Patrols above the footer)
+// EASTER EGG PIXEL MASCOT & INLINE FLUID EXPANDABLE ARCADE
 // -------------------------------------------------------------
 export function PixelBreakoutGame() {
   const [isOpen, setIsOpen] = useState(false);
   const [isShocked, setIsShocked] = useState(false);
-  const [positionX, setPositionX] = useState(30);
+  const [positionX, setPositionX] = useState(32);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [walkFrame, setWalkFrame] = useState(0);
 
@@ -170,18 +170,24 @@ export function PixelBreakoutGame() {
   }, [direction, isShocked, isOpen]);
 
   const handleMascotClick = () => {
-    if (isShocked || isOpen) return;
+    if (isShocked) return;
+
+    if (isOpen) {
+      setIsOpen(false);
+      return;
+    }
+
     setIsShocked(true);
 
-    // Shock animation plays for 380ms before expanding into game modal
+    // Shock animation plays for 380ms before fluidly unfolding the inline stage
     setTimeout(() => {
       setIsOpen(true);
       setIsShocked(false);
-    }, 420);
+    }, 400);
   };
 
   return (
-    <div className="w-full relative border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-100/50 dark:bg-[#070A10] py-6 px-4 select-none overflow-hidden">
+    <div className="w-full relative border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-100/50 dark:bg-[#070A10] py-6 px-4 select-none">
       {/* Subtle baseline track indicator */}
       <div className="max-w-7xl mx-auto relative flex items-center justify-between">
         <div className="flex items-center gap-3 text-slate-400 dark:text-slate-500 font-mono text-[11px]">
@@ -199,7 +205,7 @@ export function PixelBreakoutGame() {
           onClick={handleMascotClick}
           role="button"
           tabIndex={0}
-          aria-label="Secret Easter Egg Breakout Game"
+          aria-label={isOpen ? "Collapse Arcade" : "Unlock Secret Breakout Arcade"}
         >
           {/* Exclamation mark on shocked state */}
           {isShocked && (
@@ -215,7 +221,7 @@ export function PixelBreakoutGame() {
           {/* Speech Bubble on hover */}
           {!isShocked && (
             <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded bg-slate-900 text-white font-mono text-[10px] tracking-wider border border-white/20 pointer-events-none shadow-md">
-              DEBUG MODE? ⌁ CLICK ME
+              {isOpen ? "CLICK TO COLLAPSE ▲" : "DEBUG MODE? ⌁ CLICK ME"}
             </div>
           )}
 
@@ -229,17 +235,52 @@ export function PixelBreakoutGame() {
           </div>
         </div>
 
-        <div className="text-[11px] font-mono text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
-          <Sparkles size={12} className="text-cobalt" />
-          <span className="hidden sm:inline">AL-HUJURAT 49:6 · VERIFICATION OPERATING LOOP</span>
-          <span className="sm:hidden">VERIFIED 2026</span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="text-[11px] font-mono text-cobalt hover:text-cobalt/80 font-bold tracking-wider flex items-center gap-1.5 transition-colors"
+          >
+            <Sparkles size={12} className="text-cobalt" />
+            <span className="hidden sm:inline">
+              {isOpen ? "COLLAPSE EASTER EGG" : "PLAY EASTER EGG ARCADE"}
+            </span>
+            <span className="sm:hidden">{isOpen ? "CLOSE" : "ARCADE"}</span>
+            {isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          </button>
         </div>
       </div>
 
-      {/* FULLSCREEN BREAKOUT ARCADE MODAL */}
+      {/* 
+        INLINE FLUIDLY-EXPANDING BREAKOUT ARCADE (Havu Inspiration)
+        Opens directly in-page between the mascot line and footer without any popup modal!
+      */}
       <AnimatePresence>
         {isOpen && (
-          <BreakoutModal onClose={() => setIsOpen(false)} />
+          <motion.div
+            initial={{ opacity: 0, height: 0, scale: 0.98 }}
+            animate={{
+              opacity: 1,
+              height: "auto",
+              scale: 1,
+              transition: {
+                height: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 0.45, delay: 0.15 },
+                scale: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+              },
+            }}
+            exit={{
+              opacity: 0,
+              height: 0,
+              scale: 0.98,
+              transition: {
+                height: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 0.2 },
+              },
+            }}
+            className="overflow-hidden w-full max-w-5xl mx-auto pt-6"
+          >
+            <InlineBreakoutStage onClose={() => setIsOpen(false)} />
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -258,51 +299,58 @@ function PixelEngineerAvatar({
 }) {
   return (
     <svg
+      width="28"
+      height="28"
       viewBox="0 0 16 16"
-      shapeRendering="crispEdges"
-      className="w-7 h-7 sm:w-8 sm:h-8 filter drop-shadow-[0_4px_6px_rgba(37,99,235,0.3)]"
+      className="pixelated drop-shadow-[0_4px_8px_rgba(37,99,235,0.3)]"
+      style={{ imageRendering: "pixelated" }}
     >
-      {/* Head / Helmet (Cobalt) */}
-      <rect x="4" y="1" width="8" height="6" fill="#2563EB" />
-      <rect x="3" y="2" width="10" height="4" fill="#3B82F6" />
+      {/* Hardhat / Cap (Electric Cobalt) */}
+      <rect x="4" y="2" width="8" height="2" fill="#2563EB" />
+      <rect x="3" y="4" width="10" height="1" fill="#3B82F6" />
 
-      {/* Face Visor / Screen */}
-      <rect x="5" y="3" width="6" height="3" fill="#0B0F19" />
+      {/* Face Skin */}
+      <rect x="5" y="5" width="6" height="4" fill="#FCD34D" />
 
-      {/* Eyes: Normal vs Shocked */}
+      {/* Eyes */}
       {isShocked ? (
         <>
-          <rect x="5" y="3" width="2" height="3" fill="#FBBF24" />
-          <rect x="9" y="3" width="2" height="3" fill="#FBBF24" />
+          <rect x="5" y="6" width="2" height="2" fill="#0F172A" />
+          <rect x="9" y="6" width="2" height="2" fill="#0F172A" />
+          <rect x="5" y="6" width="1" height="1" fill="#FFFFFF" />
+          <rect x="9" y="6" width="1" height="1" fill="#FFFFFF" />
+          {/* Shocked open mouth */}
+          <rect x="7" y="8" width="2" height="1" fill="#0F172A" />
         </>
       ) : (
         <>
-          <rect x="6" y="4" width="1" height="1" fill="#60A5FA" />
-          <rect x="9" y="4" width="1" height="1" fill="#60A5FA" />
+          <rect x="6" y="6" width="1" height="2" fill="#0F172A" />
+          <rect x="9" y="6" width="1" height="2" fill="#0F172A" />
+          <rect x="7" y="8" width="2" height="1" fill="#D97706" />
         </>
       )}
 
-      {/* Torso */}
-      <rect x="4" y="7" width="8" height="5" fill="#1E293B" />
-      <rect x="6" y="8" width="4" height="3" fill="#38BDF8" />
+      {/* Engineer Body / Jacket (Dark Slate & Cobalt Accent) */}
+      <rect x="4" y="9" width="8" height="4" fill="#1E293B" />
+      <rect x="7" y="9" width="2" height="4" fill="#2563EB" />
 
-      {/* Legs (Animated Walk Cycle) */}
+      {/* Legs & Animated Walking Cycle */}
       {walkFrame === 0 && (
         <>
-          <rect x="4" y="12" width="2" height="3" fill="#2563EB" />
-          <rect x="10" y="12" width="2" height="3" fill="#2563EB" />
+          <rect x="5" y="13" width="2" height="3" fill="#2563EB" />
+          <rect x="9" y="13" width="2" height="3" fill="#2563EB" />
         </>
       )}
       {walkFrame === 1 && (
         <>
-          <rect x="3" y="12" width="2" height="3" fill="#2563EB" />
-          <rect x="9" y="12" width="2" height="2" fill="#2563EB" />
+          <rect x="4" y="13" width="2" height="2" fill="#2563EB" />
+          <rect x="10" y="12" width="2" height="3" fill="#2563EB" />
         </>
       )}
       {walkFrame === 2 && (
         <>
-          <rect x="5" y="12" width="2" height="3" fill="#2563EB" />
-          <rect x="9" y="12" width="2" height="3" fill="#2563EB" />
+          <rect x="5" y="13" width="2" height="3" fill="#2563EB" />
+          <rect x="9" y="13" width="2" height="3" fill="#2563EB" />
         </>
       )}
       {walkFrame === 3 && (
@@ -316,9 +364,10 @@ function PixelEngineerAvatar({
 }
 
 // -------------------------------------------------------------
-// BREAKOUT ARCADE MODAL
+// INLINE EMBEDDED BREAKOUT STAGE (Directly in page canvas)
 // -------------------------------------------------------------
-function BreakoutModal({ onClose }: { onClose: () => void }) {
+function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animFrameRef = useRef<number | null>(null);
 
@@ -377,7 +426,7 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
     const gap = 1.5;
 
     const newBricks: Brick[] = [];
-    const startY = isMobile ? 40 : 50;
+    const startY = isMobile ? 36 : 44;
 
     lines.forEach((lineText, lineIdx) => {
       let totalLineWidth = 0;
@@ -387,7 +436,7 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
       }
 
       let currentX = Math.floor((width - totalLineWidth) / 2);
-      const lineY = startY + lineIdx * (8 * (blockSize + gap) + 14);
+      const lineY = startY + lineIdx * (8 * (blockSize + gap) + 12);
 
       for (const char of lineText) {
         const glyph = GLYPHS[char] || GLYPHS[" "];
@@ -435,6 +484,8 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
@@ -454,7 +505,7 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
       w: padW,
       h: 12,
       x: rect.width / 2 - padW / 2,
-      y: rect.height - 42,
+      y: rect.height - 38,
     };
 
     ballRef.current = {
@@ -518,10 +569,25 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [launchBall, onClose]);
 
-  // Main 60fps Game Loop
+  // Smooth resize handling during fluid container expansion
   useEffect(() => {
     initGame(true);
 
+    const t1 = setTimeout(() => initGame(false), 200);
+    const t2 = setTimeout(() => initGame(false), 680);
+
+    const handleResize = () => initGame(false);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [initGame]);
+
+  // 60FPS Game Loop
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -534,11 +600,14 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
       const width = rect.width;
       const height = rect.height;
 
-      // 1. CLEAR CANVAS WITH DEEP NAVY OBSIDIAN
-      ctx.fillStyle = "#090D16";
-      ctx.fillRect(0, 0, width, height);
+      if (width <= 0 || height <= 0) {
+        animId = requestAnimationFrame(tick);
+        return;
+      }
 
-      // Subtle Background Grid Lines
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. DRAW SUBTLE RETRO BACKGROUND GRID
       ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
       ctx.lineWidth = 1;
       for (let x = 0; x < width; x += 30) {
@@ -564,7 +633,7 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
         ctx.fillStyle = b.color;
         ctx.fillRect(b.x, b.y, b.w, b.h);
 
-        // Crisp 1px Bright Border for Pop Against Black Background
+        // Crisp 1px Bright Border for Pop Against Dark Background
         ctx.strokeStyle = b.borderColor;
         ctx.lineWidth = 1;
         ctx.strokeRect(b.x + 0.5, b.y + 0.5, b.w - 1, b.h - 1);
@@ -598,51 +667,20 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
         ctx.restore();
       }
 
-      // 4. DRAW PADDLE (Distinct, High-Contrast Electric Cobalt + White Core)
-      const pad = paddleRef.current;
-      // Ambient Drop Glow
-      ctx.shadowColor = "rgba(37, 99, 235, 0.6)";
-      ctx.shadowBlur = 12;
-
-      // Rounded Capsule Paddle
-      ctx.fillStyle = "#2563EB";
-      ctx.beginPath();
-      ctx.roundRect(pad.x, pad.y, pad.w, pad.h, 6);
-      ctx.fill();
-
-      // Bright White Highlight Strip Along Paddle Center
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = "#FFFFFF";
-      ctx.beginPath();
-      ctx.roundRect(pad.x + 8, pad.y + 2, pad.w - 16, 2.5, 2);
-      ctx.fill();
-
-      // Outer Crisp Slate Rim
-      ctx.strokeStyle = "#93C5FD";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.roundRect(pad.x, pad.y, pad.w, pad.h, 6);
-      ctx.stroke();
-
-      // 5. UPDATE & DRAW BALL
+      // 4. DRAW & UPDATE BALL
       const ball = ballRef.current;
+      const pad = paddleRef.current;
 
       if (ball.attached) {
-        // Stick to paddle center
+        // Keep ball anchored to paddle center until launched
         ball.x = pad.x + pad.w / 2;
         ball.y = pad.y - ball.radius - 2;
-
-        // Render "CLICK TO LAUNCH" pulsing indicator
-        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-        ctx.font = "bold 11px monospace";
-        ctx.textAlign = "center";
-        ctx.fillText("⌁ CLICK OR PRESS SPACE TO LAUNCH ⌁", width / 2, pad.y - 24);
       } else {
-        // Move ball
+        // Ball in motion
         ball.x += ball.vx;
         ball.y += ball.vy;
 
-        // Wall collisions
+        // Left / Right Walls
         if (ball.x - ball.radius <= 0) {
           ball.x = ball.radius;
           ball.vx = Math.abs(ball.vx);
@@ -651,6 +689,7 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
           ball.vx = -Math.abs(ball.vx);
         }
 
+        // Top Wall
         if (ball.y - ball.radius <= 0) {
           ball.y = ball.radius;
           ball.vy = Math.abs(ball.vy);
@@ -660,22 +699,21 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
         if (
           ball.y + ball.radius >= pad.y &&
           ball.y - ball.radius <= pad.y + pad.h &&
-          ball.x >= pad.x - 4 &&
-          ball.x <= pad.x + pad.w + 4
+          ball.x >= pad.x - ball.radius &&
+          ball.x <= pad.x + pad.w + ball.radius &&
+          ball.vy > 0
         ) {
-          ball.y = pad.y - ball.radius;
-          // Calculate angle reflection based on where ball hits paddle (-1 to 1)
+          // Calculate bounce angle based on where ball hits paddle
           const hitOffset = (ball.x - (pad.x + pad.w / 2)) / (pad.w / 2);
-          const maxAngle = (Math.PI / 3); // 60 deg max spread
-          const angle = hitOffset * maxAngle;
+          const maxAngle = (Math.PI / 180) * 60; // 60 degrees max
+          const bounceAngle = hitOffset * maxAngle;
 
-          ball.vx = Math.sin(angle) * ball.speed;
-          ball.vy = -Math.abs(Math.cos(angle) * ball.speed);
-
-          spawnParticles(ball.x, ball.y, "#60A5FA");
+          ball.vx = ball.speed * Math.sin(bounceAngle);
+          ball.vy = -Math.abs(ball.speed * Math.cos(bounceAngle));
+          spawnParticles(ball.x, pad.y, "#93C5FD");
         }
 
-        // Brick Collisions
+        // Brick Collision
         for (const b of bricksRef.current) {
           if (!b.alive) continue;
 
@@ -721,21 +759,46 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
         }
       }
 
-      // Draw Ball (Glowing Neon Orb)
-      ctx.shadowColor = "#38BDF8";
+      // Draw Ball (Bright radiant white sphere with cobalt halo)
+      ctx.save();
+      ctx.shadowColor = "rgba(59, 130, 246, 0.85)";
       ctx.shadowBlur = 10;
       ctx.fillStyle = "#FFFFFF";
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Ball Outer Accent Ring
-      ctx.strokeStyle = "#38BDF8";
+      // Outer rim
       ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "#60A5FA";
       ctx.stroke();
-      ctx.shadowBlur = 0;
+      ctx.restore();
+
+      // 5. DRAW HIGH-CONTRAST PADDLE (Cobalt body with bright white core)
+      ctx.save();
+      ctx.shadowColor = "rgba(37, 99, 235, 0.8)";
+      ctx.shadowBlur = 12;
+
+      // Base paddle
+      ctx.fillStyle = "#2563EB";
+      ctx.beginPath();
+      ctx.roundRect(pad.x, pad.y, pad.w, pad.h, 6);
+      ctx.fill();
+
+      // Bright border
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "#93C5FD";
+      ctx.stroke();
+
+      // Specular white center stripe
+      ctx.fillStyle = "#FFFFFF";
+      ctx.beginPath();
+      ctx.roundRect(pad.x + 4, pad.y + 2, pad.w - 8, 2.5, 2);
+      ctx.fill();
+      ctx.restore();
 
       animId = requestAnimationFrame(tick);
+      animFrameRef.current = animId;
     };
 
     animId = requestAnimationFrame(tick);
@@ -761,109 +824,108 @@ function BreakoutModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md"
-      onClick={onClose}
+    <div
+      ref={containerRef}
+      className="w-full rounded-3xl bg-[#090D16] border border-slate-700/80 shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_35px_rgba(37,99,235,0.18)] overflow-hidden flex flex-col mb-4"
     >
-      <motion.div
-        initial={{ scale: 0.93, y: 16 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.93, y: 16 }}
-        transition={{ type: "spring", stiffness: 350, damping: 28 }}
-        className="w-full max-w-4xl rounded-3xl bg-[#090D16] border border-slate-700/80 shadow-[0_0_60px_rgba(37,99,235,0.25)] overflow-hidden flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Top Header Bar */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/[0.08] bg-slate-900/80">
-          <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-cobalt animate-ping" />
-            <span className="font-mono text-xs font-bold text-white tracking-widest uppercase">
-              TABAYYUN ARCADE // VERIFY BEFORE TRUST
+      {/* Top Header Bar */}
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/[0.08] bg-slate-900/90">
+        <div className="flex items-center gap-3">
+          <span className="w-2.5 h-2.5 rounded-full bg-cobalt animate-ping" />
+          <span className="font-mono text-xs font-bold text-white tracking-widest uppercase">
+            TABAYYUN ARCADE // VERIFY BEFORE TRUST
+          </span>
+        </div>
+
+        <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-4 text-xs font-mono text-slate-300">
+            <span>
+              BALLS: <strong className="text-amber-400">{ballsLeft}</strong>
+            </span>
+            <span>
+              BROKEN: <strong className="text-emerald-400">{brokenCount}</strong>/{totalBricks}
             </span>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-4 text-xs font-mono text-slate-300">
-              <span>
-                BALLS: <strong className="text-amber-400">{ballsLeft}</strong>
-              </span>
-              <span>
-                BROKEN: <strong className="text-emerald-400">{brokenCount}</strong>/{totalBricks}
-              </span>
-            </div>
+          <button
+            onClick={onClose}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition-colors text-xs font-mono font-semibold"
+            aria-label="Collapse Arcade"
+          >
+            <X size={14} />
+            <span className="hidden sm:inline">COLLAPSE</span>
+          </button>
+        </div>
+      </div>
 
+      {/* Game Stage Canvas */}
+      <div className="relative w-full h-[360px] sm:h-[440px] bg-[#090D16] cursor-crosshair">
+        <canvas
+          ref={canvasRef}
+          onPointerMove={handlePointerMove}
+          onClick={launchBall}
+          className="w-full h-full block touch-none"
+        />
+
+        {/* Prompt when ball is attached */}
+        {isBallAttached && gameResult === "playing" && (
+          <div
+            onClick={launchBall}
+            className="absolute bottom-16 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-cobalt/25 border border-cobalt/50 text-white font-mono text-xs tracking-wider animate-pulse pointer-events-auto cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.4)] whitespace-nowrap"
+          >
+            ⌁ CLICK CANVAS OR PRESS SPACE TO LAUNCH ⌁
+          </div>
+        )}
+
+        {/* Victory Overlay */}
+        {gameResult === "won" && (
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
+            <Trophy size={48} className="text-amber-400 mb-3 animate-bounce" />
+            <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white mb-2">
+              VERIFICATION COMPLETE
+            </h3>
+            <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6">
+              All blocks verified with zero failures. True to Al-Hujurat 49:6 Tabayyun standards!
+            </p>
             <button
-              onClick={onClose}
-              className="p-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
-              aria-label="Close Arcade"
+              onClick={() => initGame(true)}
+              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
             >
-              <X size={18} />
+              <RotateCcw size={14} />
+              <span>PLAY AGAIN</span>
             </button>
           </div>
-        </div>
+        )}
 
-        {/* Game Stage Canvas */}
-        <div className="relative w-full h-[380px] sm:h-[460px] bg-[#090D16] cursor-crosshair">
-          <canvas
-            ref={canvasRef}
-            onPointerMove={handlePointerMove}
-            onClick={launchBall}
-            className="w-full h-full block touch-none"
-          />
-
-          {/* Victory Modal Overlay */}
-          {gameResult === "won" && (
-            <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-              <Trophy size={48} className="text-amber-400 mb-3 animate-bounce" />
-              <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white mb-2">
-                VERIFICATION COMPLETE
-              </h3>
-              <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6">
-                All blocks verified with zero failures. True to Al-Hujurat 49:6 Tabayyun standards!
-              </p>
-              <button
-                onClick={() => initGame(true)}
-                className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
-              >
-                <RotateCcw size={14} />
-                <span>PLAY AGAIN</span>
-              </button>
-            </div>
-          )}
-
-          {/* Game Over Modal Overlay */}
-          {gameResult === "lost" && (
-            <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-              <div className="text-4xl mb-2 font-mono text-rose-500 font-bold">GAME OVER</div>
-              <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6">
-                Ran out of balls! You cleared {brokenCount} of {totalBricks} blocks.
-              </p>
-              <button
-                onClick={() => initGame(true)}
-                className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
-              >
-                <RotateCcw size={14} />
-                <span>TRY AGAIN</span>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Bottom Bar: Instructions */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-white/[0.08] bg-slate-900/60 text-[11px] font-mono text-slate-400">
-          <div className="flex items-center gap-4">
-            <span>🖱️ Move mouse / touch to aim paddle</span>
-            <span className="hidden sm:inline">⌨️ A/D or Arrow keys</span>
-            <span className={isBallAttached ? "text-amber-400 font-semibold animate-pulse" : "text-emerald-400 font-semibold"}>
-              {isBallAttached ? "⌁ SPACE / CLICK to launch ball" : "● Ball in Play"}
-            </span>
+        {/* Game Over Overlay */}
+        {gameResult === "lost" && (
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
+            <div className="text-4xl mb-2 font-mono text-rose-500 font-bold">GAME OVER</div>
+            <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6">
+              Ran out of balls! You cleared {brokenCount} of {totalBricks} blocks.
+            </p>
+            <button
+              onClick={() => initGame(true)}
+              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
+            >
+              <RotateCcw size={14} />
+              <span>TRY AGAIN</span>
+            </button>
           </div>
-          <div>Press ESC to close</div>
+        )}
+      </div>
+
+      {/* Bottom Bar: Instructions */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-white/[0.08] bg-slate-900/60 text-[11px] font-mono text-slate-400">
+        <div className="flex items-center gap-4">
+          <span>🖱️ Move mouse / touch to aim paddle</span>
+          <span className="hidden sm:inline">⌨️ A/D or Arrow keys</span>
+          <span className={isBallAttached ? "text-amber-400 font-semibold animate-pulse" : "text-emerald-400 font-semibold"}>
+            {isBallAttached ? "⌁ SPACE / CLICK to launch ball" : "● Ball in Play"}
+          </span>
         </div>
-      </motion.div>
-    </motion.div>
+        <div>Press ESC or Collapse to close</div>
+      </div>
+    </div>
   );
 }
