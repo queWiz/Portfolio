@@ -1,9 +1,47 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { GraduationCap, Briefcase, BookOpen } from "lucide-react";
 import { GitHubFeed } from "@/components/ui/StatusWidgets";
+
+function TimelineTrackNode({
+  progress,
+  threshold,
+}: {
+  progress: MotionValue<number>;
+  threshold: number;
+}) {
+  // Scale inner core dot from 0 to 1 as the line reaches threshold
+  const scale = useTransform(progress, [threshold - 0.08, threshold], [0.2, 1], {
+    clamp: true,
+  });
+  const opacity = useTransform(progress, [threshold - 0.08, threshold], [0.35, 1], {
+    clamp: true,
+  });
+  const glow = useTransform(
+    progress,
+    [threshold - 0.05, threshold, threshold + 0.08],
+    [0.4, 1, 0.85],
+    { clamp: true }
+  );
+
+  return (
+    <div className="absolute -left-[15px] sm:-left-[25px] top-8 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center pointer-events-none">
+      {/* Outer Glow Ring: Sits precisely centered over the 2px vertical track */}
+      <motion.div
+        style={{ opacity: glow }}
+        className="w-5 h-5 rounded-full bg-white dark:bg-[#080C14] border-2 border-cobalt flex items-center justify-center shadow-[0_0_12px_rgba(37,99,235,0.7)]"
+      >
+        {/* Inner Filled Core Dot: Blooms with spring scale as cobalt line touches */}
+        <motion.span
+          style={{ scale, opacity }}
+          className="w-2 h-2 rounded-full bg-cobalt shadow-[0_0_8px_rgba(37,99,235,0.9)]"
+        />
+      </motion.div>
+    </div>
+  );
+}
 
 interface Milestone {
   step: string;
@@ -119,10 +157,10 @@ export function HavuExperienceSection() {
         </div>
 
         {/* 
-          RIGHT COLUMN: CONTINUOUS TIMELINE WITH CLEAN, NATURAL SPACING
-          Close and neat layout without awkward large gaps.
+          RIGHT COLUMN: CONTINUOUS TIMELINE WITH SIBLING FOCUS & ANIMATED TRACK NODES
+          Nodes sit directly on the timeline track, filling dynamically as the scroll line reaches them.
         */}
-        <div className="lg:col-span-7 relative flex flex-col gap-6 sm:gap-8 pl-6 sm:pl-10">
+        <div className="lg:col-span-7 relative flex flex-col gap-6 sm:gap-8 pl-6 sm:pl-10 sibling-focus-group">
           {/* Vertical Track Background Line */}
           <div className="absolute left-2 sm:left-3.5 top-6 bottom-8 w-[2px] bg-slate-200 dark:bg-white/[0.08] rounded-full" />
 
@@ -133,20 +171,20 @@ export function HavuExperienceSection() {
           />
 
           {/* Milestone Cards */}
-          {MILESTONES.map((item) => {
+          {MILESTONES.map((item, index) => {
             const Icon = item.icon;
+            const threshold = [0.08, 0.48, 0.88][index];
 
             return (
               <div
                 key={item.step}
-                className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_8px_30px_-8px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)] relative hover:border-cobalt/30 transition-colors duration-200"
+                className="sibling-item rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_8px_30px_-8px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)] relative hover:border-cobalt/40 transition-all duration-300"
               >
-                {/* Stable Milestone Node on the Timeline Track (Crisp, steady, no hover jitter) */}
-                <div className="absolute -left-[30px] sm:-left-[46px] top-7 -translate-y-1/2 flex items-center justify-center pointer-events-none">
-                  <div className="w-4 h-4 rounded-full bg-white dark:bg-[#080C14] border-2 border-cobalt flex items-center justify-center shadow-[0_0_8px_rgba(37,99,235,0.5)]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cobalt" />
-                  </div>
-                </div>
+                {/* Milestone Node: Centered directly on top of the vertical track line */}
+                <TimelineTrackNode
+                  progress={smoothProgress}
+                  threshold={threshold}
+                />
 
                 {/* Card Header */}
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100 dark:border-white/[0.06]">

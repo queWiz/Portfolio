@@ -116,3 +116,148 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* ==========================================================================
+   HAVU ZERO-LAG MOTION SYSTEM
+   Strictly composite-only properties (transform, opacity). Zero reflow.
+   ========================================================================== */
+
+/* 1. Shift-to-Right + Sibling Dimming (CSS :has() / pure CSS) */
+@media (hover: hover) and (pointer: fine) {
+  .sibling-focus-group:hover > .sibling-item:not(:hover) {
+    opacity: 0.45;
+    filter: grayscale(25%);
+    transform: scale(0.995);
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sibling-item {
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+  }
+  .sibling-item:hover {
+    opacity: 1;
+    transform: translate3d(6px, 0, 0);
+  }
+}
+
+/* Tab-specific Sibling Focus: Translates Y (-3px) instead of X, eliminating horizontal scrollbars on grid boundaries */
+@media (hover: hover) and (pointer: fine) {
+  .tab-sibling-focus:hover > .tab-sibling-item:not(:hover) {
+    opacity: 0.45;
+    filter: grayscale(20%);
+    transform: scale(0.99);
+    transition: opacity 0.25s ease,
+                filter 0.25s ease,
+                transform 0.25s ease;
+  }
+  .tab-sibling-item {
+    transition: opacity 0.25s ease,
+                filter 0.25s ease,
+                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+    will-change: transform, opacity;
+  }
+  .tab-sibling-item:hover {
+    opacity: 1;
+    transform: translate3d(0, -3px, 0);
+  }
+}
+
+/* 2. Zero-Reflow Progress Bar Fill (Hardware accelerated scaleX) */
+@keyframes scaleXProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-progress-fill {
+  transform-origin: left;
+  animation: scaleXProgress 7s linear forwards;
+  will-change: transform;
+}
+
+/* 3. Grayscale to Full-Color Specular Sheen (Media Preview Frames) */
+.sheen-media-card {
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s ease,
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(0, 0, 0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sheen-media-card {
+    filter: grayscale(100%) contrast(1.05) brightness(0.92);
+    opacity: 0.88;
+  }
+  .sheen-media-card:hover,
+  .group:hover .sheen-media-card {
+    filter: grayscale(0%) contrast(1) brightness(1);
+    opacity: 1;
+    transform: translate3d(0, -2px, 0);
+  }
+  .sheen-media-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.15) 48%,
+      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.15) 52%,
+      transparent 70%
+    );
+    transform: translateX(-150%);
+    pointer-events: none;
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sheen-media-card:hover::after,
+  .group:hover .sheen-media-card::after {
+    transform: translateX(150%);
+  }
+}
+
+/* 4. Stacking Sticky Section Milestones */
+.stacking-milestone-card {
+  position: sticky;
+  top: calc(6rem + var(--stack-offset, 0px));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease;
+  will-change: transform;
+}
+
+/* 5. Magnetic Button Parallax (CSS Variable Driven) */
+.magnetic-btn {
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.magnetic-btn .magnetic-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+  transform: translate3d(var(--mag-text-x, 0px), var(--mag-text-y, 0px), 0);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+@media (hover: none) {
+  .magnetic-btn,
+  .magnetic-btn .magnetic-inner {
+    transform: none !important;
+  }
+}
+

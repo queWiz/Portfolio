@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "@/components/ThemeProvider";
+import { useMagnetic } from "@/hooks/useMagnetic";
 import { Sun, Moon, ArrowUpRight } from "lucide-react";
 
 export function TopNavbar() {
   const { theme, toggleTheme } = useTheme();
   const [sgtTime, setSgtTime] = useState("");
+  const resumeRef = useMagnetic<HTMLAnchorElement>({ strength: 0.28, textStrength: 0.45 });
 
   useEffect(() => {
     const updateTime = () => {
@@ -94,17 +96,20 @@ export function TopNavbar() {
             )}
           </button>
 
-          {/* Resume CTA */}
+          {/* Magnetic Resume CTA */}
           <a
+            ref={resumeRef}
             href="/Resume.pdf"
             target="_blank"
             rel="noreferrer"
             download="Uwais_Alqarni_Resume.pdf"
             title="Download / View Uwais Alqarni's Resume (PDF)"
-            className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-cobalt text-white text-xs font-mono font-semibold hover:bg-cobalt-dark shadow-[0_2px_10px_rgba(37,99,235,0.3)] transition-all"
+            className="magnetic-btn inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-cobalt text-white text-xs font-mono font-semibold hover:bg-cobalt-dark shadow-[0_2px_10px_rgba(37,99,235,0.3)] transition-all"
           >
-            <span>RESUME</span>
-            <ArrowUpRight size={12} />
+            <span className="magnetic-inner">
+              <span>RESUME</span>
+              <ArrowUpRight size={12} />
+            </span>
           </a>
         </div>
       </nav>

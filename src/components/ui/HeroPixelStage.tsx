@@ -6,19 +6,22 @@ import { useState, useEffect, useRef } from "react";
 // 1. OPEN SKY PIXEL DRONE (Floats freely in the right hero area)
 // -------------------------------------------------------------
 export function HeroPixelDrone() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
-
   const containerRef = useRef<HTMLDivElement>(null);
+  const droneRef = useRef<HTMLDivElement>(null);
 
-  // Handle subtle mouse parallax
+  // Zero-react-render mouse parallax: directly mutates GPU transform on the DOM node
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !droneRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePos({ x, y });
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 28;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 22;
+    droneRef.current.style.transform = `translate3d(${x}px, ${y - 8}px, 0)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (!droneRef.current) return;
+    droneRef.current.style.transform = `translate3d(0px, 0px, 0)`;
   };
 
   const triggerScan = () => {
@@ -30,21 +33,15 @@ export function HeroPixelDrone() {
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setMousePos({ x: 0, y: 0 });
-      }}
+      onMouseLeave={handleMouseLeave}
       className="relative w-full h-[320px] sm:h-[380px] lg:h-[440px] flex flex-col items-center justify-center select-none"
     >
       {/* Animated Flying Saucer / Drone */}
       <div
+        ref={droneRef}
         onClick={triggerScan}
         title="Click to trigger radar scan"
-        className="relative cursor-pointer transition-transform duration-300 ease-out group"
-        style={{
-          transform: `translate(${mousePos.x * 28}px, ${mousePos.y * 22 - (isHovered ? 10 : 0)}px)`,
-        }}
+        className="relative cursor-pointer transition-transform duration-300 ease-out group will-change-transform"
       >
         {/* Pulse Radar Scan Wave on Click */}
         {isScanning && (
@@ -114,6 +111,8 @@ export function HeroPixelBaseline() {
   const [walkFrame, setWalkFrame] = useState(0);
   const [walkPos, setWalkPos] = useState(30);
   const [walkDirection, setWalkDirection] = useState<1 | -1>(1);
+  const baselineRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(true);
 
   const STATUS_MESSAGES = [
     "Playwright 20/20 Suites Passing ✓",
@@ -123,16 +122,32 @@ export function HeroPixelBaseline() {
     "Distributed Schema: 10+ Relational Tables",
   ];
 
-  // Rotate speech messages every 3.5s
+  // Pause background loop when scrolled away from Hero
   useEffect(() => {
+    const el = baselineRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Rotate speech messages every 3.5s (only when in view)
+  useEffect(() => {
+    if (!isInView) return;
     const interval = setInterval(() => {
       setActiveMessageIdx((prev) => (prev + 1) % STATUS_MESSAGES.length);
     }, 3500);
     return () => clearInterval(interval);
-  }, [STATUS_MESSAGES.length]);
+  }, [isInView, STATUS_MESSAGES.length]);
 
-  // Animate walking robot back and forth along the baseline
+  // Animate walking robot back and forth along the baseline (only when in view)
   useEffect(() => {
+    if (!isInView) return;
     const walkTimer = setInterval(() => {
       setWalkFrame((f) => (f + 1) % 4);
       setWalkPos((pos) => {
@@ -149,10 +164,10 @@ export function HeroPixelBaseline() {
     }, 140);
 
     return () => clearInterval(walkTimer);
-  }, [walkDirection]);
+  }, [isInView, walkDirection]);
 
   return (
-    <div className="w-full max-w-7xl pt-4 border-t border-slate-200/80 dark:border-white/[0.08] select-none">
+    <div ref={baselineRef} className="w-full max-w-7xl pt-4 border-t border-slate-200/80 dark:border-white/[0.08] select-none">
       <div className="relative w-full min-h-[44px] flex items-center justify-between gap-4">
         {/* Left Station: Engineer Workstation & CRT Monitor */}
         <div className="flex items-center gap-2.5 shrink-0">

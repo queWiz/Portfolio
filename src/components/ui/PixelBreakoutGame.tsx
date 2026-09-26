@@ -145,10 +145,26 @@ export function PixelBreakoutGame() {
   const [positionX, setPositionX] = useState(32);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [walkFrame, setWalkFrame] = useState(0);
+  const arcadeRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
 
-  // Mascot walking animation loop
+  // Pause mascot walk loop when off-screen to preserve CPU cycles
   useEffect(() => {
-    if (isShocked || isOpen) return;
+    const el = arcadeRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Mascot walking animation loop (only active when in viewport and not open/shocked)
+  useEffect(() => {
+    if (!isInView || isShocked || isOpen) return;
 
     const interval = setInterval(() => {
       setPositionX((prev) => {
@@ -167,27 +183,23 @@ export function PixelBreakoutGame() {
     }, 60);
 
     return () => clearInterval(interval);
-  }, [direction, isShocked, isOpen]);
+  }, [isInView, direction, isShocked, isOpen]);
 
   const handleMascotClick = () => {
-    if (isShocked) return;
-
     if (isOpen) {
       setIsOpen(false);
       return;
     }
 
     setIsShocked(true);
-
-    // Shock animation plays for 380ms before fluidly unfolding the inline stage
+    setIsOpen(true);
     setTimeout(() => {
-      setIsOpen(true);
       setIsShocked(false);
-    }, 400);
+    }, 450);
   };
 
   return (
-    <div className="w-full relative border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-100/50 dark:bg-[#070A10] py-6 px-4 select-none">
+    <div ref={arcadeRef} className="w-full relative border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-100/50 dark:bg-[#070A10] py-6 px-4 select-none">
       {/* Subtle baseline track indicator */}
       <div className="max-w-7xl mx-auto relative flex items-center justify-between">
         <div className="flex items-center gap-3 text-slate-400 dark:text-slate-500 font-mono text-[11px]">
@@ -198,14 +210,14 @@ export function PixelBreakoutGame() {
           <span className="uppercase tracking-widest sm:hidden">SYS OK</span>
         </div>
 
-        {/* Walking Mascot Area */}
+        {/* Walking Mascot Area: The Sole Trigger for Secret Arcade */}
         <div
           className="absolute top-1/2 -translate-y-1/2 cursor-pointer transition-all duration-75 group"
           style={{ left: `${positionX}%` }}
           onClick={handleMascotClick}
           role="button"
           tabIndex={0}
-          aria-label={isOpen ? "Collapse Arcade" : "Unlock Secret Breakout Arcade"}
+          aria-label={isOpen ? "Collapse Arcade" : "Secret System Terminal"}
         >
           {/* Exclamation mark on shocked state */}
           {isShocked && (
@@ -221,7 +233,7 @@ export function PixelBreakoutGame() {
           {/* Speech Bubble on hover */}
           {!isShocked && (
             <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded bg-slate-900 text-white font-mono text-[10px] tracking-wider border border-white/20 pointer-events-none shadow-md">
-              {isOpen ? "CLICK TO COLLAPSE ▲" : "DEBUG MODE? ⌁ CLICK ME"}
+              {isOpen ? "CLICK TO COLLAPSE ▲" : "⌁ RUN DIAGNOSTIC?"}
             </div>
           )}
 
@@ -236,44 +248,43 @@ export function PixelBreakoutGame() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsOpen((prev) => !prev)}
-            className="text-[11px] font-mono text-cobalt hover:text-cobalt/80 font-bold tracking-wider flex items-center gap-1.5 transition-colors"
-          >
-            <Sparkles size={12} className="text-cobalt" />
-            <span className="hidden sm:inline">
-              {isOpen ? "COLLAPSE EASTER EGG" : "PLAY EASTER EGG ARCADE"}
+          {isOpen ? (
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-[11px] font-mono text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 font-bold tracking-wider flex items-center gap-1.5 transition-colors"
+            >
+              <X size={12} />
+              <span>COLLAPSE ✕</span>
+            </button>
+          ) : (
+            <span className="text-[10px] font-mono text-slate-400 dark:text-slate-600 tracking-widest hidden sm:inline">
+              SIT // RUNTIME: VERIFIED
             </span>
-            <span className="sm:hidden">{isOpen ? "CLOSE" : "ARCADE"}</span>
-            {isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-          </button>
+          )}
         </div>
       </div>
 
       {/* 
-        INLINE FLUIDLY-EXPANDING BREAKOUT ARCADE (Havu Inspiration)
+        INLINE FLUIDLY-EXPANDING BREAKOUT ARCADE (Smooth GPU Transition)
         Opens directly in-page between the mascot line and footer without any popup modal!
       */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0, scale: 0.98 }}
+            initial={{ opacity: 0, height: 0 }}
             animate={{
               opacity: 1,
               height: "auto",
-              scale: 1,
               transition: {
-                height: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
-                opacity: { duration: 0.45, delay: 0.15 },
-                scale: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+                height: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 0.35, delay: 0.1 },
               },
             }}
             exit={{
               opacity: 0,
               height: 0,
-              scale: 0.98,
               transition: {
-                height: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+                height: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
                 opacity: { duration: 0.2 },
               },
             }}

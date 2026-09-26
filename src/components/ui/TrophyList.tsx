@@ -3,9 +3,9 @@ import { Trophy, Award, CheckCircle2 } from "lucide-react";
 export const TrophyList = () => {
   return (
     <div className="w-full">
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-5 sibling-focus-group">
         {/* Award 1 */}
-        <div className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-amber-400/50 hover:shadow-md transition-all group">
+        <div className="sibling-item p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-amber-400/50 hover:shadow-md transition-all group">
           <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 group-hover:scale-105 transition-transform">
             <Trophy size={22} />
           </div>
@@ -28,7 +28,7 @@ export const TrophyList = () => {
         </div>
 
         {/* Award 2 */}
-        <div className="p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-cobalt/50 hover:shadow-md transition-all group">
+        <div className="sibling-item p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-cobalt/50 hover:shadow-md transition-all group">
           <div className="p-3 bg-cobalt/10 border border-cobalt/20 rounded-xl text-cobalt group-hover:scale-105 transition-transform">
             <Award size={22} />
           </div>

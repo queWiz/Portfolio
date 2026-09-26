@@ -75,11 +75,11 @@ export function PublicationsSection() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sibling-focus-group">
         {PUBLICATIONS.map((pub) => (
           <div
             key={pub.id}
-            className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-cobalt/40 hover:shadow-md transition-all duration-300 group"
+            className="sibling-item rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:border-cobalt/40 hover:shadow-md transition-all duration-300 group"
           >
             <div>
               {/* Badge & Year */}

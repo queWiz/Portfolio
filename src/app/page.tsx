@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useMagnetic } from "@/hooks/useMagnetic";
 import { TopNavbar } from "@/components/ui/LayoutFeatures";
 import { HeroPixelDrone, HeroPixelBaseline } from "@/components/ui/HeroPixelStage";
 import { HeroStatusStrip } from "@/components/ui/HeroStatusStrip";
@@ -16,8 +17,10 @@ import { Footer } from "@/components/ui/Footer";
 import { Terminal as TerminalIcon } from "lucide-react";
 
 export default function Home() {
+  const cliCtaRef = useMagnetic<HTMLAnchorElement>({ strength: 0.22, textStrength: 0.4 });
+
   return (
-    <main className="min-h-screen bg-[#F8F9FA] dark:bg-[#080C14] text-slate-900 dark:text-[#EFF3F8] flex flex-col items-center relative overflow-x-hidden transition-colors duration-300">
+    <main className="min-h-screen bg-[#F8F9FA] dark:bg-[#080C14] text-slate-900 dark:text-[#EFF3F8] flex flex-col items-center relative overflow-x-clip transition-colors duration-300">
       {/* Floating Glass Pill Header */}
       <TopNavbar />
 
@@ -36,50 +39,65 @@ export default function Home() {
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center my-auto">
           {/* Left Column: Typographic Identity & CTAs (7 cols) */}
           <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
-            {/* Kicker Overline */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#111622]/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm mb-6 backdrop-blur-md"
-            >
-              <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
-              <span className="text-[11px] font-mono font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300">
-                Software &amp; Data Engineer · SIT Singapore
-              </span>
-            </motion.div>
+            {/* Kicker Overline with Kinetic Mask Reveal */}
+            <div className="overflow-hidden pb-1 -mb-1 mb-6">
+              <motion.div
+                initial={{ y: "110%", opacity: 0 }}
+                animate={{ y: "0%", opacity: 1 }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#111622]/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm backdrop-blur-md"
+              >
+                <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
+                <span className="text-[11px] font-mono font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300">
+                  Software &amp; Data Engineer · SIT Singapore
+                </span>
+              </motion.div>
+            </div>
 
-            {/* Oversized Brandmark Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-heading font-extrabold tracking-[-0.04em] text-slate-950 dark:text-white leading-[1.06] mb-6"
-            >
-              UWAIS ALQARNI
-              <span className="text-cobalt drop-shadow-[0_0_20px_rgba(37,99,235,0.4)]">
-                .
-              </span>
-            </motion.h1>
+            {/* Oversized Brandmark Headline with Kinetic Mask Reveal */}
+            <div className="overflow-hidden pb-2 -mb-2 mb-6">
+              <motion.h1
+                initial={{ y: "115%", opacity: 0 }}
+                animate={{ y: "0%", opacity: 1 }}
+                transition={{
+                  duration: 0.75,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.08,
+                }}
+                className="text-4xl sm:text-6xl lg:text-7xl font-heading font-extrabold tracking-[-0.04em] text-slate-950 dark:text-white leading-[1.06]"
+              >
+                UWAIS ALQARNI
+                <span className="text-cobalt drop-shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                  .
+                </span>
+              </motion.h1>
+            </div>
 
-            {/* Lede Paragraph */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-normal leading-relaxed mb-8"
-            >
-              Architecting resilient distributed pipelines, edge AI inference engines,
-              and verified full-stack platforms with uncompromising engineering discipline.
-            </motion.p>
+            {/* Lede Paragraph with Kinetic Mask Reveal */}
+            <div className="overflow-hidden pb-1 -mb-1 mb-8">
+              <motion.p
+                initial={{ y: "100%", opacity: 0 }}
+                animate={{ y: "0%", opacity: 1 }}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.18,
+                }}
+                className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-normal leading-relaxed"
+              >
+                Architecting resilient distributed pipelines, edge AI inference engines,
+                and verified full-stack platforms with uncompromising engineering discipline.
+              </motion.p>
+            </div>
 
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.28 }}
               className="flex flex-wrap items-center gap-3.5 mb-10"
             >
+              {/* Primary CTA (Preserves pristine .bl text swapper without magnetic pull) */}
               <a
                 href="#projects"
                 className="btn-nordic px-7 py-3 font-mono text-xs font-bold tracking-wider uppercase shadow-[0_4px_16px_rgba(37,99,235,0.25)]"
@@ -91,11 +109,14 @@ export default function Home() {
               </a>
 
               <a
+                ref={cliCtaRef}
                 href="#terminal"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] text-xs font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-400 transition-all shadow-sm"
+                className="magnetic-btn inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] text-xs font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-400 transition-all shadow-sm"
               >
-                <TerminalIcon size={14} className="text-cobalt" />
-                <span>LAUNCH CLI ⌁</span>
+                <span className="magnetic-inner flex items-center gap-2">
+                  <TerminalIcon size={14} className="text-cobalt" />
+                  <span>LAUNCH CLI ⌁</span>
+                </span>
               </a>
 
               <a
@@ -148,9 +169,17 @@ export default function Home() {
                 SELECTED WORKS · 2024 — 2026
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
-              Engineered Systems &amp;<br />Client Platforms.
-            </h2>
+            <div className="overflow-hidden pb-1 -mb-1">
+              <motion.h2
+                initial={{ y: "100%", opacity: 0 }}
+                whileInView={{ y: "0%", opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
+              >
+                Engineered Systems &amp;<br />Client Platforms.
+              </motion.h2>
+            </div>
           </div>
           <p className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
             Four production architectures delivered for real-world Singapore clients,
@@ -180,9 +209,17 @@ export default function Home() {
                 DEVELOPER CONSOLE
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
-              Interactive Candidate Terminal.
-            </h2>
+            <div className="overflow-hidden pb-1 -mb-1">
+              <motion.h2
+                initial={{ y: "100%", opacity: 0 }}
+                whileInView={{ y: "0%", opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
+              >
+                Interactive Candidate Terminal.
+              </motion.h2>
+            </div>
           </div>
           <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
             Direct CLI access to candidate background, stack proficiencies, target roles,
