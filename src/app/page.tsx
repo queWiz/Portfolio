@@ -1,13 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { TopNavbar } from "@/components/ui/LayoutFeatures";
 import { Hero } from "@/components/ui/Hero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
 import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
 import { ApproachSection } from "@/components/ui/ApproachSection";
-import { InteractiveTerminal } from "@/components/ui/Terminal";
+import { TerminalSection } from "@/components/ui/Terminal";
 import { PublicationsSection } from "@/components/ui/PublicationsSection";
 import { TrophyList } from "@/components/ui/TrophyList";
 import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
@@ -43,46 +42,8 @@ export default function Home() {
       {/* --- HOW I WORK (Tabayyun) --- */}
       <ApproachSection />
 
-      {/* --- CANDIDATE INTERACTIVE TERMINAL (CLI) --- */}
-      <section
-        id="terminal"
-        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
-      >
-        {/* Structural Editorial Index Bar (03 / 06) */}
-        <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/90 dark:border-white/[0.08] text-xs font-mono">
-          <div className="flex items-center gap-2.5">
-            <span className="px-2 py-0.5 rounded bg-cobalt/10 text-cobalt font-bold border border-cobalt/20">
-              03 / 06
-            </span>
-            <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
-              Developer Console
-            </span>
-          </div>
-          <span className="text-slate-400 dark:text-slate-500">
-            INTERACTIVE DOSSIER · CLI
-          </span>
-        </div>
-
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="overflow-hidden pb-1 -mb-1">
-            <motion.h2
-              initial={{ y: "100%", opacity: 0 }}
-              whileInView={{ y: "0%", opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl sm:text-4xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white"
-            >
-              Interactive Candidate Terminal.
-            </motion.h2>
-          </div>
-          <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
-            Direct CLI access to candidate background, stack proficiencies, target roles,
-            and verification standards.
-          </p>
-        </div>
-
-        <InteractiveTerminal />
-      </section>
+      {/* --- TERMINAL --- */}
+      <TerminalSection />
 
       {/* --- HAVU-STYLE STICKY EXPERIENCE TIMELINE & LIVE ACTIVITY --- */}
       <HavuExperienceSection />
