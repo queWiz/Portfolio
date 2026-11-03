@@ -215,7 +215,7 @@ export function ProjectShowcase() {
             onClick={() => setViewLayout("carousel")}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
               viewLayout === "carousel"
-                ? "bg-white dark:bg-[#161D2B] text-slate-900 dark:text-white shadow-sm"
+                ? "bg-surface dark:bg-surface text-slate-900 dark:text-white shadow-sm"
                 : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
@@ -226,7 +226,7 @@ export function ProjectShowcase() {
             onClick={() => setViewLayout("stacked")}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
               viewLayout === "stacked"
-                ? "bg-white dark:bg-[#161D2B] text-slate-900 dark:text-white shadow-sm"
+                ? "bg-surface dark:bg-surface text-slate-900 dark:text-white shadow-sm"
                 : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
@@ -249,7 +249,7 @@ export function ProjectShowcase() {
                 top: `calc(5rem + ${idx * 20}px)`,
                 zIndex: idx + 5,
               }}
-              className="sticky w-full rounded-3xl bg-white/95 dark:bg-[#101520]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.07)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.65)] transition-all duration-300"
+              className="sticky w-full rounded-3xl bg-surface/95 dark:bg-surface/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.07)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.65)] transition-all duration-300"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 {/* Left Column: Open Editorial Narrative */}
@@ -262,7 +262,7 @@ export function ProjectShowcase() {
                       <span>·</span>
                       <span>{proj.year}</span>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-slate-950 dark:text-white tracking-tight leading-snug">
+                    <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-slate-950 dark:text-white tracking-[-0.035em] leading-snug">
                       {proj.title}
                     </h3>
                     <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold mt-1">
@@ -281,7 +281,7 @@ export function ProjectShowcase() {
                         <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
                           {m.label}
                         </span>
-                        <span className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
+                        <span className="text-xs sm:text-sm font-heading font-semibold text-slate-900 dark:text-white">
                           {m.value}
                         </span>
                       </div>
@@ -355,14 +355,14 @@ export function ProjectShowcase() {
               <button
                 onClick={() => selectProject((currentIndex - 1 + PROJECTS.length) % PROJECTS.length)}
                 aria-label="Previous Project"
-                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-slate-200 bg-white/80 dark:bg-white/5 active:scale-95 transition-transform"
+                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-slate-200 bg-surface/80 dark:bg-white/5 active:scale-95 transition-transform"
               >
                 ← Prev
               </button>
               <button
                 onClick={() => selectProject((currentIndex + 1) % PROJECTS.length)}
                 aria-label="Next Project"
-                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-slate-200 bg-white/80 dark:bg-white/5 active:scale-95 transition-transform"
+                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-slate-200 bg-surface/80 dark:bg-white/5 active:scale-95 transition-transform"
               >
                 Next →
               </button>
@@ -379,8 +379,8 @@ export function ProjectShowcase() {
                   onClick={() => selectProject(idx)}
                   className={`tab-sibling-item text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 relative overflow-hidden flex flex-col justify-between shrink-0 sm:shrink min-w-[145px] sm:min-w-0 snap-start min-h-[82px] sm:min-h-[88px] ${
                     isActive
-                      ? "bg-white dark:bg-[#101520] border-cobalt/60 shadow-md ring-1 ring-cobalt/15 !opacity-100 !transform-none"
-                      : "bg-white/50 dark:bg-[#101520]/40 border-slate-200/70 dark:border-white/[0.05] hover:border-slate-300 dark:hover:border-white/15"
+                      ? "bg-surface dark:bg-surface border-cobalt/60 shadow-md ring-1 ring-cobalt/15 !opacity-100 !transform-none"
+                      : "bg-surface/50 dark:bg-surface/40 border-slate-200/70 dark:border-white/[0.05] hover:border-slate-300 dark:hover:border-white/15"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-1 w-full mb-1">
@@ -397,7 +397,7 @@ export function ProjectShowcase() {
                   </div>
 
                   <div
-                    className={`text-xs sm:text-sm font-heading font-bold truncate leading-tight ${
+                    className={`text-xs sm:text-sm font-heading font-semibold truncate leading-tight ${
                       isActive
                         ? "text-slate-900 dark:text-white"
                         : "text-slate-600 dark:text-slate-400"
@@ -431,7 +431,7 @@ export function ProjectShowcase() {
             MAIN SHOWCASE STAGE:
             Generous whitespace, soft atmospheric surface, open metrics, and Live Interactive Architecture on the right!
           */}
-          <div className="w-full rounded-3xl bg-white dark:bg-[#101520] border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 lg:p-12 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] transition-all">
+          <div className="w-full rounded-3xl bg-surface dark:bg-surface border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 lg:p-12 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] transition-all">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               {/* Left Column: Open Editorial Narrative (No Boxed Table Headers) */}
               <div className="lg:col-span-6 flex flex-col justify-between gap-6 min-h-[460px] sm:min-h-[500px]">
@@ -444,7 +444,7 @@ export function ProjectShowcase() {
                       <span>·</span>
                       <span>{currentProject.role}</span>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-slate-950 dark:text-white tracking-tight leading-snug">
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-semibold text-slate-950 dark:text-white tracking-[-0.035em] leading-snug">
                       {currentProject.title}
                     </h3>
                     <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold mt-1.5">
@@ -463,7 +463,7 @@ export function ProjectShowcase() {
                         <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
                           {m.label}
                         </span>
-                        <span className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
+                        <span className="text-xs sm:text-sm font-heading font-semibold text-slate-900 dark:text-white">
                           {m.value}
                         </span>
                       </div>
@@ -519,12 +519,12 @@ export function ProjectShowcase() {
               <div className="lg:col-span-6 w-full flex flex-col justify-between gap-4 min-h-[460px] sm:min-h-[500px]">
                 {/* Mode Controller: Interactive Architecture (Default) / Desktop / Mobile */}
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 dark:bg-[#161D2B] border border-slate-200/80 dark:border-white/[0.07]">
+                  <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 dark:bg-surface border border-slate-200/80 dark:border-white/[0.07]">
                     <button
                       onClick={() => setRightMode("simulator")}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
                         rightMode === "simulator"
-                          ? "bg-cobalt text-white shadow-sm"
+                          ? "bg-cobalt text-on-accent shadow-sm"
                           : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
@@ -535,7 +535,7 @@ export function ProjectShowcase() {
                       onClick={() => setRightMode("desktop")}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
                         rightMode === "desktop"
-                          ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
+                          ? "bg-surface dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
                           : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
@@ -546,7 +546,7 @@ export function ProjectShowcase() {
                       onClick={() => setRightMode("mobile")}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
                         rightMode === "mobile"
-                          ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
+                          ? "bg-surface dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
                           : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
@@ -620,9 +620,9 @@ function PergasInteractiveSimulator() {
   const activeSample = SAMPLES[sampleIdx];
 
   return (
-    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
         <div className="flex items-center gap-2.5">
           <ShieldCheck size={15} className="text-emerald-400" />
           <span className="text-xs font-semibold text-slate-200">
@@ -632,7 +632,7 @@ function PergasInteractiveSimulator() {
         <button
           onClick={runTests}
           disabled={testState === "running"}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-white hover:bg-cobalt/90 transition-colors font-semibold shadow-sm"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-on-accent hover:bg-cobalt/90 transition-colors font-semibold shadow-sm"
         >
           <Play size={11} />
           <span>{testState === "running" ? "Verifying..." : "Simulate Payload"}</span>
@@ -641,13 +641,13 @@ function PergasInteractiveSimulator() {
 
       <div className="p-5 sm:p-6 space-y-5">
         {/* Visual Pipeline Diagram: Raw Input -> SSR Scrubbing -> Supabase RLS */}
-        <div className="p-4 rounded-xl bg-[#111827] border border-slate-800/90 space-y-3">
+        <div className="p-4 rounded-xl bg-console-raised border border-slate-800/90 space-y-3">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span>SINGAPORE PDPA SERVER-SIDE SANITIZATION</span>
             <span className="text-emerald-400 font-semibold">ZERO PII LEAK</span>
           </div>
           <div className="grid grid-cols-3 gap-2.5 items-center">
-            <div className="p-3 rounded-lg bg-[#0B0F17] border border-red-500/25">
+            <div className="p-3 rounded-lg bg-console border border-red-500/25">
               <div className="text-xs text-slate-500">CLIENT PAYLOAD</div>
               <div className="text-xs sm:text-sm font-bold text-red-400 mt-1">
                 {activeSample.rawNric}
@@ -658,7 +658,7 @@ function PergasInteractiveSimulator() {
               <div className="w-full h-[2px] bg-gradient-to-r from-red-500/40 via-cobalt to-emerald-500/60 my-1.5 rounded-full" />
               <span className="text-xs text-slate-500">{activeSample.role}</span>
             </div>
-            <div className="p-3 rounded-lg bg-[#0B0F17] border border-emerald-500/30">
+            <div className="p-3 rounded-lg bg-console border border-emerald-500/30">
               <div className="text-xs text-slate-500">POSTGRES RLS</div>
               <div className="text-xs sm:text-sm font-bold text-emerald-400 mt-1">
                 {activeSample.masked}
@@ -683,7 +683,7 @@ function PergasInteractiveSimulator() {
               {TEST_SPECS.map((spec, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between py-2 px-3 rounded-lg bg-[#111827]/70 border border-slate-800/70"
+                  className="flex items-center justify-between py-2 px-3 rounded-lg bg-console-raised/70 border border-slate-800/70"
                 >
                   <div className="flex items-center gap-2 truncate">
                     <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
@@ -722,8 +722,8 @@ function CleanBrilliantSimulator() {
   };
 
   return (
-    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
         <div className="flex items-center gap-2.5">
           <Database size={15} className="text-cobalt" />
           <span className="text-xs font-semibold text-slate-200">
@@ -732,7 +732,7 @@ function CleanBrilliantSimulator() {
         </div>
         <button
           onClick={reorderWidgets}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-white hover:bg-cobalt/90 transition-colors font-semibold"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-on-accent hover:bg-cobalt/90 transition-colors font-semibold"
         >
           <Activity size={12} />
           <span>Permute Grid State</span>
@@ -750,7 +750,7 @@ function CleanBrilliantSimulator() {
             {widgets.map((w, i) => (
               <div
                 key={w.id}
-                className={`${w.span} p-3.5 rounded-xl bg-[#111827] border border-slate-800 flex items-center justify-between transition-all`}
+                className={`${w.span} p-3.5 rounded-xl bg-console-raised border border-slate-800 flex items-center justify-between transition-all`}
               >
                 <div>
                   <span className="text-xs text-slate-500">SLOT 0{i + 1} · {w.id}</span>
@@ -765,7 +765,7 @@ function CleanBrilliantSimulator() {
         </div>
 
         {/* Serialized PostgreSQL JSONB Payload Inspector */}
-        <div className="p-3.5 rounded-xl bg-[#111827]/80 border border-slate-800/80 space-y-1.5">
+        <div className="p-3.5 rounded-xl bg-console-raised/80 border border-slate-800/80 space-y-1.5">
           <div className="flex items-center justify-between text-xs text-slate-400">
             <span>POSTGRESQL HYBRID JSONB PERSISTENCE (UNIT OF WORK)</span>
             <span className="text-emerald-400">PARAMETERIZED SQL</span>
@@ -806,8 +806,8 @@ function CodexRAGSimulator() {
   const current = QUERIES[activeQueryIdx];
 
   return (
-    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
         <div className="flex items-center gap-2.5">
           <Sparkles size={15} className="text-cobalt" />
           <span className="text-xs font-semibold text-slate-200">
@@ -816,14 +816,14 @@ function CodexRAGSimulator() {
         </div>
         <button
           onClick={() => setActiveQueryIdx((i) => (i + 1) % QUERIES.length)}
-          className="px-3 py-1 rounded-lg bg-cobalt text-white hover:bg-cobalt/90 transition-colors font-semibold"
+          className="px-3 py-1 rounded-lg bg-cobalt text-on-accent hover:bg-cobalt/90 transition-colors font-semibold"
         >
           Switch Semantic Query
         </button>
       </div>
 
       <div className="p-5 sm:p-6 space-y-4">
-        <div className="p-3.5 rounded-xl bg-[#111827] border border-slate-800">
+        <div className="p-3.5 rounded-xl bg-console-raised border border-slate-800">
           <div className="text-xs text-slate-400 mb-1">MULTIMODAL QUERY VECTOR (768-DIM)</div>
           <div className="text-xs sm:text-sm text-white font-bold">
             &ldquo;{current.prompt}&rdquo;
@@ -831,7 +831,7 @@ function CodexRAGSimulator() {
         </div>
 
         {/* Video Timeline Scrubber Visual */}
-        <div className="p-4 rounded-xl bg-[#111827] border border-slate-800 space-y-3">
+        <div className="p-4 rounded-xl bg-console-raised border border-slate-800 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-emerald-400 font-bold">
               MATCH @ {current.timestamp}
@@ -873,8 +873,8 @@ function BidForGoodInteractiveSimulator() {
   };
 
   return (
-    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
         <div className="flex items-center gap-2.5">
           <Lock size={15} className="text-emerald-400" />
           <span className="text-xs font-semibold text-slate-200">
@@ -887,7 +887,7 @@ function BidForGoodInteractiveSimulator() {
       </div>
 
       <div className="p-5 sm:p-6 space-y-4">
-        <div className="p-4 rounded-xl bg-[#111827] border border-slate-800 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-console-raised border border-slate-800 flex items-center justify-between">
           <div>
             <div className="text-xs text-slate-400">CHARITY LOT #104 · SERIALIZABLE LOCK</div>
             <div className="text-xl sm:text-2xl font-bold text-white mt-0.5">
@@ -896,7 +896,7 @@ function BidForGoodInteractiveSimulator() {
           </div>
           <button
             onClick={placeBid}
-            className="px-4 py-2.5 rounded-xl bg-cobalt hover:bg-cobalt/90 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-md"
+            className="px-4 py-2.5 rounded-xl bg-cobalt hover:bg-cobalt/90 text-on-accent font-bold text-xs transition-all flex items-center gap-1.5 shadow-md"
           >
             <Zap size={13} />
             <span>Atomic Bid +$25</span>
@@ -904,13 +904,13 @@ function BidForGoodInteractiveSimulator() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="p-3.5 rounded-xl bg-[#111827] border border-slate-800">
+          <div className="p-3.5 rounded-xl bg-console-raised border border-slate-800">
             <div className="text-xs text-slate-400">ROW LOCK TX</div>
             <div className="text-xs font-bold text-emerald-400 mt-1">
               SELECT ... FOR UPDATE #{txId}
             </div>
           </div>
-          <div className="p-3.5 rounded-xl bg-[#111827] border border-slate-800">
+          <div className="p-3.5 rounded-xl bg-console-raised border border-slate-800">
             <div className="text-xs text-slate-400">CSRF &amp; SQLi DEFENSE</div>
             <div className="text-xs font-bold text-emerald-400 mt-1">
               HMAC-SHA256 Verified
@@ -945,8 +945,8 @@ function TabayyunInteractiveSimulator() {
   const active = ITEMS[itemIdx];
 
   return (
-    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
         <div className="flex items-center gap-2.5">
           <Cpu size={15} className="text-cobalt" />
           <span className="text-xs font-semibold text-slate-200">
@@ -960,11 +960,11 @@ function TabayyunInteractiveSimulator() {
 
       <div className="p-5 sm:p-6 space-y-4">
         {/* Bounding Box Vision Viewport */}
-        <div className="relative rounded-xl bg-[#111827] border border-slate-800 p-4 overflow-hidden">
+        <div className="relative rounded-xl bg-console-raised border border-slate-800 p-4 overflow-hidden">
           {isScanning && (
             <div className="absolute inset-x-0 h-0.5 bg-cobalt shadow-[0_0_12px_#3b82f6] animate-pulse top-1/2" />
           )}
-          <div className="border-2 border-dashed border-emerald-400/70 rounded-lg p-3.5 bg-[#0B0F17]/80">
+          <div className="border-2 border-dashed border-emerald-400/70 rounded-lg p-3.5 bg-console/80">
             <div className="flex items-center justify-between text-xs">
               <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
                 YOLOv8 BBOX: {active.conf}
@@ -981,7 +981,7 @@ function TabayyunInteractiveSimulator() {
         <button
           onClick={handleScan}
           disabled={isScanning}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cobalt text-white font-semibold text-xs hover:bg-cobalt/90 transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cobalt text-on-accent font-semibold text-xs hover:bg-cobalt/90 transition-colors"
         >
           <Cpu size={13} />
           <span>{isScanning ? "Running On-Device WASM..." : "Run On-Device Vision Frame"}</span>
@@ -996,27 +996,27 @@ function TabayyunInteractiveSimulator() {
 // -------------------------------------------------------------
 function DesktopBrowserMockup({ project }: { project: ProjectData }) {
   return (
-    <div className="w-full max-w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800 shadow-2xl overflow-hidden font-sans">
-      <div className="flex items-center justify-between px-4 py-3 bg-[#0F1522] border-b border-slate-800 text-xs">
+    <div className="w-full max-w-full rounded-2xl bg-console text-slate-100 border border-slate-800 shadow-2xl overflow-hidden font-sans">
+      <div className="flex items-center justify-between px-4 py-3 bg-console-raised border-b border-slate-800 text-xs">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
         </div>
-        <div className="flex-1 max-w-xs mx-auto py-1 px-3 rounded-md bg-[#0B0F17] border border-slate-800 text-xs font-mono text-slate-400 text-center truncate">
+        <div className="flex-1 max-w-xs mx-auto py-1 px-3 rounded-md bg-console border border-slate-800 text-xs font-mono text-slate-400 text-center truncate">
           https://{project.domain}
         </div>
         <div className="w-8" />
       </div>
 
-      <div className="p-5 bg-[#0B0F17] min-h-[300px] flex flex-col justify-between">
+      <div className="p-5 bg-console min-h-[300px] flex flex-col justify-between">
         <div className="group/screen relative w-full h-44 rounded-xl overflow-hidden border border-slate-800/90 mb-4 bg-slate-950">
-          <div className="sheen-media-card w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-slate-900/95 via-[#0c1424] to-slate-950">
+          <div className="sheen-media-card w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-slate-900/95 via-console-raised to-slate-950">
             <div className="relative z-10 flex flex-col items-center gap-1.5 max-w-xs">
               <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-cobalt/20 text-cobalt border border-cobalt/30 font-bold uppercase tracking-wider">
                 {project.domain}
               </span>
-              <span className="text-sm font-heading font-bold text-slate-200 mt-1">
+              <span className="text-sm font-heading font-semibold text-slate-200 mt-1">
                 {project.title}
               </span>
               <span className="text-xs font-mono text-slate-400">
@@ -1051,7 +1051,7 @@ function MobilePhoneMockup({ project }: { project: ProjectData }) {
           <div className="text-xs font-mono text-cobalt font-bold uppercase mb-1">
             {project.num} · MOBILE VIEW
           </div>
-          <h4 className="font-heading font-extrabold text-sm text-white mb-2 leading-tight">
+          <h4 className="font-heading font-semibold text-sm text-white mb-2 leading-tight">
             {project.title}
           </h4>
           <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 mb-3 space-y-1">

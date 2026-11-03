@@ -1,49 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTheme, type PaletteMode } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/ThemeProvider";
 import { useMagnetic } from "@/hooks/useMagnetic";
-import { Sun, Moon, ArrowUpRight, Palette } from "lucide-react";
-
-const PALETTE_OPTIONS: {
-  id: PaletteMode;
-  shortLabel: string;
-  fullLabel: string;
-  swatch: string;
-  desc: string;
-}[] = [
-  {
-    id: "indigo",
-    shortLabel: "A · Carbon Indigo",
-    fullLabel: "Option A: True Carbon & Indigo (Linear / Geist)",
-    swatch: "#6366F1",
-    desc: "True neutral obsidian/alabaster with zero muddy blue tint + electric indigo.",
-  },
-  {
-    id: "vermilion",
-    shortLabel: "B · Warm Vermilion",
-    fullLabel: "Option B: Warm Stone & Vermilion (Rauno / Dieter Rams)",
-    swatch: "#EA580C",
-    desc: "Warm architectural paper & graphite with aerospace international orange.",
-  },
-  {
-    id: "jade",
-    shortLabel: "C · Matte Jade",
-    fullLabel: "Option C: Matte Charcoal & Signal Jade (Supabase / Warp)",
-    swatch: "#10B981",
-    desc: "Deep forest carbon & sage bone with unified emerald telemetry.",
-  },
-  {
-    id: "cobalt",
-    shortLabel: "Original",
-    fullLabel: "Original: Navy Slate & Cobalt Blue",
-    swatch: "#2563EB",
-    desc: "Original navy-tinted dark mode and royal blue accent.",
-  },
-];
+import { Sun, Moon, ArrowUpRight } from "lucide-react";
 
 export function TopNavbar() {
-  const { theme, toggleTheme, palette, setPalette } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [sgtTime, setSgtTime] = useState("");
   const resumeRef = useMagnetic<HTMLAnchorElement>({ strength: 0.28, textStrength: 0.45 });
 
@@ -64,20 +27,18 @@ export function TopNavbar() {
     return () => clearInterval(interval);
   }, []);
 
-  const activePaletteInfo =
-    PALETTE_OPTIONS.find((p) => p.id === palette) || PALETTE_OPTIONS[0];
 
   return (
     <>
       <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
         <nav
           aria-label="Main Navigation"
-          className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 py-2.5 rounded-full bg-white/85 dark:bg-[#101520]/85 border border-slate-200/80 dark:border-white/[0.08] shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 max-w-5xl w-full"
+          className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 py-2.5 rounded-full bg-surface/85 dark:bg-surface/85 border border-slate-200/80 dark:border-white/[0.08] shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 max-w-5xl w-full"
         >
           {/* Brandmark */}
           <a
             href="#home"
-            className="font-heading font-extrabold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white flex items-center gap-0.5 group"
+            className="font-heading font-semibold text-sm sm:text-base tracking-[-0.035em] text-slate-900 dark:text-white flex items-center gap-0.5 group"
           >
             ALQARNI
             <span className="text-cobalt group-hover:scale-125 transition-transform duration-200">
@@ -142,7 +103,7 @@ export function TopNavbar() {
               rel="noreferrer"
               download="Uwais_Alqarni_Resume.pdf"
               title="Download / View Uwais Alqarni's Resume (PDF)"
-              className="magnetic-btn inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-cobalt text-white text-xs font-mono font-semibold hover:bg-cobalt-dark shadow-sm transition-all"
+              className="magnetic-btn inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-cobalt text-on-accent text-xs font-mono font-semibold hover:bg-cobalt-dark shadow-sm transition-all"
             >
               <span className="magnetic-inner">
                 <span>RESUME</span>
@@ -153,51 +114,6 @@ export function TopNavbar() {
         </nav>
       </header>
 
-      {/* =================================================================
-          LIVE PALETTE COMPARISON SLIDER DOCK (Floating Bottom-Center)
-          Allows instant 1-click comparison between A (Indigo), B (Vermilion),
-          C (Jade), and Original (Cobalt) in both Light & Dark modes!
-          ================================================================= */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-3 w-full max-w-xl pointer-events-none">
-        <div className="pointer-events-auto rounded-2xl bg-white/95 dark:bg-[#101520]/95 border border-slate-200/90 dark:border-white/[0.12] shadow-[0_16px_45px_rgba(0,0,0,0.18)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.75)] backdrop-blur-xl p-2 sm:p-2.5 flex flex-col gap-1.5">
-          <div className="flex items-center justify-between px-2 text-xs font-mono">
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-200 font-semibold truncate">
-              <Palette size={13} className="text-cobalt shrink-0" />
-              <span className="truncate">{activePaletteInfo.fullLabel}</span>
-            </div>
-            <button
-              onClick={toggleTheme}
-              className="px-2 py-0.5 rounded bg-slate-100 dark:bg-white/[0.08] text-slate-600 dark:text-slate-300 hover:text-cobalt text-xs font-mono shrink-0"
-            >
-              {theme === "light" ? "Switch to Dark" : "Switch to Light"}
-            </button>
-          </div>
-
-          {/* 3-Palette Slider Buttons (+ Original) */}
-          <div className="grid grid-cols-4 gap-1 bg-slate-100/90 dark:bg-black/40 p-1 rounded-xl border border-slate-200/70 dark:border-white/[0.06]">
-            {PALETTE_OPTIONS.map((opt) => {
-              const isSelected = palette === opt.id;
-              return (
-                <button
-                  key={opt.id}
-                  onClick={() => setPalette(opt.id)}
-                  className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-xs font-mono font-semibold transition-all truncate ${
-                    isSelected
-                      ? "bg-white dark:bg-[#18181B] text-slate-950 dark:text-white shadow-sm ring-1 ring-cobalt/40"
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: opt.swatch }}
-                  />
-                  <span className="truncate">{opt.shortLabel}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
     </>
   );
 }

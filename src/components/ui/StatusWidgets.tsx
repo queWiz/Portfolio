@@ -130,7 +130,7 @@ export function GitHubFeed({ defaultUsername = 'queWiz' }: { defaultUsername?: s
         </span>
 
         {/* Account Selector Switch */}
-        <div className="flex items-center gap-1.5 p-0.5 rounded-full bg-slate-100 dark:bg-[#141B28] border border-slate-200 dark:border-white/10 text-[11px] font-mono">
+        <div className="flex items-center gap-1.5 p-0.5 rounded-full bg-slate-100 dark:bg-surface border border-slate-200 dark:border-white/10 text-[11px] font-mono">
           <button
             onClick={() => setSelectedUser('queWiz')}
             className={`px-2.5 py-0.5 rounded-full transition-all ${
@@ -159,7 +159,7 @@ export function GitHubFeed({ defaultUsername = 'queWiz' }: { defaultUsername?: s
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] animate-pulse flex items-start gap-3"
+              className="p-3.5 rounded-xl bg-slate-50 dark:bg-surface border border-slate-200/80 dark:border-white/[0.06] animate-pulse flex items-start gap-3"
             >
               <div className="w-2 h-2 rounded-full bg-cobalt/40 mt-1" />
               <div className="flex-1 space-y-2">
@@ -172,7 +172,7 @@ export function GitHubFeed({ defaultUsername = 'queWiz' }: { defaultUsername?: s
       )}
 
       {status === "error" && (
-        <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06]">
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-surface border border-slate-200/80 dark:border-white/[0.06]">
           <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
             Direct feed offline.{" "}
             <a
@@ -196,7 +196,7 @@ export function GitHubFeed({ defaultUsername = 'queWiz' }: { defaultUsername?: s
               target="_blank"
               rel="noreferrer"
               aria-label={`View commit "${commit.message}" on GitHub`}
-              className="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-[#111622] border border-slate-200/80 dark:border-white/[0.08] hover:border-cobalt/50 hover:shadow-sm transition-all duration-200 group"
+              className="flex items-start gap-3 p-3.5 rounded-xl bg-surface dark:bg-surface border border-slate-200/80 dark:border-white/[0.08] hover:border-cobalt/50 hover:shadow-sm transition-all duration-200 group"
             >
               <span className="text-cobalt text-xs mt-0.5 group-hover:scale-125 transition-transform">
                 ✦

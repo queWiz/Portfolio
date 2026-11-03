@@ -93,7 +93,7 @@ export function ProjectGrid() {
         return (
           <article
             key={p.id}
-            className="group relative bg-[#0a0a0f] border border-borderWarm/80 hover:border-accent-green/50 rounded-2xl p-7 md:p-8 flex flex-col justify-between transition-all duration-300 shadow-xl hover:shadow-[0_0_30px_rgba(134,239,172,0.06)]"
+            className="group relative bg-console border border-borderWarm/80 hover:border-accent-green/50 rounded-2xl p-7 md:p-8 flex flex-col justify-between transition-all duration-300 shadow-xl hover:shadow-[0_0_30px_rgba(134,239,172,0.06)]"
           >
             <div>
               {/* Header: Tag + Links */}
@@ -113,7 +113,7 @@ export function ProjectGrid() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`View ${p.name} source code on GitHub`}
-                    className="flex items-center gap-1.5 text-xs font-mono text-muted hover:text-cream px-3 py-1.5 rounded-md bg-white/[0.03] border border-borderWarm hover:border-cream/40 transition-colors"
+                    className="flex items-center gap-1.5 text-xs font-mono text-muted hover:text-cream px-3 py-1.5 rounded-md bg-surface/[0.03] border border-borderWarm hover:border-cream/40 transition-colors"
                   >
                     <Github size={13} />
                     <span className="hidden sm:inline">Source</span>
@@ -124,7 +124,7 @@ export function ProjectGrid() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label={`Open ${p.name} live application`}
-                      className="flex items-center gap-1 text-xs font-mono text-black font-semibold px-3 py-1.5 rounded-md bg-cream hover:bg-white transition-colors"
+                      className="flex items-center gap-1 text-xs font-mono text-black font-semibold px-3 py-1.5 rounded-md bg-cream hover:bg-surface transition-colors"
                     >
                       <span>Live</span>
                       <ArrowUpRight size={13} />
@@ -157,7 +157,7 @@ export function ProjectGrid() {
               </div>
 
               {/* Metric Badges */}
-              <div className="grid grid-cols-3 gap-3 mb-6 p-3.5 rounded-xl bg-white/[0.02] border border-borderWarm/40">
+              <div className="grid grid-cols-3 gap-3 mb-6 p-3.5 rounded-xl bg-surface/[0.02] border border-borderWarm/40">
                 {p.metrics.map((m) => (
                   <div key={m.label} className="text-left">
                     <div className="text-base md:text-lg font-bold font-mono text-cream">

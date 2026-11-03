@@ -11,7 +11,7 @@ export const TrophyList = () => {
               <span>·</span>
               <span>Nanyang Polytechnic (NYP)</span>
             </div>
-            <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-950 dark:text-white">
+            <h4 className="text-lg sm:text-xl font-heading font-semibold text-slate-950 dark:text-white">
               Director&apos;s List Academic Distinction (Top 15%)
             </h4>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2">
@@ -28,7 +28,7 @@ export const TrophyList = () => {
               <span>·</span>
               <span>Google Professional Certification</span>
             </div>
-            <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-950 dark:text-white">
+            <h4 className="text-lg sm:text-xl font-heading font-semibold text-slate-950 dark:text-white">
               Google Data Analytics Professional Certificate
             </h4>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2">

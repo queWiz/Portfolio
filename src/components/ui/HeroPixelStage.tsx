@@ -54,14 +54,14 @@ export function HeroPixelDrone() {
           <svg
             viewBox="0 0 24 10"
             shapeRendering="crispEdges"
-            className="w-48 sm:w-56 lg:w-64 h-auto drop-shadow-[0_12px_28px_rgba(37,99,235,0.22)] transition-transform group-hover:scale-105 duration-300"
+            className="w-48 sm:w-56 lg:w-64 h-auto transition-transform group-hover:scale-105 duration-300"
           >
             {/* Cockpit Glass Dome */}
-            <rect x="9" y="0" width="6" height="1" fill="#3B82F6" />
-            <rect x="8" y="1" width="8" height="1" fill="#60A5FA" />
-            <rect x="7" y="2" width="10" height="1" fill="#93C5FD" />
+            <rect x="9" y="0" width="6" height="1" style={{ fill: "rgb(var(--accent))" }} />
+            <rect x="8" y="1" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)" }} />
+            <rect x="7" y="2" width="10" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 32%, #fff)" }} />
             {/* Pilot Eye Pixel */}
-            <rect x="11" y="2" width="2" height="1" fill="#1E3A8A" />
+            <rect x="11" y="2" width="2" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 55%, #000)" }} />
 
             {/* UFO Main Hull */}
             <rect x="4" y="3" width="16" height="1" fill="currentColor" className="text-slate-800 dark:text-slate-100" />
@@ -71,29 +71,29 @@ export function HeroPixelDrone() {
             {/* Sensor Lights */}
             <rect x="3" y="5" width="2" height="1" fill="#EF4444" className="animate-pulse" />
             <rect x="7" y="5" width="2" height="1" fill="#F59E0B" />
-            <rect x="11" y="5" width="2" height="1" fill="#10B981" />
-            <rect x="15" y="5" width="2" height="1" fill="#3B82F6" />
-            <rect x="19" y="5" width="2" height="1" fill="#8B5CF6" className="animate-pulse" />
+            <rect x="11" y="5" width="2" height="1" style={{ fill: "rgb(var(--moss))" }} />
+            <rect x="15" y="5" width="2" height="1" style={{ fill: "rgb(var(--accent))" }} />
+            <rect x="19" y="5" width="2" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)" }} className="animate-pulse" />
 
             {/* Lower Propulsion Ring */}
             <rect x="2" y="7" width="20" height="1" fill="currentColor" className="text-slate-700 dark:text-slate-300" />
             <rect x="6" y="8" width="12" height="1" fill="currentColor" className="text-slate-600 dark:text-slate-400" />
-            <rect x="9" y="9" width="6" height="1" fill="#2563EB" />
+            <rect x="9" y="9" width="6" height="1" style={{ fill: "rgb(var(--accent))" }} />
           </svg>
 
           {/* Flickering Plasma Thruster Plume */}
           <div className="flex justify-center items-start gap-1 mt-0.5">
             <svg viewBox="0 0 6 4" shapeRendering="crispEdges" className="w-12 h-auto text-cobalt animate-pulse">
-              <rect x="1" y="0" width="4" height="1" fill="#60A5FA" />
-              <rect x="2" y="1" width="2" height="2" fill="#3B82F6" />
-              <rect x="2" y="3" width="2" height="1" fill="#93C5FD" />
+              <rect x="1" y="0" width="4" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)" }} />
+              <rect x="2" y="1" width="2" height="2" style={{ fill: "rgb(var(--accent))" }} />
+              <rect x="2" y="3" width="2" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 32%, #fff)" }} />
             </svg>
           </div>
         </div>
 
         {/* Floating Status Pill */}
         <div className="mt-4 flex items-center justify-center">
-          <span className="px-3 py-1 rounded-full bg-white/90 dark:bg-[#111622]/90 backdrop-blur-md text-[10px] font-mono text-slate-800 dark:text-slate-200 tracking-widest uppercase flex items-center gap-1.5 shadow-md border border-slate-200 dark:border-white/10 group-hover:border-cobalt transition-colors">
+          <span className="px-3 py-1 rounded-full bg-surface/90 dark:bg-surface/90 backdrop-blur-md text-[10px] font-mono text-slate-800 dark:text-slate-200 tracking-widest uppercase flex items-center gap-1.5 shadow-md border border-slate-200 dark:border-white/10 group-hover:border-cobalt transition-colors">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>DEV COMPANION · ACTIVE</span>
           </span>
@@ -175,11 +175,11 @@ export function HeroPixelBaseline() {
             {/* Monitor Frame */}
             <rect x="1" y="0" width="14" height="9" fill="currentColor" />
             {/* Green CRT Screen */}
-            <rect x="2" y="1" width="12" height="7" fill="#064E3B" />
+            <rect x="2" y="1" width="12" height="7" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 35%, #000)" }} />
             {/* Code lines */}
-            <rect x="3" y="2" width="6" height="1" fill="#34D399" />
-            <rect x="3" y="4" width="8" height="1" fill="#34D399" />
-            <rect x="3" y="6" width="4" height="1" fill="#10B981" />
+            <rect x="3" y="2" width="6" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
+            <rect x="3" y="4" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
+            <rect x="3" y="6" width="4" height="1" style={{ fill: "rgb(var(--moss))" }} />
             {/* Stand */}
             <rect x="7" y="9" width="2" height="2" fill="currentColor" />
             <rect x="4" y="11" width="8" height="1" fill="currentColor" />
@@ -200,18 +200,18 @@ export function HeroPixelBaseline() {
           {/* 8-bit Walking Robot SVG */}
           <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 h-auto text-slate-800 dark:text-white">
             {/* Antenna */}
-            <rect x="5" y="0" width="2" height="1" fill="#2563EB" />
+            <rect x="5" y="0" width="2" height="1" style={{ fill: "rgb(var(--accent))" }} />
             <rect x="5" y="1" width="2" height="1" fill="currentColor" />
 
             {/* Head */}
             <rect x="3" y="2" width="6" height="4" fill="currentColor" />
             {/* Eyes */}
-            <rect x="4" y="3" width="1" height="1" fill="#3B82F6" />
-            <rect x="7" y="3" width="1" height="1" fill="#3B82F6" />
+            <rect x="4" y="3" width="1" height="1" style={{ fill: "rgb(var(--accent))" }} />
+            <rect x="7" y="3" width="1" height="1" style={{ fill: "rgb(var(--accent))" }} />
 
             {/* Body */}
             <rect x="2" y="6" width="8" height="4" fill="currentColor" />
-            <rect x="4" y="7" width="4" height="2" fill="#10B981" />
+            <rect x="4" y="7" width="4" height="2" style={{ fill: "rgb(var(--moss))" }} />
 
             {/* Dynamic Walking Legs */}
             {walkFrame === 0 && (
@@ -250,7 +250,7 @@ export function HeroPixelBaseline() {
         </div>
 
         {/* Center-Right Telemetry Speech Bubble */}
-        <div className="mx-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-[#141B28] border border-slate-200/90 dark:border-white/10 shadow-sm max-w-xs sm:max-w-md truncate">
+        <div className="mx-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface dark:bg-surface border border-slate-200/90 dark:border-white/10 shadow-sm max-w-xs sm:max-w-md truncate">
           <span className="w-1.5 h-1.5 rounded-full bg-cobalt animate-ping shrink-0" />
           <span className="text-[10px] sm:text-[11px] font-mono text-slate-700 dark:text-slate-300 truncate">
             &gt; {STATUS_MESSAGES[activeMessageIdx]}
@@ -265,11 +265,11 @@ export function HeroPixelBaseline() {
           <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 sm:w-7 h-auto text-slate-800 dark:text-slate-200">
             <rect x="1" y="0" width="10" height="14" fill="currentColor" />
             {/* Server Bays */}
-            <rect x="2" y="2" width="8" height="2" fill="#1E293B" />
-            <rect x="9" y="2" width="1" height="1" fill="#3B82F6" className="animate-pulse" />
-            <rect x="2" y="6" width="8" height="2" fill="#1E293B" />
-            <rect x="9" y="6" width="1" height="1" fill="#10B981" />
-            <rect x="2" y="10" width="8" height="2" fill="#1E293B" />
+            <rect x="2" y="2" width="8" height="2" fill="#2E2A24" />
+            <rect x="9" y="2" width="1" height="1" style={{ fill: "rgb(var(--accent))" }} className="animate-pulse" />
+            <rect x="2" y="6" width="8" height="2" fill="#2E2A24" />
+            <rect x="9" y="6" width="1" height="1" style={{ fill: "rgb(var(--moss))" }} />
+            <rect x="2" y="10" width="8" height="2" fill="#2E2A24" />
             <rect x="9" y="10" width="1" height="1" fill="#EF4444" className="animate-ping" />
           </svg>
         </div>

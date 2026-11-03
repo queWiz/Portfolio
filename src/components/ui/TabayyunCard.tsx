@@ -10,7 +10,7 @@ export function TabayyunCard() {
         borderColor:["rgba(134,239,172,0.1)", "rgba(134,239,172,0.3)", "rgba(134,239,172,0.1)"]
       }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      className="bg-[#0a0a0f] border border-accent-green/20 rounded-xl p-8 md:p-12 relative overflow-hidden flex flex-col justify-center h-full"
+      className="bg-console border border-accent-green/20 rounded-xl p-8 md:p-12 relative overflow-hidden flex flex-col justify-center h-full"
     >
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent-green/10 rounded-full blur-[80px] pointer-events-none" />
 

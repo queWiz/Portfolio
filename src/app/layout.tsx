@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { Poppins, Inter, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
 
-const poppins = Poppins({
+const geist = Geist({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-poppins",
+  variable: "--font-geist",
 });
 
-const inter = Inter({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-inter",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
@@ -44,12 +38,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${inter.variable} ${mono.variable} font-sans antialiased`}
-      >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

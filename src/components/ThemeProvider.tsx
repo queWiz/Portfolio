@@ -3,63 +3,48 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 export type Theme = "light" | "dark";
-export type PaletteMode = "indigo" | "vermilion" | "jade" | "cobalt";
 
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
-  palette: PaletteMode;
-  setPalette: (palette: PaletteMode) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: "light",
   toggleTheme: () => {},
-  palette: "indigo",
-  setPalette: () => {},
 });
+
+export const THEME_STORAGE_KEY = "portfolio-theme";
+
+/**
+ * Runs in <head> before first paint so a saved dark theme never flashes light.
+ * Falls back to the OS preference when nothing is stored.
+ */
+export const themeInitScript = `(function(){try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}})();`;
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
-  const [palette, setPaletteState] = useState<PaletteMode>("indigo");
 
+  // The init script already applied the class; mirror it into React state.
   useEffect(() => {
-    const savedTheme = localStorage.getItem("portfolio-theme") as Theme | null;
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      requestAnimationFrame(() => {
-        setTheme("dark");
-      });
-    } else {
-      document.documentElement.classList.remove("dark");
+    if (document.documentElement.classList.contains("dark")) {
+      requestAnimationFrame(() => setTheme("dark"));
     }
-
-    const savedPalette = (localStorage.getItem("portfolio-palette") as PaletteMode | null) || "indigo";
-    document.documentElement.setAttribute("data-palette", savedPalette);
-    requestAnimationFrame(() => {
-      setPaletteState(savedPalette);
-    });
   }, []);
 
   const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
+    const next: Theme = theme === "light" ? "dark" : "light";
     setTheme(next);
-    localStorage.setItem("portfolio-theme", next);
-    if (next === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    document.documentElement.classList.toggle("dark", next === "dark");
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // Storage can be blocked (private mode); the toggle still works for this visit.
     }
   };
 
-  const setPalette = (next: PaletteMode) => {
-    setPaletteState(next);
-    localStorage.setItem("portfolio-palette", next);
-    document.documentElement.setAttribute("data-palette", next);
-  };
-
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, palette, setPalette }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

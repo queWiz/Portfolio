@@ -3,10 +3,10 @@ import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="w-full border-t border-slate-200/80 dark:border-white/[0.08] bg-white/50 dark:bg-[#080C14]/50 py-16 px-6 relative z-10 backdrop-blur-md">
+    <footer className="w-full border-t border-slate-200/80 dark:border-white/[0.08] bg-surface/50 dark:bg-paper/50 py-16 px-6 relative z-10 backdrop-blur-md">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
         <div>
-          <div className="font-heading font-extrabold text-xl tracking-tight text-slate-900 dark:text-white mb-1.5 flex items-center justify-center md:justify-start gap-1">
+          <div className="font-heading font-semibold text-xl tracking-[-0.035em] text-slate-900 dark:text-white mb-1.5 flex items-center justify-center md:justify-start gap-1">
             UWAIS ALQARNI<span className="text-cobalt">.</span>
           </div>
           <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-sm">
@@ -68,7 +68,7 @@ const SocialLink = ({
     target={href.startsWith("mailto:") ? undefined : "_blank"}
     rel={href.startsWith("mailto:") ? undefined : "noreferrer"}
     aria-label={label}
-    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] text-xs font-mono text-slate-700 dark:text-slate-300 hover:text-cobalt hover:border-cobalt/40 transition-all group"
+    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-surface border border-slate-200/90 dark:border-white/[0.08] text-xs font-mono text-slate-700 dark:text-slate-300 hover:text-cobalt hover:border-cobalt/40 transition-all group"
   >
     <span className="text-slate-500 group-hover:text-cobalt transition-colors">
       {icon}

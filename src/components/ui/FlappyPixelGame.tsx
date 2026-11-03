@@ -769,7 +769,7 @@ export function FlappyPixelGame() {
       {/* Game Stage Canvas */}
       <div
         onClick={flap}
-        className="relative w-full h-[420px] sm:h-[480px] md:h-[520px] bg-[#05070D] cursor-pointer overflow-hidden"
+        className="relative w-full h-[420px] sm:h-[480px] md:h-[520px] bg-console cursor-pointer overflow-hidden"
       >
         <canvas ref={canvasRef} className="w-full h-full block touch-none" />
 
@@ -804,11 +804,11 @@ export function FlappyPixelGame() {
                 <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
                 <span className="text-xs sm:text-sm font-mono tracking-wider font-semibold text-slate-200 uppercase flex items-center gap-2">
                   PRESS
-                  <kbd className="px-2 py-0.5 rounded-md bg-white/10 dark:bg-white/15 border border-white/20 text-cyan-300 font-mono text-xs font-bold shadow-inner">
+                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-cyan-300 font-mono text-xs font-bold shadow-inner">
                     SPACE
                   </kbd>
                   OR
-                  <kbd className="px-2 py-0.5 rounded-md bg-white/10 dark:bg-white/15 border border-white/20 text-white font-mono text-xs font-bold shadow-inner">
+                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-white font-mono text-xs font-bold shadow-inner">
                     CLICK CANVAS
                   </kbd>
                   TO FLAP
@@ -823,7 +823,7 @@ export function FlappyPixelGame() {
                   e.stopPropagation();
                   setIsArmoryOpen(true);
                 }}
-                className="px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono font-semibold text-slate-300 hover:text-white transition-colors flex items-center gap-2"
+                className="px-4 py-1.5 rounded-full bg-surface/5 hover:bg-surface/10 border border-white/10 text-xs font-mono font-semibold text-slate-300 hover:text-white transition-colors flex items-center gap-2"
               >
                 <SlidersHorizontal size={12} className="text-cyan-400" />
                 <span>CONFIGURE EQUIPMENT LOADOUT</span>
@@ -842,12 +842,12 @@ export function FlappyPixelGame() {
               Pillar collision registered on telemetry channel.
             </p>
 
-            <div className="flex items-center gap-8 px-8 py-3.5 rounded-2xl bg-white/[0.04] border border-white/10 mb-6">
+            <div className="flex items-center gap-8 px-8 py-3.5 rounded-2xl bg-surface/[0.04] border border-white/10 mb-6">
               <div className="text-center">
                 <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">SCORE</div>
                 <div className="text-3xl font-mono font-extrabold text-cyan-400">{score}</div>
               </div>
-              <div className="w-px h-10 bg-white/10" />
+              <div className="w-px h-10 bg-surface/10" />
               <div className="text-center">
                 <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">BEST</div>
                 <div className="text-3xl font-mono font-extrabold text-amber-400">{bestScore}</div>
@@ -870,7 +870,7 @@ export function FlappyPixelGame() {
                   e.stopPropagation();
                   setIsArmoryOpen(true);
                 }}
-                className="px-5 py-2.5 rounded-full border border-white/20 hover:bg-white/10 font-mono text-xs font-bold tracking-wider text-slate-200 transition-colors flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full border border-white/20 hover:bg-surface/10 font-mono text-xs font-bold tracking-wider text-slate-200 transition-colors flex items-center gap-2"
               >
                 <SlidersHorizontal size={13} />
                 <span>CHANGE LOADOUT</span>
@@ -889,7 +889,7 @@ export function FlappyPixelGame() {
               onClick={(e) => e.stopPropagation()}
               className="absolute inset-0 bg-slate-950/95 dark:bg-black/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center p-4 sm:p-6"
             >
-              <div className="w-full max-w-3xl bg-[#090D16] border border-slate-800 dark:border-white/10 rounded-2xl p-5 sm:p-6 shadow-2xl flex flex-col">
+              <div className="w-full max-w-3xl bg-console border border-slate-800 dark:border-white/10 rounded-2xl p-5 sm:p-6 shadow-2xl flex flex-col">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-white/10 pb-3.5 mb-4">
                   <div className="flex items-center gap-3">
@@ -897,7 +897,7 @@ export function FlappyPixelGame() {
                       <SlidersHorizontal size={16} />
                     </span>
                     <div>
-                      <h4 className="font-heading font-extrabold text-white text-base sm:text-lg tracking-tight">
+                      <h4 className="font-heading font-semibold text-white text-base sm:text-lg tracking-[-0.035em]">
                         Agent Loadout Configuration
                       </h4>
                       <p className="text-[11px] font-mono text-slate-400">
@@ -907,7 +907,7 @@ export function FlappyPixelGame() {
                   </div>
                   <button
                     onClick={() => setIsArmoryOpen(false)}
-                    className="p-1.5 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                    className="p-1.5 rounded-full hover:bg-surface/10 text-slate-400 hover:text-white transition-colors"
                     aria-label="Close loadout armory"
                   >
                     <X size={18} />
@@ -928,7 +928,7 @@ export function FlappyPixelGame() {
 
                     {/* Scaled Preview Sprite */}
                     <div className="my-4 relative w-24 h-24 flex items-center justify-center">
-                      <svg width="64" height="64" viewBox="-18 -20 36 36" className="drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                      <svg width="64" height="64" viewBox="-18 -20 36 36" className="">
                         {/* Propulsion */}
                         {loadout.propulsion === "jetpack" && (
                           <>
@@ -1027,7 +1027,7 @@ export function FlappyPixelGame() {
                         onClick={() => setArmoryTab("headgear")}
                         className={`flex-1 py-1.5 px-2 rounded-lg font-mono text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                           armoryTab === "headgear"
-                            ? "bg-cobalt text-white shadow"
+                            ? "bg-cobalt text-on-accent shadow"
                             : "text-slate-400 hover:text-white"
                         }`}
                       >
@@ -1038,7 +1038,7 @@ export function FlappyPixelGame() {
                         onClick={() => setArmoryTab("propulsion")}
                         className={`flex-1 py-1.5 px-2 rounded-lg font-mono text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                           armoryTab === "propulsion"
-                            ? "bg-cobalt text-white shadow"
+                            ? "bg-cobalt text-on-accent shadow"
                             : "text-slate-400 hover:text-white"
                         }`}
                       >
@@ -1049,7 +1049,7 @@ export function FlappyPixelGame() {
                         onClick={() => setArmoryTab("suit")}
                         className={`flex-1 py-1.5 px-2 rounded-lg font-mono text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                           armoryTab === "suit"
-                            ? "bg-cobalt text-white shadow"
+                            ? "bg-cobalt text-on-accent shadow"
                             : "text-slate-400 hover:text-white"
                         }`}
                       >
@@ -1071,12 +1071,12 @@ export function FlappyPixelGame() {
                               className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
                                 isEquipped
                                   ? "bg-cobalt/15 border-cobalt ring-1 ring-cobalt/40 shadow-sm"
-                                  : "bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                  : "bg-surface/[0.02] border-white/10 hover:border-white/20 hover:bg-surface/[0.04]"
                               }`}
                             >
                               <div className="flex items-center justify-between mb-1.5">
                                 <div className="flex items-center gap-2">
-                                  <span className="p-1 rounded-md bg-white/5 border border-white/10">
+                                  <span className="p-1 rounded-md bg-surface/5 border border-white/10">
                                     <IconComp size={15} style={{ color: item.color }} />
                                   </span>
                                   <span className="font-mono text-xs font-bold text-white">
@@ -1108,12 +1108,12 @@ export function FlappyPixelGame() {
                               className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
                                 isEquipped
                                   ? "bg-cobalt/15 border-cobalt ring-1 ring-cobalt/40 shadow-sm"
-                                  : "bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                  : "bg-surface/[0.02] border-white/10 hover:border-white/20 hover:bg-surface/[0.04]"
                               }`}
                             >
                               <div className="flex items-center justify-between mb-1.5">
                                 <div className="flex items-center gap-2">
-                                  <span className="p-1 rounded-md bg-white/5 border border-white/10">
+                                  <span className="p-1 rounded-md bg-surface/5 border border-white/10">
                                     <IconComp size={15} style={{ color: item.color }} />
                                   </span>
                                   <span className="font-mono text-xs font-bold text-white">
@@ -1144,7 +1144,7 @@ export function FlappyPixelGame() {
                               className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
                                 isEquipped
                                   ? "bg-cobalt/15 border-cobalt ring-1 ring-cobalt/40 shadow-sm"
-                                  : "bg-white/[0.02] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                  : "bg-surface/[0.02] border-white/10 hover:border-white/20 hover:bg-surface/[0.04]"
                               }`}
                             >
                               <div className="flex items-center justify-between mb-1.5">
@@ -1210,7 +1210,7 @@ export function FlappyPixelGame() {
             </span>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
-            Press <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-slate-300 font-bold border border-white/10">ESC</kbd> or Collapse to close
+            Press <kbd className="px-1.5 py-0.5 rounded bg-surface/10 text-slate-300 font-bold border border-white/10">ESC</kbd> or Collapse to close
           </div>
         </div>
       </div>

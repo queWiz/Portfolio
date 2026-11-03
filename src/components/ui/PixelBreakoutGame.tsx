@@ -326,7 +326,7 @@ export function PixelBreakoutGame() {
                     {activeGame === "breakout" && (
                       <motion.div
                         layoutId="activeGameIndicator"
-                        className="absolute inset-0 rounded-full bg-cobalt shadow-[0_0_12px_rgba(37,99,235,0.6)]"
+                        className="absolute inset-0 rounded-full bg-cobalt"
                         transition={{ type: "spring", stiffness: 450, damping: 35 }}
                       />
                     )}
@@ -402,7 +402,7 @@ function PixelEngineerAvatar({
       width="28"
       height="28"
       viewBox="0 0 16 16"
-      className="pixelated drop-shadow-[0_4px_8px_rgba(37,99,235,0.3)]"
+      className="pixelated"
       style={{ imageRendering: "pixelated" }}
     >
       {/* Hardhat / Cap (Electric Cobalt) */}
@@ -992,7 +992,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
 
       // Draw Paddle
       ctx.save();
-      ctx.shadowColor = "rgba(37, 99, 235, 0.8)";
+      ctx.shadowColor = "rgba(232, 137, 63, 0.8)";
       ctx.shadowBlur = 12;
 
       ctx.fillStyle = "#2563EB";
@@ -1070,7 +1070,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Seamless Game Stage Canvas */}
-      <div className="relative w-full h-[420px] sm:h-[480px] md:h-[520px] bg-[#05070D] cursor-crosshair overflow-hidden">
+      <div className="relative w-full h-[420px] sm:h-[480px] md:h-[520px] bg-console cursor-crosshair overflow-hidden">
         <canvas
           ref={canvasRef}
           onPointerMove={handlePointerMove}
@@ -1088,15 +1088,15 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
               onClick={launchBall}
               className="pointer-events-auto cursor-pointer select-none group"
             >
-              <div className="flex items-center gap-3 px-6 py-3.5 rounded-full bg-slate-950/95 dark:bg-[#030712]/95 border border-cobalt/60 shadow-[0_0_35px_rgba(37,99,235,0.45),0_10px_25px_rgba(0,0,0,0.85)] backdrop-blur-xl group-hover:border-cobalt group-hover:shadow-[0_0_45px_rgba(37,99,235,0.65)] transition-all duration-200">
+              <div className="flex items-center gap-3 px-6 py-3.5 rounded-full bg-slate-950/95 dark:bg-[#030712]/95 border border-cobalt/60 backdrop-blur-xl group-hover:border-cobalt group-hover:shadow-[0_0_32px_rgba(232,137,63,0.35)] transition-all duration-200">
                 <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
                 <span className="text-xs sm:text-sm font-mono tracking-wider font-semibold text-slate-200 uppercase flex items-center gap-2">
                   PRESS
-                  <kbd className="px-2 py-0.5 rounded-md bg-white/10 dark:bg-white/15 border border-white/20 text-cyan-300 font-mono text-xs font-bold shadow-inner">
+                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-cyan-300 font-mono text-xs font-bold shadow-inner">
                     SPACE
                   </kbd>
                   OR
-                  <kbd className="px-2 py-0.5 rounded-md bg-white/10 dark:bg-white/15 border border-white/20 text-white font-mono text-xs font-bold shadow-inner">
+                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-white font-mono text-xs font-bold shadow-inner">
                     CLICK CANVAS
                   </kbd>
                   TO LAUNCH
@@ -1115,7 +1115,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
             <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4 text-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.25)]">
               <Trophy size={28} className="animate-bounce" />
             </div>
-            <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white mb-2 tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-white mb-2 tracking-[-0.035em]">
               VERIFICATION COMPLETE
             </h3>
             <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6 leading-relaxed">
@@ -1123,7 +1123,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
             </p>
             <button
               onClick={resetGame}
-              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
             >
               <RotateCcw size={14} />
               <span>PLAY AGAIN</span>
@@ -1142,7 +1142,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
             </p>
             <button
               onClick={resetGame}
-              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
             >
               <RotateCcw size={14} />
               <span>TRY AGAIN</span>
@@ -1168,7 +1168,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
             </span>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
-            Press <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-slate-300 font-bold border border-white/10">ESC</kbd> or Collapse to close
+            Press <kbd className="px-1.5 py-0.5 rounded bg-surface/10 text-slate-300 font-bold border border-white/10">ESC</kbd> or Collapse to close
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function Home() {
   const cliCtaRef = useMagnetic<HTMLAnchorElement>({ strength: 0.22, textStrength: 0.4 });
 
   return (
-    <main className="min-h-screen bg-[#F8F9FA] dark:bg-[#080C14] text-slate-900 dark:text-[#EFF3F8] flex flex-col items-center relative overflow-x-clip transition-colors duration-300">
+    <main className="min-h-screen paper-grain text-ink flex flex-col items-center relative overflow-x-clip transition-colors duration-300">
       {/* Floating Glass Pill Header */}
       <TopNavbar />
 
@@ -29,11 +29,9 @@ export default function Home() {
         id="home"
         className="relative w-full min-h-[90vh] flex flex-col items-center justify-between pt-28 pb-8 px-4 sm:px-10 lg:px-16 isolate"
       >
-        {/* Subtle Radial Gradient + Isometric Dot Grid */}
-        <div className="absolute inset-0 isometric-grid-bg pointer-events-none -z-10" />
 
         {/* Hero Ambient Radial Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-cobalt/5 dark:bg-cobalt/[0.08] blur-3xl pointer-events-none -z-10 rounded-full" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-accent/[0.06] blur-3xl pointer-events-none -z-10 rounded-full" />
 
         {/* Unified Main Hero Content Row */}
         <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center my-auto">
@@ -45,7 +43,7 @@ export default function Home() {
                 initial={{ y: "110%", opacity: 0 }}
                 animate={{ y: "0%", opacity: 1 }}
                 transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#111622]/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm backdrop-blur-md"
+                className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 dark:bg-surface/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm backdrop-blur-md"
               >
                 <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
                 <span className="text-xs font-mono font-semibold tracking-[0.16em] uppercase text-slate-600 dark:text-slate-300">
@@ -64,10 +62,10 @@ export default function Home() {
                   ease: [0.16, 1, 0.3, 1],
                   delay: 0.08,
                 }}
-                className="text-4xl sm:text-6xl lg:text-7xl font-heading font-extrabold tracking-[-0.04em] text-slate-950 dark:text-white leading-[1.06]"
+                className="text-4xl sm:text-6xl lg:text-7xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white leading-[1.06]"
               >
                 UWAIS ALQARNI
-                <span className="text-cobalt drop-shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                <span className="text-cobalt">
                   .
                 </span>
               </motion.h1>
@@ -100,7 +98,7 @@ export default function Home() {
               {/* Primary CTA (Preserves pristine .bl text swapper without magnetic pull) */}
               <a
                 href="#projects"
-                className="btn-nordic px-7 py-3 font-mono text-xs font-bold tracking-wider uppercase shadow-[0_4px_16px_rgba(37,99,235,0.25)]"
+                className="btn-nordic px-7 py-3 font-mono text-xs font-bold tracking-wider uppercase"
               >
                 <span className="bl">
                   <span>EXPLORE CASE STUDIES ↓</span>
@@ -111,7 +109,7 @@ export default function Home() {
               <a
                 ref={cliCtaRef}
                 href="#terminal"
-                className="magnetic-btn inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] text-xs font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-400 transition-all shadow-sm"
+                className="magnetic-btn inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 dark:border-white/[0.12] bg-surface/60 dark:bg-white/[0.04] text-xs font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-400 transition-all shadow-sm"
               >
                 <span className="magnetic-inner flex items-center gap-2">
                   <TerminalIcon size={14} className="text-cobalt" />
@@ -183,7 +181,7 @@ export default function Home() {
               whileInView={{ y: "0%", opacity: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
+              className="text-3xl sm:text-4xl lg:text-5xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white"
             >
               Engineered Systems &amp;<br />Client Platforms.
             </motion.h2>
@@ -230,7 +228,7 @@ export default function Home() {
               whileInView={{ y: "0%", opacity: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
+              className="text-3xl sm:text-4xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white"
             >
               Interactive Candidate Terminal.
             </motion.h2>

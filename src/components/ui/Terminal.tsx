@@ -105,10 +105,10 @@ export function InteractiveTerminal() {
   return (
     <div
       id="terminal"
-      className="w-full max-w-4xl mx-auto rounded-3xl bg-[#090D16] border border-slate-800 text-slate-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden font-mono flex flex-col h-[480px] sm:h-[500px]"
+      className="w-full max-w-4xl mx-auto rounded-3xl bg-console border border-slate-800 text-slate-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden font-mono flex flex-col h-[480px] sm:h-[500px]"
     >
       {/* Hardware Console Header Bar */}
-      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0D121E] border-b border-slate-800/90">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/90">
         <div className="flex items-center gap-2.5">
           <span className="w-3 h-3 rounded-full bg-[#f06a6a]" />
           <span className="w-3 h-3 rounded-full bg-[#f0b74a]" />
@@ -151,7 +151,7 @@ export function InteractiveTerminal() {
       </div>
 
       {/* Quick Run Buttons Bar */}
-      <div className="px-5 py-2.5 bg-[#0B0F19] border-t border-slate-800/80 flex flex-wrap items-center gap-2">
+      <div className="px-5 py-2.5 bg-console border-t border-slate-800/80 flex flex-wrap items-center gap-2">
         <span className="text-[10px] text-slate-500 uppercase tracking-widest mr-1">
           QUICK RUN:
         </span>
@@ -160,7 +160,7 @@ export function InteractiveTerminal() {
             <button
               key={btn}
               onClick={() => executeCommand(btn)}
-              className="px-2.5 py-1 rounded-md bg-white/[0.05] hover:bg-cobalt/20 hover:text-cobalt hover:border-cobalt/40 border border-white/[0.08] text-[11px] text-slate-300 font-semibold transition-all duration-150"
+              className="px-2.5 py-1 rounded-md bg-surface/[0.05] hover:bg-cobalt/20 hover:text-cobalt hover:border-cobalt/40 border border-white/[0.08] text-[11px] text-slate-300 font-semibold transition-all duration-150"
             >
               [{btn}]
             </button>
@@ -169,7 +169,7 @@ export function InteractiveTerminal() {
       </div>
 
       {/* Interactive Command Prompt */}
-      <div className="flex items-center gap-3 px-5 py-3.5 bg-[#090D16] border-t border-slate-800/60">
+      <div className="flex items-center gap-3 px-5 py-3.5 bg-console border-t border-slate-800/60">
         <span className="text-cobalt font-bold text-sm">$</span>
         <input
           value={input}

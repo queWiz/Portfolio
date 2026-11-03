@@ -94,7 +94,7 @@ export function TelemetryStream() {
   }, []);
 
   return (
-    <div className="w-full rounded-xl border border-borderWarm/90 bg-[#0a0a0f] overflow-hidden shadow-2xl font-mono text-xs relative z-20">
+    <div className="w-full rounded-xl border border-borderWarm/90 bg-console overflow-hidden shadow-2xl font-mono text-xs relative z-20">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-black/60 border-b border-borderWarm/70">
         <div className="flex items-center gap-2">
@@ -116,7 +116,7 @@ export function TelemetryStream() {
       </div>
 
       {/* Stream Content */}
-      <div className="p-4 space-y-2 text-[11px] leading-relaxed bg-[#0a0a0f]/95">
+      <div className="p-4 space-y-2 text-[11px] leading-relaxed bg-console/95">
         {events.map((e) => (
           <div key={e.id} className="flex items-start gap-2.5 border-b border-white/[0.02] pb-1.5 last:border-0 last:pb-0">
             <span className="text-muted/60 select-none shrink-0 font-mono text-[10px]">

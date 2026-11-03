@@ -94,7 +94,7 @@ export function ArchitectureLoopSection() {
 
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white">
             Tabayyun (تَبَيَّنُوا): Continuous Verification.
           </h2>
         </div>
@@ -107,7 +107,7 @@ export function ArchitectureLoopSection() {
       </div>
 
       {/* Decision #3: Interactive SVG Pipeline Schematic + Live Contract Inspector */}
-      <div className="rounded-3xl bg-white dark:bg-[#101520] border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] space-y-8">
+      <div className="rounded-3xl bg-surface dark:bg-surface border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] space-y-8">
         {/* SVG Connected Pipeline Nodes */}
         <div className="relative">
           {/* Desktop Horizontal SVG Connector Line with Animated Data Pulse */}
@@ -129,8 +129,8 @@ export function ArchitectureLoopSection() {
                   onClick={() => setSelectedIdx(idx)}
                   className={`text-left p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between min-h-[128px] ${
                     isSelected
-                      ? "bg-white dark:bg-[#161F30] border-cobalt shadow-lg ring-2 ring-cobalt/20 -translate-y-0.5"
-                      : "bg-slate-50/90 dark:bg-[#0B0F17]/90 border-slate-200/80 dark:border-white/[0.07] hover:border-cobalt/40"
+                      ? "bg-surface dark:bg-surface border-cobalt shadow-lg ring-2 ring-cobalt/20 -translate-y-0.5"
+                      : "bg-slate-50/90 dark:bg-surface/60 border-slate-200/80 dark:border-white/[0.07] hover:border-cobalt/40"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 w-full mb-3">
@@ -158,7 +158,7 @@ export function ArchitectureLoopSection() {
                         size={15}
                         className={isSelected ? "text-cobalt shrink-0" : "text-slate-400 shrink-0"}
                       />
-                      <h3 className="text-sm font-heading font-bold text-slate-950 dark:text-white leading-tight">
+                      <h3 className="text-sm font-heading font-semibold text-slate-950 dark:text-white leading-tight">
                         {stage.title}
                       </h3>
                     </div>
@@ -188,7 +188,7 @@ export function ArchitectureLoopSection() {
               <span>·</span>
               <span>{activeStage.subtitle}</span>
             </div>
-            <h4 className="text-xl sm:text-2xl font-heading font-extrabold text-slate-950 dark:text-white">
+            <h4 className="text-xl sm:text-2xl font-heading font-semibold text-slate-950 dark:text-white">
               {activeStage.title}
             </h4>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -196,7 +196,7 @@ export function ArchitectureLoopSection() {
             </p>
           </div>
 
-          <div className="lg:col-span-6 rounded-2xl bg-[#0B0F17] border border-slate-800 p-5 font-mono text-xs text-slate-200 shadow-xl">
+          <div className="lg:col-span-6 rounded-2xl bg-console border border-slate-800 p-5 font-mono text-xs text-slate-200 shadow-xl">
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 text-xs">
               <span className="text-cobalt font-bold">VERIFICATION CONTRACT // JSON</span>
               <span className="text-emerald-400 font-semibold">{activeStage.badge}</span>

@@ -84,7 +84,7 @@ export function PublicationsSection() {
 
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white">
             Peer-Reviewed Publications.
           </h2>
           <p className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400 mt-2 max-w-2xl">
@@ -97,7 +97,7 @@ export function PublicationsSection() {
             href="https://orcid.org/0009-0006-6833-4965"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface dark:bg-surface border border-slate-200/90 dark:border-white/[0.08] text-xs font-mono text-slate-700 dark:text-slate-300 hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span>ORCID: 0009-0006-6833-4965</span>
@@ -107,7 +107,7 @@ export function PublicationsSection() {
       </div>
 
       {/* Editorial Research Citation Ledger (1px Shared Hairlines, Zero SaaS Card Bloat) */}
-      <div className="rounded-xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#0D121D] overflow-hidden divide-y divide-slate-200/90 dark:divide-white/[0.08]">
+      <div className="rounded-xl border border-slate-200/90 dark:border-white/[0.08] bg-surface dark:bg-surface overflow-hidden divide-y divide-slate-200/90 dark:divide-white/[0.08]">
         {/* Ledger Column Header Strip (Desktop) */}
         <div className="hidden lg:grid lg:grid-cols-12 px-6 py-3 bg-slate-50/80 dark:bg-white/[0.02] text-xs font-mono text-slate-400 dark:text-slate-500 uppercase tracking-wider">
           <div className="col-span-2">Proceedings / Role</div>
@@ -138,7 +138,7 @@ export function PublicationsSection() {
             {/* Center Column: Title, Conference String & Unboxed Technical Contribution */}
             <div className="lg:col-span-7 space-y-3">
               <div>
-                <h3 className="text-base sm:text-lg font-heading font-bold text-slate-950 dark:text-white leading-snug group-hover:text-cobalt transition-colors">
+                <h3 className="text-base sm:text-lg font-heading font-semibold text-slate-950 dark:text-white leading-snug group-hover:text-cobalt transition-colors">
                   {pub.title}
                 </h3>
                 <p className="text-xs font-mono text-slate-500 dark:text-slate-400 mt-1">

@@ -28,11 +28,11 @@ function TimelineTrackNode({
     <div className="absolute -left-[15px] sm:-left-[25px] top-8 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center pointer-events-none">
       <motion.div
         style={{ opacity: glow }}
-        className="w-5 h-5 rounded-full bg-white dark:bg-[#080C14] border-2 border-cobalt flex items-center justify-center shadow-[0_0_12px_rgba(37,99,235,0.7)]"
+        className="w-5 h-5 rounded-full bg-surface dark:bg-paper border-2 border-cobalt flex items-center justify-center"
       >
         <motion.span
           style={{ scale, opacity }}
-          className="w-2 h-2 rounded-full bg-cobalt shadow-[0_0_8px_rgba(37,99,235,0.9)]"
+          className="w-2 h-2 rounded-full bg-cobalt"
         />
       </motion.div>
     </div>
@@ -126,7 +126,7 @@ export function HavuExperienceSection() {
         {/* LEFT COLUMN: STICKY EDITORIAL SECTION */}
         <div className="lg:col-span-5 lg:sticky lg:top-28 self-start flex flex-col gap-6">
           <div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.1]">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white leading-[1.1]">
               Engineering Progression &amp;<br />Experience.
             </h2>
           </div>
@@ -148,7 +148,7 @@ export function HavuExperienceSection() {
 
           <motion.div
             style={{ height: lineHeight }}
-            className="absolute left-2 sm:left-3.5 top-6 w-[2px] bg-gradient-to-b from-cobalt via-cobalt to-cyan-400 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.7)] origin-top pointer-events-none"
+            className="absolute left-2 sm:left-3.5 top-6 w-[2px] bg-gradient-to-b from-cobalt via-cobalt to-cyan-400 rounded-full origin-top pointer-events-none"
           />
 
           {MILESTONES.map((item, index) => {
@@ -157,7 +157,7 @@ export function HavuExperienceSection() {
             return (
               <div
                 key={item.step}
-                className="sibling-item rounded-2xl bg-white dark:bg-[#101520] border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-8 shadow-[0_12px_35px_-10px_rgba(15,23,42,0.05)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)] relative hover:border-cobalt/40 transition-all duration-300"
+                className="sibling-item rounded-2xl bg-surface dark:bg-surface border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-8 shadow-[0_12px_35px_-10px_rgba(15,23,42,0.05)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.45)] relative hover:border-cobalt/40 transition-all duration-300"
               >
                 <TimelineTrackNode
                   progress={smoothProgress}
@@ -176,7 +176,7 @@ export function HavuExperienceSection() {
                   </span>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-heading font-extrabold text-slate-950 dark:text-white leading-snug mb-2.5">
+                <h3 className="text-lg sm:text-xl font-heading font-semibold text-slate-950 dark:text-white leading-snug mb-2.5">
                   {item.title}
                 </h3>
 

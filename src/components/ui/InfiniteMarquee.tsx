@@ -24,10 +24,10 @@ const TECHNOLOGIES = [
 
 export const InfiniteMarquee = () => {
   return (
-    <div className="w-full relative overflow-hidden border-y border-slate-200/80 dark:border-white/[0.08] bg-white/60 dark:bg-[#080C14]/60 py-5 backdrop-blur-md">
+    <div className="w-full relative overflow-hidden border-y border-slate-200/80 dark:border-white/[0.08] bg-surface/60 dark:bg-paper/60 py-5 backdrop-blur-md">
       {/* Edge gradient masks for seamless fade */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-44 bg-gradient-to-r from-[#F8F9FA] dark:from-[#080C14] to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-44 bg-gradient-to-l from-[#F8F9FA] dark:from-[#080C14] to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-44 bg-gradient-to-r from-paper dark:from-paper to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-44 bg-gradient-to-l from-paper dark:from-paper to-transparent z-10" />
 
       <div className="flex w-max animate-scroll gap-12 sm:gap-16 px-8 hover:[animation-play-state:paused]">
         {[...TECHNOLOGIES, ...TECHNOLOGIES, ...TECHNOLOGIES].map((tech, i) => (
