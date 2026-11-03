@@ -1,71 +1,80 @@
-# Uwais Alqarni | Software Engineer Portfolio 🚀
+# Uwais Alqarni, portfolio
 
-> A high-performance, interactive portfolio engineered to reflect a focus on backend systems, data pipelines, and elegant architecture. 
+My personal site. I'm a Software Engineering student at the Singapore Institute of Technology, and this is where I show the client work, research and side projects I've built.
 
-![Tech Stack](https://img.shields.io/badge/Stack-Next.js_|_Tailwind_|_Framer_Motion-black)
-![3D Graphics](https://img.shields.io/badge/3D-React_Three_Fiber-blue)
-![Deploy](https://img.shields.io/badge/Deploy-Vercel-success)
+Live at **[portfolio-indol-eight-45.vercel.app](https://portfolio-indol-eight-45.vercel.app)**
 
-🌐 **[View Live Site](https://portfolio-indol-eight-45.vercel.app)**
+## What's on the page
 
-## 💡 The Philosophy: Tabayyun (تبيّن)
-The design and engineering of this site—and my work in general—is guided by the Islamic principle of **Tabayyun**: *"to verify, ascertain, and seek clarity before acting."* 
-Whether validating a high-velocity Kafka stream, cross-referencing messy datasets, or shipping an ML model to production, I believe technology should bring clarity to chaos.
+- **Hero.** My name, which alternates between a handwritten signature and a pixel nameplate on each visit, and a lanyard badge with a pixel portrait you can drag to swing or tap to flip.
+- **Selected work.** Five projects with real screenshots: Pergas Members Platform, Clean Brilliant Carbon Analytics, Codex Video Search, BidForGood and Tabayyun Food Scanner. Each card opens a case study with a small interactive mock of how the project works.
+- **How I work.** Built around the Arabic word تبينوا ("investigate, make sure", Al-Hujurat 49:6) and four principles I try to follow when building software.
+- **Terminal.** A small shell with history, tab completion and commands like `about`, `projects`, `cd contact` and `theme`. Everything on the page is reachable from it.
+- **About.** Photo, background, education, side projects and the tools I use.
+- **Research.** Two papers at ACM AutoUI '26 on takeover requests and driver monitoring, with DOI links and copyable BibTeX.
+- **Recognition and contact.** Director's List at Nanyang Polytechnic, the Google Data Analytics certificate, and an email you can copy in one click.
+- **Arcade.** Breakout (the bricks spell "verify before trust") and a Flappy-style game with an outfit picker. Both keep a best score in your browser.
 
-## ✨ Technical Features
+There are a few hidden extras too. Try typing `play` in the terminal, poking the robot in the hero, or the Konami code.
 
-This portfolio is not a static template; it is a custom-engineered web application showcasing modern frontend physics and API integrations:
+## Stack
 
-*   **Orbital 3D Kinematics:** A custom-built, continuously rendering 3D orbital system using `Three.js` and `React Three Fiber`, mapped to a 60/40 asymmetrical grid.
-*   **Interactive Terminal:** A fully functional, state-driven command-line interface featuring an automated boot-sequence and custom command parsing.
-*   **Live GitHub Telemetry:** Integrates with the GitHub REST API to fetch and display recent commits and repository updates in real-time.
-*   **Dynamic API Integrations:** Fetches live, geolocated prayer times (Singapore) via the Aladhan API, rendering them into a custom animated CSS astrolabe widget.
-*   **Physics-Based Micro-Interactions:** 
-    *   Custom Spring-physics cursor mapping (`framer-motion`).
-    *   Bi-directional `IntersectionObserver` hooks for smooth scroll reveals.
-    *   Animated project slideshows with tracked directional states.
-*   **High-Contrast "Cream on Black" UI:** Built with strict Tailwind CSS tokens to ensure readability, accessibility, and a premium editorial aesthetic.
+- [Next.js 16](https://nextjs.org) (App Router) and React 19
+- Tailwind CSS 3 with colour tokens stored as CSS variables
+- Framer Motion for the reveals, springs and the badge physics
+- Canvas 2D for the two games
+- Fonts through `next/font`: Geist, Geist Mono, Amiri, Pixelify Sans and Mrs Saint Delafield
+- Hosted on Vercel
 
-## 🛠️ Tech Stack
-
-| Category | Technology | Usage |
-| :--- | :--- | :--- |
-| **Framework** | Next.js (App Router) | Core application structure & SSR |
-| **Styling** | Tailwind CSS | Utility-first styling & strict RGBA colour tokens |
-| **Animation** | Framer Motion | Spring physics, layout transitions, scroll reveals |
-| **3D Graphics** | React Three Fiber | Background starfield and orbital mesh rendering |
-| **Data Fetching** | Fetch API / React Hooks | GitHub Activity & Geolocated Time APIs |
-
-## 🚀 Local Development
-
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/YOUR_USERNAME/portfolio.git
-    cd portfolio
-    ```
-
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
-
-3.  **Run the dev server**
-    ```bash
-    npm run dev
-    ```
-
-4.  Open[http://localhost:3000](http://localhost:3000)
-
-## 📂 Project Architecture
+## Running it locally
 
 ```bash
-src/
-├── app/              # Next.js App Router (page.tsx, layout.tsx)
-├── components/       
-│   └── ui/           # Bespoke interactive components (Terminal, 3D Canvas, Slideshow)
-├── hooks/            # Custom React hooks (e.g., useReveal for scroll physics)
-└── lib/              # Utility functions (Tailwind class mergers)
+git clone https://github.com/queWiz/Portfolio.git
+cd Portfolio
+npm install
+npm run dev
 ```
 
----
-*Designed & Engineered by Uwais Alqarni*
+The dev server runs on [http://127.0.0.1:3457](http://127.0.0.1:3457). The port is set in `package.json`.
+
+Other scripts:
+
+```bash
+npm run build   # production build
+npm run start   # serve the production build on the same port
+npm run lint    # ESLint
+```
+
+## Where things live
+
+```
+src/
+├── app/                 layout, page order, global styles and colour tokens
+├── components/
+│   ├── ui/              one file per section (Hero, Terminal, AboutSection, Footer, the games...)
+│   ├── projects/        project data, screenshot frames and the case-study mocks
+│   ├── mascot/          the lanyard badge and the pixel portrait
+│   ├── motion/          RevealText, the word-by-word heading reveal
+│   └── easter/          Konami code and the console greeting
+└── lib/
+    ├── motion.ts        shared easing, durations and reveal variants
+    └── initScripts.ts   scripts that run in <head> before first paint (theme, name style)
+public/
+├── projects/            project screenshots (WebP)
+├── about/               About photo
+└── Resume.pdf
+```
+
+## Editing notes
+
+**Projects.** Add or change a project in `src/components/projects/data.ts`. Screenshots go in `public/projects/` as WebP. A project without screenshots falls back to its mock in `ProjectMockups.tsx`.
+
+**Colours.** The palette is "Deep Teal & Flare". Every colour is a CSS variable in `src/app/globals.css`, with light values in `:root` and dark values in `.dark`. Values are stored as `R G B` so Tailwind opacity modifiers like `bg-accent/10` work. Components use the token names (`paper`, `ink`, `accent`, `signal`, `console` and so on) and never hard-code colours, so changing the palette only means editing that file. The games read the same variables, so they follow the theme too.
+
+**Theme.** Light is the default. Dark mode only turns on through the toggle, and the choice is saved in `localStorage`.
+
+**Head scripts.** The scripts that apply the saved theme and pick the name style live in `src/lib/initScripts.ts`, not in a client component. `layout.tsx` is a server component. If it imports a value from a `"use client"` file, it receives a client reference instead of the string, and the script silently never renders.
+
+## License
+
+MIT. See [LICENSE](LICENSE). The code is free to reuse. The photos, screenshots, résumé and written content are mine, so please don't reuse those.
