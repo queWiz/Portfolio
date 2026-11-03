@@ -20,6 +20,9 @@
   --accent-soft: 232 137 63;     /* #E8893F */
   --moss: 47 93 70;              /* #2F5D46 */
   --on-accent: 255 255 255;      /* text on accent fills: 5.7:1 */
+  --arcade-a: 232 137 63;         /* game-screen colours: bright tones for the dark console */
+  --arcade-b: 134 190 159;
+  --arcade-c: 236 230 218;
   --console: 23 21 18;           /* #171512 code panels stay dark in both themes */
   --console-raised: 32 29 25;    /* #201D19 */
   --console-line: 52 48 42;      /* #34302A */
@@ -39,6 +42,9 @@
   --accent-soft: 168 75 15;      /* #A84B0F */
   --moss: 134 190 159;           /* #86BE9F */
   --on-accent: 20 18 15;         /* dark text on light accent: 7.2:1 */
+  --arcade-a: 232 137 63;         /* game-screen colours: bright tones for the dark console */
+  --arcade-b: 134 190 159;
+  --arcade-c: 236 230 218;
   --console: 14 13 11;           /* #0E0D0B */
   --console-raised: 24 22 19;    /* #181613 */
   --console-line: 46 42 37;      /* #2E2A25 */

@@ -15,13 +15,32 @@ const ROBOT_LINES = [
   "Hi! Uwais is open to software engineering internships.",
   "Two papers at ACM AutoUI '26, Gothenburg.",
   "Psst. Give that name badge a swing.",
+  "Poke me. Go on.",
   "There's a terminal further down. Type help.",
   "Made with Next.js, Tailwind and a lot of pixels.",
+];
+
+// What the robot says when you poke it.
+const POKE_LINES = [
+  "Hey! That tickles.",
+  "I'm on break. Mostly.",
+  "Fun fact: there's an arcade at the bottom.",
+  "Try the terminal. Type play.",
+  "Beep. Boop. Hire Uwais.",
+  "I've been walking this line all day.",
 ];
 
 export function HeroPixelBaseline() {
   const reduce = useReducedMotion();
   const [line, setLine] = useState(0);
+  const [poke, setPoke] = useState<{ n: number; text: string } | null>(null);
+  const pokeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (pokeTimer.current) clearTimeout(pokeTimer.current); }, []);
+  const pokeRobot = () => {
+    setPoke((p) => ({ n: (p?.n ?? 0) + 1, text: POKE_LINES[((p?.n ?? -1) + 1) % POKE_LINES.length] }));
+    if (pokeTimer.current) clearTimeout(pokeTimer.current);
+    pokeTimer.current = setTimeout(() => setPoke(null), 2600);
+  };
   const [walkFrame, setWalkFrame] = useState(0);
   const [walkPos, setWalkPos] = useState(30);
   const [walkDirection, setWalkDirection] = useState<1 | -1>(1);
@@ -79,12 +98,22 @@ export function HeroPixelBaseline() {
         </svg>
 
         {/* Walking robot */}
-        <div
-          aria-hidden
-          className="absolute transition-all duration-150 ease-linear flex flex-col items-center pointer-events-none"
+        <button
+          type="button"
+          onClick={pokeRobot}
+          aria-label="Poke the robot"
+          className="absolute z-10 flex flex-col items-center cursor-pointer transition-all duration-150 ease-linear"
           style={{ left: `${walkPos}%`, transform: `scaleX(${walkDirection})` }}
         >
-          <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 h-auto text-ink">
+          <motion.svg
+            key={poke?.n ?? 0}
+            viewBox="0 0 12 14"
+            shapeRendering="crispEdges"
+            className="w-6 h-auto text-ink"
+            initial={poke && !reduce ? { y: 0 } : false}
+            animate={poke && !reduce ? { y: [0, -14, 0, -5, 0] } : { y: 0 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+          >
             <rect x="5" y="0" width="2" height="1" style={{ fill: ACCENT }} />
             <rect x="5" y="1" width="2" height="1" fill="currentColor" />
             <rect x="3" y="2" width="6" height="4" fill="currentColor" />
@@ -124,21 +153,21 @@ export function HeroPixelBaseline() {
                 <rect x="6" y="13" width="3" height="1" fill="currentColor" />
               </>
             )}
-          </svg>
-        </div>
+          </motion.svg>
+        </button>
 
         {/* Speech bubble */}
         <div className="mx-auto max-w-[70%] sm:max-w-md px-3 py-1.5 rounded-full bg-surface border border-line overflow-hidden" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
             <motion.p
-              key={line}
+              key={poke ? `poke-${poke.n}` : line}
               initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
               transition={{ duration: 0.35, ease: EASE_OUT }}
               className="text-[12px] text-ink-2 truncate"
             >
-              {ROBOT_LINES[line]}
+              {poke ? poke.text : ROBOT_LINES[line]}
             </motion.p>
           </AnimatePresence>
         </div>

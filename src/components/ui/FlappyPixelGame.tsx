@@ -18,7 +18,6 @@ import {
   Check,
   SlidersHorizontal,
   Play,
-  Layers,
   ShieldCheck,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -231,10 +230,14 @@ export function FlappyPixelGame() {
   const [levelNotification, setLevelNotification] = useState<string | null>(null);
 
   const gameStateRef = useRef<"idle" | "playing" | "dead">("idle");
-  gameStateRef.current = gameState;
+  useEffect(() => {
+    gameStateRef.current = gameState;
+  }, [gameState]);
 
   const loadoutRef = useRef<Loadout>(loadout);
-  loadoutRef.current = loadout;
+  useEffect(() => {
+    loadoutRef.current = loadout;
+  }, [loadout]);
 
   // Physics state (tuned to be floaty and accessible)
   const birdRef = useRef<{
@@ -260,16 +263,20 @@ export function FlappyPixelGame() {
 
   // Load loadout & best score from localStorage
   useEffect(() => {
-    try {
-      const savedScore = localStorage.getItem("portfolio_flappy_best");
-      if (savedScore) setBestScore(parseInt(savedScore, 10) || 0);
+    // Read after mount (localStorage is browser-only), applied on the next frame.
+    const id = requestAnimationFrame(() => {
+      try {
+        const savedScore = localStorage.getItem("portfolio_flappy_best");
+        if (savedScore) setBestScore(parseInt(savedScore, 10) || 0);
 
-      const savedLoadout = localStorage.getItem("portfolio_flappy_loadout");
-      if (savedLoadout) {
-        const parsed = JSON.parse(savedLoadout);
-        setLoadout((prev) => ({ ...prev, ...parsed }));
-      }
-    } catch {}
+        const savedLoadout = localStorage.getItem("portfolio_flappy_loadout");
+        if (savedLoadout) {
+          const parsed = JSON.parse(savedLoadout);
+          setLoadout((prev) => ({ ...prev, ...parsed }));
+        }
+      } catch {}
+    });
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const updateLoadout = (partial: Partial<Loadout>) => {
@@ -733,34 +740,31 @@ export function FlappyPixelGame() {
       className="w-full flex flex-col relative select-none"
     >
       {/* Sub-header Bar: Clean Enterprise Stats & Armory Access */}
-      <div className="w-full border-b border-slate-200/80 dark:border-white/[0.08] bg-slate-100/90 dark:bg-[#070A10]/95 backdrop-blur-md">
+      <div className="w-full border-b border-line bg-surface/60 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 py-2 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsArmoryOpen(true)}
-              className="flex items-center gap-2 px-3 py-1 rounded-full bg-cobalt/10 hover:bg-cobalt/20 border border-cobalt/30 text-cobalt dark:text-cyan-300 font-mono text-xs font-semibold transition-all shadow-sm group"
+              className="flex items-center gap-2 px-3 py-1 rounded-full border border-line text-ink-2 hover:text-ink hover:bg-ink/[0.05] text-[13px] transition-colors group"
             >
-              <SlidersHorizontal size={13} className="text-cobalt dark:text-cyan-400 group-hover:rotate-45 transition-transform" />
-              <span>CUSTOMIZE LOADOUT</span>
+              <SlidersHorizontal size={13} className="group-hover:rotate-45 transition-transform" />
+              <span>Customise</span>
             </button>
 
-            <div className="hidden md:flex items-center gap-2 text-[11px] font-mono text-slate-500 dark:text-slate-400">
-              <span className="text-slate-600 dark:text-slate-500">//</span>
-              <span>Head: <strong className="text-slate-700 dark:text-slate-300">{curHeadgear.name}</strong></span>
-              <span className="text-slate-400">·</span>
-              <span>Thrust: <strong className="text-slate-700 dark:text-slate-300">{curPropulsion.name}</strong></span>
-              <span className="text-slate-400">·</span>
-              <span>Suit: <strong className="text-slate-700 dark:text-slate-300">{curSuit.name}</strong></span>
+            <div className="hidden md:flex items-center gap-2 text-[12px] text-muted">
+              <span>{curHeadgear.name}</span>
+              <span aria-hidden>·</span>
+              <span>{curPropulsion.name}</span>
+              <span aria-hidden>·</span>
+              <span>{curSuit.name}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-5 text-xs font-mono">
-            <span className="text-slate-500 dark:text-slate-400">
-              SCORE: <strong className="text-cyan-400 font-bold">{score}</strong>
-            </span>
-            <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-              <Trophy size={13} className="text-amber-400" />
-              BEST: <strong className="text-amber-400 font-bold">{bestScore}</strong>
+          <div className="flex items-center gap-5 font-mono text-[12px] text-muted tabular-nums">
+            <span>Score <strong className="font-medium text-ink">{score}</strong></span>
+            <span className="flex items-center gap-1.5">
+              <Trophy size={13} />
+              Best <strong className="font-medium text-accent">{bestScore}</strong>
             </span>
           </div>
         </div>
@@ -783,7 +787,7 @@ export function FlappyPixelGame() {
               onAnimationComplete={() => {
                 setTimeout(() => setLevelNotification(null), 2000);
               }}
-              className="absolute top-14 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/50 backdrop-blur-md text-cyan-300 font-mono text-xs font-bold tracking-wider pointer-events-none z-20 shadow-[0_0_20px_rgba(6,182,212,0.35)]"
+              className="absolute top-14 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-black/60 border border-white/15 backdrop-blur-md text-white text-[13px] pointer-events-none z-20"
             >
               {levelNotification}
             </motion.div>
@@ -800,20 +804,9 @@ export function FlappyPixelGame() {
               className="pointer-events-auto cursor-pointer"
               onClick={flap}
             >
-              <div className="flex items-center gap-3 px-6 py-3.5 rounded-full bg-slate-950/95 dark:bg-[#030712]/95 border border-cyan-500/60 shadow-[0_0_35px_rgba(6,182,212,0.4),0_10px_25px_rgba(0,0,0,0.85)] backdrop-blur-xl hover:border-cyan-400 hover:shadow-[0_0_45px_rgba(6,182,212,0.6)] transition-all">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-                <span className="text-xs sm:text-sm font-mono tracking-wider font-semibold text-slate-200 uppercase flex items-center gap-2">
-                  PRESS
-                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-cyan-300 font-mono text-xs font-bold shadow-inner">
-                    SPACE
-                  </kbd>
-                  OR
-                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-white font-mono text-xs font-bold shadow-inner">
-                    CLICK CANVAS
-                  </kbd>
-                  TO FLAP
-                </span>
-                <span className="text-cyan-400 font-bold">▲</span>
+              <div className="flex items-center gap-2.5 rounded-full border border-white/15 bg-black/50 px-5 py-3 text-[14px] text-white/85 backdrop-blur-md transition-colors duration-200 hover:border-white/30">
+                Press <kbd className="rounded-md border border-white/20 px-1.5 py-0.5 font-mono text-[12px] text-white">Space</kbd> or click to fly
+                <span>▲</span>
               </div>
             </motion.div>
 
@@ -823,10 +816,10 @@ export function FlappyPixelGame() {
                   e.stopPropagation();
                   setIsArmoryOpen(true);
                 }}
-                className="px-4 py-1.5 rounded-full bg-surface/5 hover:bg-surface/10 border border-white/10 text-xs font-mono font-semibold text-slate-300 hover:text-white transition-colors flex items-center gap-2"
+                className="px-4 py-1.5 rounded-full border border-white/15 text-[13px] text-white/70 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2"
               >
-                <SlidersHorizontal size={12} className="text-cyan-400" />
-                <span>CONFIGURE EQUIPMENT LOADOUT</span>
+                <SlidersHorizontal size={12} />
+                <span>Change your look</span>
               </button>
             </div>
           </div>
@@ -834,23 +827,29 @@ export function FlappyPixelGame() {
 
         {/* Game Over Overlay */}
         {gameState === "dead" && (
-          <div className="absolute inset-0 bg-slate-950/90 dark:bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30 pointer-events-auto">
-            <div className="text-3xl sm:text-4xl mb-2 font-mono font-extrabold text-rose-500 tracking-wider">
-              CIRCUIT BREACHED
-            </div>
-            <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-4">
-              Pillar collision registered on telemetry channel.
-            </p>
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30 pointer-events-auto">
+            {score > 0 && score >= bestScore && (
+              <motion.p
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 14 }}
+                className="mb-3 rounded-full bg-[rgb(var(--arcade-a))] px-3 py-1 font-mono text-[12px] font-medium text-black"
+              >
+                New best
+              </motion.p>
+            )}
+            <h3 className="text-3xl sm:text-4xl font-semibold tracking-[-0.035em] text-white">Crashed.</h3>
+            <p className="mt-2 mb-5 max-w-md text-[15px] text-white/70">Happens to the best pilots.</p>
 
-            <div className="flex items-center gap-8 px-8 py-3.5 rounded-2xl bg-surface/[0.04] border border-white/10 mb-6">
+            <div className="flex items-center gap-8 px-8 py-3.5 rounded-2xl border border-white/10 mb-6">
               <div className="text-center">
-                <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">SCORE</div>
-                <div className="text-3xl font-mono font-extrabold text-cyan-400">{score}</div>
+                <div className="font-mono text-[11px] text-white/50">Score</div>
+                <div className="text-3xl font-semibold tabular-nums text-white">{score}</div>
               </div>
-              <div className="w-px h-10 bg-surface/10" />
+              <div className="w-px h-10 bg-white/10" />
               <div className="text-center">
-                <div className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">BEST</div>
-                <div className="text-3xl font-mono font-extrabold text-amber-400">{bestScore}</div>
+                <div className="font-mono text-[11px] text-white/50">Best</div>
+                <div className="text-3xl font-semibold tabular-nums text-[rgb(var(--arcade-a))]">{bestScore}</div>
               </div>
             </div>
 
@@ -860,20 +859,20 @@ export function FlappyPixelGame() {
                   e.stopPropagation();
                   resetGame();
                 }}
-                className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-black transition-transform active:scale-[0.97]"
               >
                 <RotateCcw size={14} />
-                <span>FLAP AGAIN</span>
+                <span>Fly again</span>
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsArmoryOpen(true);
                 }}
-                className="px-5 py-2.5 rounded-full border border-white/20 hover:bg-surface/10 font-mono text-xs font-bold tracking-wider text-slate-200 transition-colors flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full border border-white/20 hover:bg-white/10 text-[14px] text-white/85 transition-colors flex items-center gap-2"
               >
                 <SlidersHorizontal size={13} />
-                <span>CHANGE LOADOUT</span>
+                <span>Change look</span>
               </button>
             </div>
           </div>
@@ -921,9 +920,9 @@ export function FlappyPixelGame() {
                     <div className="w-full flex items-center justify-between text-[10px] font-mono text-slate-400 pb-2 border-b border-white/5">
                       <span className="flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>HOLOCHAMBER</span>
+                        <span>Preview</span>
                       </span>
-                      <span>ACTIVE</span>
+                      <span></span>
                     </div>
 
                     {/* Scaled Preview Sprite */}
@@ -1005,15 +1004,15 @@ export function FlappyPixelGame() {
 
                     <div className="w-full text-[10px] font-mono space-y-1 text-slate-400 pt-2 border-t border-white/5">
                       <div className="flex justify-between">
-                        <span>HEAD:</span>
+                        <span>Head:</span>
                         <span className="text-white font-bold">{curHeadgear.name}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>THRUST:</span>
+                        <span>Thrust:</span>
                         <span className="text-white font-bold">{curPropulsion.name}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>SUIT:</span>
+                        <span>Suit:</span>
                         <span className="text-white font-bold">{curSuit.name}</span>
                       </div>
                     </div>
@@ -1032,7 +1031,7 @@ export function FlappyPixelGame() {
                         }`}
                       >
                         <HardHat size={13} />
-                        <span>HEADGEAR</span>
+                        <span>Headgear</span>
                       </button>
                       <button
                         onClick={() => setArmoryTab("propulsion")}
@@ -1043,7 +1042,7 @@ export function FlappyPixelGame() {
                         }`}
                       >
                         <Wind size={13} />
-                        <span>PROPULSION</span>
+                        <span>Thrusters</span>
                       </button>
                       <button
                         onClick={() => setArmoryTab("suit")}
@@ -1054,7 +1053,7 @@ export function FlappyPixelGame() {
                         }`}
                       >
                         <Palette size={13} />
-                        <span>SUIT MATRIX</span>
+                        <span>Suit</span>
                       </button>
                     </div>
 
@@ -1086,7 +1085,7 @@ export function FlappyPixelGame() {
                                 {isEquipped && (
                                   <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800">
                                     <Check size={10} />
-                                    <span>EQUIPPED</span>
+                                    <span>Equipped</span>
                                   </span>
                                 )}
                               </div>
@@ -1123,7 +1122,7 @@ export function FlappyPixelGame() {
                                 {isEquipped && (
                                   <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800">
                                     <Check size={10} />
-                                    <span>EQUIPPED</span>
+                                    <span>Equipped</span>
                                   </span>
                                 )}
                               </div>
@@ -1160,7 +1159,7 @@ export function FlappyPixelGame() {
                                 {isEquipped && (
                                   <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-800">
                                     <Check size={10} />
-                                    <span>EQUIPPED</span>
+                                    <span>Equipped</span>
                                   </span>
                                 )}
                               </div>
@@ -1185,7 +1184,7 @@ export function FlappyPixelGame() {
                     className="btn-nordic px-5 py-2 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
                   >
                     <Check size={14} />
-                    <span>CONFIRM LOADOUT</span>
+                    <span>Done</span>
                   </button>
                 </div>
               </div>
@@ -1194,23 +1193,20 @@ export function FlappyPixelGame() {
         </AnimatePresence>
       </div>
 
-      {/* Bottom Bar: Instructions (Zero Emojis, Pure Lucide Icons) */}
-      <div className="w-full border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-100/50 dark:bg-[#070A10]/70 py-2.5 select-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+      {/* Bottom bar */}
+      <div className="w-full border-t border-line bg-surface/60 py-2.5 select-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[12px] text-muted">
           <div className="flex items-center gap-5">
             <span className="flex items-center gap-1.5">
-              <Play size={11} className="text-slate-400" />
-              <span>Space / Click to Flap</span>
+              <Play size={11} />
+              <span>Space or click to flap</span>
             </span>
-            <span className="hidden sm:inline">
-              Configuration: {curHeadgear.name} + {curPropulsion.name}
-            </span>
-            <span className={gameState === "playing" ? "text-cyan-400 font-semibold animate-pulse" : "text-slate-400"}>
-              {gameState === "playing" ? "● In Flight" : "Ready for Launch"}
+            <span className={gameState === "playing" ? "text-moss" : "text-accent"}>
+              {gameState === "playing" ? "In flight" : "Ready"}
             </span>
           </div>
-          <div className="text-slate-400 dark:text-slate-500">
-            Press <kbd className="px-1.5 py-0.5 rounded bg-surface/10 text-slate-300 font-bold border border-white/10">ESC</kbd> or Collapse to close
+          <div>
+            <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-[11px]">Esc</kbd> to close
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { RecognitionSection } from "@/components/ui/TrophyList";
 import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
 import { AboutSection } from "@/components/ui/AboutSection";
 import { Footer } from "@/components/ui/Footer";
+import { EasterEggs } from "@/components/easter/EasterEggs";
 
 export default function Home() {
   return (
@@ -56,6 +57,9 @@ export default function Home() {
 
       {/* --- FOOTER --- */}
       <Footer />
+
+      {/* Konami code + DevTools hello */}
+      <EasterEggs />
     </main>
   );
 }

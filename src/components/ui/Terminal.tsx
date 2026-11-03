@@ -36,6 +36,7 @@ const STATIC: Record<string, string> = {
   resume       open my résumé (PDF)
   ls / cd      list and jump to sections of this page
   theme        switch light/dark
+  play         open the arcade (play flappy for the other game)
   whoami, date, echo, clear
 Tip: ↑/↓ for history, Tab to complete.`,
   about: `Uwais Alqarni, software & data engineer in Singapore.
@@ -70,7 +71,7 @@ I usually reply within a day (SGT, UTC+8).`,
   whoami: `You're a visitor. I'm Uwais. Nice to meet you.`,
 };
 
-const COMMAND_NAMES = [...Object.keys(STATIC), "resume", "cd", "theme", "date", "echo", "clear", "sudo"].sort();
+const COMMAND_NAMES = [...Object.keys(STATIC), "resume", "cd", "theme", "play", "date", "echo", "clear", "sudo"].sort();
 const QUICK = ["about", "projects", "skills", "research", "contact", "resume"];
 
 let nextId = 1;
@@ -167,6 +168,10 @@ export function InteractiveTerminal() {
       } else if (c === "theme") {
         toggleTheme();
         reply = toLines("out", `Switched to ${theme === "light" ? "dark" : "light"} mode.`);
+      } else if (c === "play" || c === "arcade") {
+        const game = (args[0] ?? "").toLowerCase() === "flappy" ? "flappy" : "breakout";
+        window.dispatchEvent(new CustomEvent("arcade:open", { detail: { game } }));
+        reply = toLines("out", `Loading ${game}… (it's near the bottom of the page)`);
       } else if (c === "date") {
         reply = toLines("out", new Intl.DateTimeFormat("en-SG", { dateStyle: "full", timeStyle: "short", timeZone: "Asia/Singapore" }).format(new Date()) + " (SGT)");
       } else if (c === "echo") {

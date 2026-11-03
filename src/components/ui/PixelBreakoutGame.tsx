@@ -5,6 +5,21 @@ import { X, RotateCcw, Trophy, Layers, Wind, MousePointer, Keyboard } from "luci
 import { motion, AnimatePresence } from "framer-motion";
 import { FlappyPixelGame } from "./FlappyPixelGame";
 
+/** Arcade colours come from CSS tokens (bright tones for the dark game screen), so the games follow the site palette. */
+function arcadeColors() {
+  const css = typeof window === "undefined" ? null : getComputedStyle(document.documentElement);
+  const read = (n: string, fb: string) => (css?.getPropertyValue(`--${n}`).trim() || fb);
+  const a = read("arcade-a", "232 137 63"), b = read("arcade-b", "134 190 159"), c = read("arcade-c", "236 230 218");
+  return {
+    a: `rgb(${a})`, b: `rgb(${b})`, c: `rgb(${c})`,
+    aSoft: `rgb(${a} / 0.45)`, bSoft: `rgb(${b} / 0.45)`, cSoft: `rgb(${c} / 0.45)`,
+  };
+}
+type ArcadeColors = ReturnType<typeof arcadeColors>;
+
+const BEST_KEY = "portfolio_breakout_best";
+const readBest = (k: string) => { try { return parseInt(localStorage.getItem(k) || "0", 10) || 0; } catch { return 0; } };
+
 // 7x5 pixel glyph definitions for retro typography
 const GLYPHS: Record<string, number[][]> = {
   V: [
@@ -149,6 +164,24 @@ export function PixelBreakoutGame() {
   const [walkFrame, setWalkFrame] = useState(0);
   const arcadeRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [bests, setBests] = useState({ breakout: 0, flappy: 0 });
+
+  // Best scores for the strip (refreshed whenever the arcade opens or closes)
+  useEffect(() => {
+    requestAnimationFrame(() => setBests({ breakout: readBest(BEST_KEY), flappy: readBest("portfolio_flappy_best") }));
+  }, [isOpen]);
+
+  // Other easter eggs (terminal `play`, Konami code) open the arcade with this event.
+  useEffect(() => {
+    const open = (e: Event) => {
+      const game = (e as CustomEvent<{ game?: "breakout" | "flappy" }>).detail?.game;
+      if (game) setActiveGame(game);
+      setIsOpen(true);
+      setTimeout(() => arcadeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
+    };
+    window.addEventListener("arcade:open", open);
+    return () => window.removeEventListener("arcade:open", open);
+  }, []);
 
   // Pause mascot walk loop when off-screen to preserve CPU cycles
   useEffect(() => {
@@ -236,15 +269,15 @@ export function PixelBreakoutGame() {
             <motion.div
               initial={{ scale: 0, y: 0 }}
               animate={{ scale: [0, 1.4, 1], y: -24 }}
-              className="absolute -top-7 left-1/2 -translate-x-1/2 text-amber-400 font-extrabold text-sm font-mono pointer-events-none drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]"
+              className="absolute -top-7 left-1/2 -translate-x-1/2 text-accent font-bold text-sm font-mono pointer-events-none"
             >
-              ! ? !
+              !
             </motion.div>
           )}
 
           {/* Speech Bubble on hover */}
           {!isShocked && (
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded bg-slate-900 text-white font-mono text-[10px] tracking-wider border border-white/20 pointer-events-none shadow-md">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-ink px-2.5 py-1 text-[11px] text-paper pointer-events-none shadow-sm">
               {isOpen ? "Close the arcade" : "Play a game?"}
             </div>
           )}
@@ -261,7 +294,9 @@ export function PixelBreakoutGame() {
 
         {/* Right baseline status indicator */}
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline font-mono text-[12px] text-muted">Breakout · Flappy</span>
+          <span className="hidden sm:inline font-mono text-[12px] text-muted tabular-nums">
+            {bests.breakout || bests.flappy ? `Best: Breakout ${bests.breakout} · Flappy ${bests.flappy}` : "Breakout · Flappy"}
+          </span>
         </div>
       </div>
 
@@ -288,47 +323,41 @@ export function PixelBreakoutGame() {
                 opacity: { duration: 0.2 },
               },
             }}
-            className="w-full overflow-hidden border-t border-slate-200/80 dark:border-white/[0.08]"
+            className="w-full overflow-hidden border-t border-line"
           >
             {/* Top Shared Arcade Header: Branding, Game Switcher Slider, & Single Collapse */}
-            <div className="w-full border-b border-slate-200/80 dark:border-white/[0.08] bg-slate-100/90 dark:bg-[#070A10]/95 backdrop-blur-md">
+            <div className="w-full border-b border-line bg-surface/80 backdrop-blur-md">
               <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 py-2.5 flex flex-wrap items-center justify-between gap-4">
                 {/* Left: Arcade branding */}
-                <div className="flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
-                  <span className="font-mono text-xs font-bold text-slate-900 dark:text-white tracking-widest uppercase flex items-center gap-2">
-                    <span>TABAYYUN ARCADE</span>
-                    <span className="text-slate-400 dark:text-slate-600 hidden md:inline">//</span>
-                    <span className="text-slate-500 dark:text-slate-400 font-normal hidden md:inline text-[11px]">
-                      {activeGame === "breakout" ? "BREAKOUT PROTOCOL" : "FLAPPY SECURITY RUN"}
-                    </span>
+                <p className="flex items-center gap-2 text-[14px]">
+                  <span className="font-semibold text-ink">Arcade</span>
+                  <span className="hidden md:inline text-muted">
+                    {activeGame === "breakout" ? "Break the bricks. They spell the motto." : "Fly through the gaps. Tap or press Space."}
                   </span>
-                </div>
+                </p>
 
                 {/* Center: Sliding Game Switcher Button */}
-                <div className="flex items-center p-1 rounded-full bg-slate-200/70 dark:bg-black/70 border border-slate-300 dark:border-white/10 text-xs font-mono">
+                <div className="flex items-center p-1 rounded-full bg-ink/[0.06] text-[13px]">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.currentTarget.blur();
                       handleGameSwitch("breakout");
                     }}
-                    className={`relative px-3.5 py-1 rounded-full font-bold transition-colors ${
-                      activeGame === "breakout"
-                        ? "text-white"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    className={`relative px-3.5 py-1 rounded-full font-medium transition-colors ${
+                      activeGame === "breakout" ? "text-paper" : "text-ink-2 hover:text-ink"
                     }`}
                   >
                     {activeGame === "breakout" && (
                       <motion.div
                         layoutId="activeGameIndicator"
-                        className="absolute inset-0 rounded-full bg-cobalt"
+                        className="absolute inset-0 rounded-full bg-ink"
                         transition={{ type: "spring", stiffness: 450, damping: 35 }}
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-1.5">
                       <Layers size={13} />
-                      <span>BREAKOUT</span>
+                      <span>Breakout</span>
                     </span>
                   </button>
 
@@ -338,22 +367,20 @@ export function PixelBreakoutGame() {
                       e.currentTarget.blur();
                       handleGameSwitch("flappy");
                     }}
-                    className={`relative px-3.5 py-1 rounded-full font-bold transition-colors ${
-                      activeGame === "flappy"
-                        ? "text-white"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    className={`relative px-3.5 py-1 rounded-full font-medium transition-colors ${
+                      activeGame === "flappy" ? "text-paper" : "text-ink-2 hover:text-ink"
                     }`}
                   >
                     {activeGame === "flappy" && (
                       <motion.div
                         layoutId="activeGameIndicator"
-                        className="absolute inset-0 rounded-full bg-emerald-600 shadow-[0_0_12px_rgba(16,185,129,0.6)]"
+                        className="absolute inset-0 rounded-full bg-ink"
                         transition={{ type: "spring", stiffness: 450, damping: 35 }}
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-1.5">
                       <Wind size={13} />
-                      <span>FLAPPY PIXEL</span>
+                      <span>Flappy</span>
                     </span>
                   </button>
                 </div>
@@ -361,11 +388,11 @@ export function PixelBreakoutGame() {
                 {/* Right: The ONLY Clean Collapse Button */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors text-xs font-mono font-semibold"
-                  aria-label="Collapse Arcade"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-line text-ink-2 hover:text-ink hover:bg-ink/[0.05] transition-colors text-[13px]"
+                  aria-label="Close the arcade"
                 >
                   <X size={13} />
-                  <span>COLLAPSE</span>
+                  <span>Close</span>
                 </button>
               </div>
             </div>
@@ -402,8 +429,8 @@ function PixelEngineerAvatar({
       style={{ imageRendering: "pixelated" }}
     >
       {/* Hardhat / Cap (Electric Cobalt) */}
-      <rect x="4" y="2" width="8" height="2" fill="#2563EB" />
-      <rect x="3" y="4" width="10" height="1" fill="#3B82F6" />
+      <rect x="4" y="2" width="8" height="2" style={{ fill: "rgb(var(--accent))" }} />
+      <rect x="3" y="4" width="10" height="1" style={{ fill: "rgb(var(--accent-soft))" }} />
 
       {/* Face Skin */}
       <rect x="5" y="5" width="6" height="4" fill="#FCD34D" />
@@ -428,31 +455,31 @@ function PixelEngineerAvatar({
 
       {/* Engineer Body / Jacket (Dark Slate & Cobalt Accent) */}
       <rect x="4" y="9" width="8" height="4" fill="#1E293B" />
-      <rect x="7" y="9" width="2" height="4" fill="#2563EB" />
+      <rect x="7" y="9" width="2" height="4" style={{ fill: "rgb(var(--accent))" }} />
 
       {/* Legs & Animated Walking Cycle */}
       {walkFrame === 0 && (
         <>
-          <rect x="5" y="13" width="2" height="3" fill="#2563EB" />
-          <rect x="9" y="13" width="2" height="3" fill="#2563EB" />
+          <rect x="5" y="13" width="2" height="3" style={{ fill: "rgb(var(--accent))" }} />
+          <rect x="9" y="13" width="2" height="3" style={{ fill: "rgb(var(--accent))" }} />
         </>
       )}
       {walkFrame === 1 && (
         <>
-          <rect x="4" y="13" width="2" height="2" fill="#2563EB" />
-          <rect x="10" y="12" width="2" height="3" fill="#2563EB" />
+          <rect x="4" y="13" width="2" height="2" style={{ fill: "rgb(var(--accent))" }} />
+          <rect x="10" y="12" width="2" height="3" style={{ fill: "rgb(var(--accent))" }} />
         </>
       )}
       {walkFrame === 2 && (
         <>
-          <rect x="5" y="13" width="2" height="3" fill="#2563EB" />
-          <rect x="9" y="13" width="2" height="3" fill="#2563EB" />
+          <rect x="5" y="13" width="2" height="3" style={{ fill: "rgb(var(--accent))" }} />
+          <rect x="9" y="13" width="2" height="3" style={{ fill: "rgb(var(--accent))" }} />
         </>
       )}
       {walkFrame === 3 && (
         <>
-          <rect x="5" y="12" width="2" height="2" fill="#2563EB" />
-          <rect x="11" y="12" width="2" height="3" fill="#2563EB" />
+          <rect x="5" y="12" width="2" height="2" style={{ fill: "rgb(var(--accent))" }} />
+          <rect x="11" y="12" width="2" height="3" style={{ fill: "rgb(var(--accent))" }} />
         </>
       )}
     </svg>
@@ -474,9 +501,23 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
   const [gameResult, setGameResult] = useState<"playing" | "won" | "lost">("playing");
 
   const gameResultRef = useRef<"playing" | "won" | "lost">("playing");
-  gameResultRef.current = gameResult;
+  useEffect(() => {
+    gameResultRef.current = gameResult;
+  }, [gameResult]);
 
   const bricksRef = useRef<Brick[]>([]);
+  const colorsRef = useRef<ArcadeColors | null>(null);
+  const [best, setBest] = useState(() => (typeof window === "undefined" ? 0 : readBest(BEST_KEY)));
+  const [newBest, setNewBest] = useState(false);
+
+  // Save the best run when a game ends.
+  useEffect(() => {
+    if (gameResult === "playing") return;
+    if (brokenCount > best) {
+      try { localStorage.setItem(BEST_KEY, String(brokenCount)); } catch {}
+      requestAnimationFrame(() => { setBest(brokenCount); setNewBest(true); });
+    }
+  }, [gameResult, brokenCount, best]);
   const particlesRef = useRef<Particle[]>([]);
   const ballRef = useRef<{
     x: number;
@@ -519,9 +560,11 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
       words: WordDef[];
     }
 
-    const verifyWord: WordDef = { text: "VERIFY", fill: "#3B82F6", border: "#93C5FD" }; // Cobalt
-    const beforeWord: WordDef = { text: "BEFORE", fill: "#10B981", border: "#6EE7B7" }; // Mint
-    const trustWord: WordDef = { text: "TRUST", fill: "#F59E0B", border: "#FDE68A" }; // Amber
+    const C = arcadeColors();
+    colorsRef.current = C;
+    const verifyWord: WordDef = { text: "VERIFY", fill: C.a, border: C.aSoft };
+    const beforeWord: WordDef = { text: "BEFORE", fill: C.b, border: C.bSoft };
+    const trustWord: WordDef = { text: "TRUST", fill: C.c, border: C.cSoft };
 
     // Responsive lines:
     // - Extra-wide screens (>= 1350px): 1 single horizontal marquee line
@@ -651,6 +694,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
 
     buildBricks(rect.width, rect.height);
     setBrokenCount(0);
+    setNewBest(false);
     setBallsLeft(3);
     setGameResult("playing");
     gameResultRef.current = "playing";
@@ -921,7 +965,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
 
           ball.vx = ball.speed * Math.sin(bounceAngle);
           ball.vy = -Math.abs(ball.speed * Math.cos(bounceAngle));
-          spawnParticles(ball.x, pad.y, "#93C5FD");
+          spawnParticles(ball.x, pad.y, colorsRef.current?.c ?? "#ffffff");
         }
 
         // Brick Collision
@@ -973,36 +1017,28 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
       // Draw Ball
       if (gameResultRef.current !== "lost") {
         ctx.save();
-        ctx.shadowColor = "rgba(59, 130, 246, 0.85)";
-        ctx.shadowBlur = 10;
         ctx.fillStyle = "#FFFFFF";
         ctx.beginPath();
         ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.lineWidth = 1.5;
-        ctx.strokeStyle = "#60A5FA";
+        ctx.strokeStyle = colorsRef.current?.a ?? "#ffffff";
         ctx.stroke();
         ctx.restore();
       }
 
       // Draw Paddle
       ctx.save();
-      ctx.shadowColor = "rgba(232, 137, 63, 0.8)";
-      ctx.shadowBlur = 12;
-
-      ctx.fillStyle = "#2563EB";
+      ctx.fillStyle = colorsRef.current?.c ?? "#ffffff";
       ctx.beginPath();
       ctx.roundRect(pad.x, pad.y, pad.w, pad.h, 6);
       ctx.fill();
 
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = "#93C5FD";
-      ctx.stroke();
-
-      ctx.fillStyle = "#FFFFFF";
+      // accent stripe along the top edge
+      ctx.fillStyle = colorsRef.current?.a ?? "#ffffff";
       ctx.beginPath();
-      ctx.roundRect(pad.x + 4, pad.y + 2, pad.w - 8, 2.5, 2);
+      ctx.roundRect(pad.x + 4, pad.y + 1.5, pad.w - 8, 2.5, 2);
       ctx.fill();
       ctx.restore();
 
@@ -1038,29 +1074,16 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
       className="w-full flex flex-col relative select-none"
     >
       {/* Sub-header Bar: Breakout Live Status */}
-      <div className="w-full border-b border-slate-200/80 dark:border-white/[0.08] bg-slate-100/60 dark:bg-[#070A10]/70 py-2">
+      <div className="w-full border-b border-line bg-surface/60 py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-xs font-mono text-slate-500 dark:text-slate-400">
-            <span className="text-cobalt font-bold">TARGET:</span>
-            <span className="text-slate-700 dark:text-slate-300 font-semibold tracking-wide">
-              VERIFY BEFORE TRUST (AL-HUJURAT 49:6)
-            </span>
-          </div>
+          <p className="text-[13px] text-ink-2">
+            Clear the wall: <span className="text-ink">verify before trust</span>
+          </p>
 
-          <div className="flex items-center gap-6 text-xs font-mono">
-            <span className="text-slate-500 dark:text-slate-400">
-              BALLS:{" "}
-              <strong className="text-amber-500 dark:text-amber-400 font-bold">
-                {ballsLeft}
-              </strong>
-            </span>
-            <span className="text-slate-500 dark:text-slate-400">
-              BROKEN:{" "}
-              <strong className="text-emerald-500 dark:text-emerald-400 font-bold">
-                {brokenCount}
-              </strong>
-              <span className="text-slate-400 dark:text-slate-600">/{totalBricks}</span>
-            </span>
+          <div className="flex items-center gap-5 font-mono text-[12px] text-muted tabular-nums">
+            <span>Balls <strong className="font-medium text-ink">{ballsLeft}</strong></span>
+            <span>Bricks <strong className="font-medium text-ink">{brokenCount}</strong>/{totalBricks}</span>
+            <span>Best <strong className="font-medium text-accent">{best}</strong></span>
           </div>
         </div>
       </div>
@@ -1084,22 +1107,9 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
               onClick={launchBall}
               className="pointer-events-auto cursor-pointer select-none group"
             >
-              <div className="flex items-center gap-3 px-6 py-3.5 rounded-full bg-slate-950/95 dark:bg-[#030712]/95 border border-cobalt/60 backdrop-blur-xl group-hover:border-cobalt group-hover:shadow-[0_0_32px_rgba(232,137,63,0.35)] transition-all duration-200">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-                <span className="text-xs sm:text-sm font-mono tracking-wider font-semibold text-slate-200 uppercase flex items-center gap-2">
-                  PRESS
-                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-cyan-300 font-mono text-xs font-bold shadow-inner">
-                    SPACE
-                  </kbd>
-                  OR
-                  <kbd className="px-2 py-0.5 rounded-md bg-surface/10 dark:bg-white/15 border border-white/20 text-white font-mono text-xs font-bold shadow-inner">
-                    CLICK CANVAS
-                  </kbd>
-                  TO LAUNCH
-                </span>
-                <span className="text-cyan-400 font-bold group-hover:translate-x-0.5 transition-transform text-sm">
-                  →
-                </span>
+              <div className="flex items-center gap-2.5 rounded-full border border-white/15 bg-black/50 px-5 py-3 text-[14px] text-white/85 backdrop-blur-md transition-colors duration-200 group-hover:border-white/30">
+                Press <kbd className="rounded-md border border-white/20 px-1.5 py-0.5 font-mono text-[12px] text-white">Space</kbd> or click to launch
+                <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </div>
             </motion.div>
           </div>
@@ -1107,64 +1117,58 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
 
         {/* Victory Overlay */}
         {gameResult === "won" && (
-          <div className="absolute inset-0 bg-slate-950/90 dark:bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4 text-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.25)]">
-              <Trophy size={28} className="animate-bounce" />
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-white mb-2 tracking-[-0.035em]">
-              VERIFICATION COMPLETE
-            </h3>
-            <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6 leading-relaxed">
-              All blocks verified with zero failures. True to Al-Hujurat 49:6 Tabayyun standards!
-            </p>
-            <button
-              onClick={resetGame}
-              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
-            >
-              <RotateCcw size={14} />
-              <span>PLAY AGAIN</span>
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
+            <Trophy size={32} className="mb-4 text-[rgb(var(--arcade-a))]" />
+            <h3 className="text-3xl sm:text-4xl font-semibold tracking-[-0.035em] text-white">Wall cleared.</h3>
+            <p className="mt-2 mb-6 max-w-md text-[15px] text-white/70">Every brick checked. That&apos;s the whole philosophy, in one game.</p>
+            <button onClick={resetGame} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-black transition-transform active:scale-[0.97]">
+              <RotateCcw size={14} /> Play again
             </button>
           </div>
         )}
 
         {/* Game Over Overlay */}
         {gameResult === "lost" && (
-          <div className="absolute inset-0 bg-slate-950/90 dark:bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
-            <div className="text-3xl sm:text-4xl mb-2 font-mono font-extrabold text-rose-500 tracking-wider">
-              GAME OVER
-            </div>
-            <p className="text-xs sm:text-sm font-mono text-slate-300 max-w-md mb-6">
-              Out of balls! You cleared <strong className="text-emerald-400 font-bold">{brokenCount}</strong> of <strong className="text-white font-bold">{totalBricks}</strong> blocks.
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
+            {newBest && (
+              <motion.p
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 14 }}
+                className="mb-3 rounded-full bg-[rgb(var(--arcade-a))] px-3 py-1 font-mono text-[12px] font-medium text-black"
+              >
+                New best
+              </motion.p>
+            )}
+            <h3 className="text-3xl sm:text-4xl font-semibold tracking-[-0.035em] text-white">Out of balls.</h3>
+            <p className="mt-2 mb-6 max-w-md text-[15px] text-white/70">
+              You cleared <strong className="font-medium text-white">{brokenCount}</strong> of {totalBricks} bricks. Best: {best}.
             </p>
-            <button
-              onClick={resetGame}
-              className="btn-nordic px-6 py-2.5 font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2"
-            >
-              <RotateCcw size={14} />
-              <span>TRY AGAIN</span>
+            <button onClick={resetGame} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[14px] font-medium text-black transition-transform active:scale-[0.97]">
+              <RotateCcw size={14} /> Try again
             </button>
           </div>
         )}
       </div>
 
       {/* Bottom Bar: Instructions */}
-      <div className="w-full border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-100/50 dark:bg-[#070A10]/70 py-2.5 select-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+      <div className="w-full border-t border-line bg-surface/60 py-2.5 select-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[12px] text-muted">
           <div className="flex items-center gap-4 sm:gap-6">
             <span className="flex items-center gap-1.5">
-              <MousePointer size={12} className="text-slate-400" />
-              <span>Move cursor / touch to guide paddle</span>
+              <MousePointer size={12} />
+              <span>Move the mouse or drag to steer</span>
             </span>
             <span className="hidden sm:flex items-center gap-1.5">
-              <Keyboard size={12} className="text-slate-400" />
-              <span>A / D or Arrow keys</span>
+              <Keyboard size={12} />
+              <span>A / D or arrow keys</span>
             </span>
-            <span className={isBallAttached ? "text-amber-500 dark:text-amber-400 font-semibold" : "text-emerald-500 dark:text-emerald-400 font-semibold"}>
-              {isBallAttached ? "Ready for launch" : "Ball in play"}
+            <span className={isBallAttached ? "text-accent" : "text-moss"}>
+              {isBallAttached ? "Ready" : "Ball in play"}
             </span>
           </div>
-          <div className="text-slate-400 dark:text-slate-500">
-            Press <kbd className="px-1.5 py-0.5 rounded bg-surface/10 text-slate-300 font-bold border border-white/10">ESC</kbd> or Collapse to close
+          <div>
+            <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-[11px]">Esc</kbd> to close
           </div>
         </div>
       </div>
