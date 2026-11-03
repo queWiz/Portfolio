@@ -1,51 +1,38 @@
-import { Trophy, Award, CheckCircle2 } from "lucide-react";
-
 export const TrophyList = () => {
   return (
     <div className="w-full">
-      <div className="grid md:grid-cols-2 gap-5 sibling-focus-group">
-        {/* Award 1 */}
-        <div className="sibling-item p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-amber-400/50 hover:shadow-md transition-all group">
-          <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 group-hover:scale-105 transition-transform">
-            <Trophy size={22} />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <h4 className="text-base font-heading font-bold text-slate-900 dark:text-white">
-                Director&apos;s List (Top 15%)
-              </h4>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold border border-amber-500/20">
-                Academic Distinction
-              </span>
+      {/* Open Editorial Columns (Contrasts with the Publications Ledger above so not everything is boxed) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 pt-2">
+        {/* Distinction 01 */}
+        <div className="flex flex-col justify-between gap-3 border-l-2 border-amber-500/70 pl-5 sm:pl-6 py-1">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-xs text-slate-500 dark:text-slate-400 mb-1.5">
+              <span className="text-amber-600 dark:text-amber-400 font-bold">2019 — 2021</span>
+              <span>·</span>
+              <span>Nanyang Polytechnic (NYP)</span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-              Nanyang Polytechnic · Diploma in IT (2019 — 2021)
-            </p>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              Awarded for graduating in the top 15% of the cohort, with distinctions in UX Design and Networking Architecture.
+            <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-950 dark:text-white">
+              Director&apos;s List Academic Distinction (Top 15%)
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2">
+              Awarded for graduating in the top 15% of the Information Technology cohort, achieving module distinctions in Software Engineering, UX Design, and Networking Architecture.
             </p>
           </div>
         </div>
 
-        {/* Award 2 */}
-        <div className="sibling-item p-6 rounded-2xl border border-slate-200/90 dark:border-white/[0.08] bg-white dark:bg-[#111622] flex items-start gap-4 hover:border-cobalt/50 hover:shadow-md transition-all group">
-          <div className="p-3 bg-cobalt/10 border border-cobalt/20 rounded-xl text-cobalt group-hover:scale-105 transition-transform">
-            <Award size={22} />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <h4 className="text-base font-heading font-bold text-slate-900 dark:text-white">
-                Google Data Analytics
-              </h4>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cobalt/10 text-cobalt font-semibold border border-cobalt/20 flex items-center gap-1">
-                <CheckCircle2 size={10} /> Professional
-              </span>
+        {/* Distinction 02 */}
+        <div className="flex flex-col justify-between gap-3 border-l-2 border-cobalt/80 pl-5 sm:pl-6 py-1">
+          <div>
+            <div className="flex items-center gap-2 font-mono text-xs text-slate-500 dark:text-slate-400 mb-1.5">
+              <span className="text-cobalt font-bold">2022</span>
+              <span>·</span>
+              <span>Google Professional Certification</span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
-              Google Professional Certification (2022)
-            </p>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              Rigorous data processing, exploratory SQL pipelines, R statistical modeling, and interactive visualization frameworks.
+            <h4 className="text-lg sm:text-xl font-heading font-bold text-slate-950 dark:text-white">
+              Google Data Analytics Professional Certificate
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2">
+              Verified proficiency in end-to-end data cleaning pipelines, relational SQL querying, R statistical modeling, and quantitative decision dashboards.
             </p>
           </div>
         </div>

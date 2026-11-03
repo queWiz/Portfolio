@@ -12,6 +12,11 @@ import {
   ArrowUpRight,
   Monitor,
   Smartphone,
+  Layers,
+  LayoutGrid,
+  Database,
+  Lock,
+  Sparkles,
 } from "lucide-react";
 
 interface ProjectData {
@@ -38,7 +43,7 @@ const PROJECTS: ProjectData[] = [
     title: "Pergas Members Platform",
     tagline: "Enterprise Member & Admin Digital Platform",
     role: "Lead Technical Delivery",
-    client: "Pergas (Registered Singapore NGO)",
+    client: "Pergas (Singapore NGO)",
     year: "2026",
     domain: "pergas.org.sg",
     tags: ["Next.js (App Router)", "Supabase", "PostgreSQL", "Playwright", "PDPA"],
@@ -70,8 +75,8 @@ const PROJECTS: ProjectData[] = [
     tags: ["C# / .NET Core", "ASP.NET Core", "PostgreSQL", "JSONB", "Table Data Gateway"],
     metrics: [
       { label: "Architecture", value: "BCE Pattern" },
-      { label: "Schema", value: "Hybrid Relational + JSONB" },
-      { label: "Security", value: "Parameterized ADO.NET" },
+      { label: "Schema", value: "Relational + JSONB" },
+      { label: "Security", value: "Parameterized SQL" },
       { label: "State Model", value: "Unit of Work" },
     ],
     overview:
@@ -95,10 +100,10 @@ const PROJECTS: ProjectData[] = [
     domain: "codex-rag.internal",
     tags: ["Python", "FastAPI", "Gemini API", "pgvector", "PostgreSQL", "AWS S3"],
     metrics: [
-      { label: "Search Infra", value: "pgvector Embeddings" },
-      { label: "Cost Optimization", value: "-30% DB Overhead" },
+      { label: "Search Infra", value: "pgvector HNSW" },
+      { label: "Cost Delta", value: "-30% DB Overhead" },
       { label: "Concurrency", value: "Async FastAPI" },
-      { label: "Multimodal", value: "Gemini Vision & Audio" },
+      { label: "Multimodal", value: "Gemini Vision" },
     ],
     overview:
       "Architected a multimodal Retrieval-Augmented Generation (RAG) pipeline using the Gemini API and pgvector embeddings for semantic insight extraction across video, audio, and documents.",
@@ -124,7 +129,7 @@ const PROJECTS: ProjectData[] = [
       { label: "CI/CD Pipeline", value: "GitHub Actions CI" },
       { label: "Defense In-Depth", value: "CSRF & SQLi Proof" },
       { label: "Concurrency", value: "ACID Safe Locks" },
-      { label: "Vulnerability Scan", value: "Zero High CVEs" },
+      { label: "Security Audit", value: "Zero High CVEs" },
     ],
     overview:
       "A defensive charity auction application engineered to guarantee transactional integrity during high-frequency concurrent bidding while shielding against web attack vectors.",
@@ -164,19 +169,17 @@ const PROJECTS: ProjectData[] = [
   },
 ];
 
-const SLIDE_DURATION = 7000; // 7 seconds per slide
+const SLIDE_DURATION = 7500;
 
 export function ProjectShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [deviceView, setDeviceView] = useState<"desktop" | "mobile">("desktop");
-  const [showSimulator, setShowSimulator] = useState(false);
+  // Decision #1: Interactive Architecture Simulator is now the DEFAULT hero visual!
+  const [rightMode, setRightMode] = useState<"simulator" | "desktop" | "mobile">("simulator");
   const [viewLayout, setViewLayout] = useState<"carousel" | "stacked">("carousel");
 
   const currentProject = PROJECTS[currentIndex];
 
-  // Zero-lag auto-advancing slideshow: Single setTimeout update per slide;
-  // Progress bar is driven 100% on the GPU via CSS scaleX keyframes (0 re-renders)
   useEffect(() => {
     if (isPaused || viewLayout === "stacked") return;
 
@@ -197,51 +200,48 @@ export function ProjectShowcase() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* 
-        VIEW SWITCHER CONTROLLER:
-        Allows recruiters and visitors to toggle between the default interactive carousel 
-        and the full Havu-style Stacking Sticky Deep-Dive.
-      */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-1 mb-2">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
-          <span className="text-xs font-mono font-bold tracking-wider text-slate-700 dark:text-slate-300 uppercase">
+      {/* View Switcher Controller */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-1 mb-1">
+        <div className="flex items-center gap-2.5">
+          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">
             {viewLayout === "carousel"
-              ? `PROJECT ${currentProject.num} OF 05 · INTERACTIVE STAGE`
-              : "ALL 5 PRODUCTION CASE STUDIES · STACKED"}
+              ? `Showing Case Study ${currentProject.num} of 05`
+              : "All 5 Case Studies — Cascading Depth"}
           </span>
         </div>
 
-        <div className="inline-flex items-center p-1 rounded-full bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/10 shadow-sm text-xs font-mono">
+        <div className="inline-flex items-center p-1 rounded-xl bg-slate-200/60 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/[0.07] text-xs font-mono">
           <button
             onClick={() => setViewLayout("carousel")}
-            className={`px-3 py-1 rounded-full font-semibold transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
               viewLayout === "carousel"
-                ? "bg-cobalt text-white shadow-sm"
+                ? "bg-white dark:bg-[#161D2B] text-slate-900 dark:text-white shadow-sm"
                 : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            ⌁ Carousel View
+            <LayoutGrid size={12} />
+            <span>Interactive Stage</span>
           </button>
           <button
             onClick={() => setViewLayout("stacked")}
-            className={`px-3 py-1 rounded-full font-semibold transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
               viewLayout === "stacked"
-                ? "bg-cobalt text-white shadow-sm"
+                ? "bg-white dark:bg-[#161D2B] text-slate-900 dark:text-white shadow-sm"
                 : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            ☰ Stacked Deep-Dive
+            <Layers size={12} />
+            <span>Stacked Deep-Dive</span>
           </button>
         </div>
       </div>
 
       {viewLayout === "stacked" ? (
         /* ==============================================================
-           HAVU STACKING STICKY SECTIONS DEEP-DIVE
-           All 5 projects laid out in sticky cascading depth
+           STACKING STICKY SECTIONS DEEP-DIVE
+           Clean, breathing elevated surfaces with live simulators mounted
            ============================================================== */
-        <div className="w-full flex flex-col gap-8 relative pb-10">
+        <div className="w-full flex flex-col gap-10 relative pb-10">
           {PROJECTS.map((proj, idx) => (
             <div
               key={proj.id}
@@ -249,73 +249,69 @@ export function ProjectShowcase() {
                 top: `calc(5rem + ${idx * 20}px)`,
                 zIndex: idx + 5,
               }}
-              className="sticky w-full rounded-3xl bg-white/95 dark:bg-[#111622]/95 backdrop-blur-xl border border-slate-200/90 dark:border-white/[0.08] p-5 sm:p-8 lg:p-10 shadow-[0_12px_40px_-10px_rgba(15,23,42,0.08)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:border-cobalt/40 transition-all duration-300"
+              className="sticky w-full rounded-3xl bg-white/95 dark:bg-[#101520]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.07)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.65)] transition-all duration-300"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                {/* Left Column: Project Info & Tradeoffs */}
-                <div className="lg:col-span-6 flex flex-col justify-between gap-5 sm:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* Left Column: Open Editorial Narrative */}
+                <div className="lg:col-span-6 flex flex-col justify-between gap-6">
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="font-mono text-xs font-bold text-cobalt px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20">
-                        {proj.num} · CASE STUDY
-                      </span>
-                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
-                        {proj.client} · {proj.year}
-                      </span>
+                    <div className="flex items-center gap-3 text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
+                      <span className="font-bold text-cobalt">{proj.num}</span>
+                      <span>·</span>
+                      <span>{proj.client}</span>
+                      <span>·</span>
+                      <span>{proj.year}</span>
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-slate-950 dark:text-white tracking-tight leading-snug">
                       {proj.title}
                     </h3>
-                    <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold uppercase tracking-wider mt-1">
+                    <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold mt-1">
                       {proj.tagline}
                     </p>
                   </div>
 
-                  <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                     {proj.overview}
                   </p>
 
-                  {/* Metrics Grid */}
-                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06]">
+                  {/* Open, Breathing Metrics Row (No Boxed Spreadsheet Cells) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-slate-100 dark:border-white/[0.06]">
                     {proj.metrics.map((m, i) => (
                       <div key={i} className="flex flex-col gap-0.5">
-                        <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
                           {m.label}
                         </span>
-                        <span className="text-xs sm:text-sm font-heading font-bold text-slate-800 dark:text-slate-200">
+                        <span className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
                           {m.value}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Technical Highlights */}
-                  <div className="space-y-2">
-                    <span className="text-xs font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 font-semibold">
-                      Technical Highlights
-                    </span>
-                    <ul className="space-y-2">
-                      {proj.bulletPoints.map((bp, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
-                        >
-                          <span className="text-cobalt text-xs mt-0.5">✦</span>
-                          <span>{bp}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Clean Numbered Engineering Specs (Open Spacing, No Box Dividers) */}
+                  <div className="space-y-3">
+                    {proj.bulletPoints.map((bp, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
+                      >
+                        <span className="font-mono text-xs text-cobalt/80 font-bold shrink-0 mt-0.5">
+                          0{i + 1}
+                        </span>
+                        <span>{bp}</span>
+                      </div>
+                    ))}
                   </div>
 
                   {/* Tags and Action Links */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100 dark:border-white/[0.06]">
-                    <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div className="flex flex-wrap gap-2">
                       {proj.tags.map((tag, i) => (
                         <span
                           key={i}
-                          className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-slate-400 border border-slate-200/80 dark:border-white/[0.08]"
+                          className="text-xs font-mono text-slate-500 dark:text-slate-400"
                         >
-                          {tag}
+                          #{tag}
                         </span>
                       ))}
                     </div>
@@ -326,19 +322,19 @@ export function ProjectShowcase() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`View ${proj.title} on GitHub`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.08] text-slate-800 dark:text-white text-xs font-mono font-semibold hover:bg-cobalt hover:text-white transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] text-slate-800 dark:text-white text-xs font-mono font-semibold hover:bg-cobalt hover:text-white transition-colors"
                       >
                         <Github size={13} />
-                        <span>Repo</span>
+                        <span>Source</span>
                         <ArrowUpRight size={11} className="opacity-70" />
                       </a>
                     )}
                   </div>
                 </div>
 
-                {/* Right Column: Screenshot & Mockup Frame with Havu Sheen */}
+                {/* Right Column: Live Interactive Architecture Simulator Mounted Directly */}
                 <div className="lg:col-span-6 w-full flex flex-col gap-4">
-                  <DesktopBrowserMockup project={proj} />
+                  <ProjectInteractiveVisualizer project={proj} />
                 </div>
               </div>
             </div>
@@ -347,8 +343,7 @@ export function ProjectShowcase() {
       ) : (
         /* ==============================================================
            INTERACTIVE CAROUSEL VIEW (DEFAULT)
-           With vertical-only tab translation (no horizontal scrollbar)
-           and stable min-height (zero layout shifting below)
+           Breathing Dribbble/Linear aesthetic + Live Interactive Simulators by default
            ============================================================== */
         <>
           {/* Mobile Top Quick Switcher */}
@@ -374,18 +369,18 @@ export function ProjectShowcase() {
             </div>
           </div>
 
-          {/* Tabs list: Vertical translation on hover to completely prevent horizontal scrollbar */}
-          <div className="tab-sibling-focus flex sm:grid sm:grid-cols-5 gap-2 sm:gap-3 overflow-x-auto snap-x scrollbar-none pb-2 pt-1 -mx-1 px-1">
+          {/* Selector Tabs */}
+          <div className="tab-sibling-focus flex sm:grid sm:grid-cols-5 gap-2.5 overflow-x-auto snap-x scrollbar-none pb-2 pt-1 -mx-1 px-1">
             {PROJECTS.map((proj, idx) => {
               const isActive = idx === currentIndex;
               return (
                 <button
                   key={proj.id}
                   onClick={() => selectProject(idx)}
-                  className={`tab-sibling-item text-left p-3 sm:p-4 rounded-2xl border transition-all duration-300 relative overflow-hidden flex flex-col justify-between shrink-0 sm:shrink min-w-[145px] sm:min-w-0 snap-start min-h-[82px] sm:min-h-[90px] ${
+                  className={`tab-sibling-item text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 relative overflow-hidden flex flex-col justify-between shrink-0 sm:shrink min-w-[145px] sm:min-w-0 snap-start min-h-[82px] sm:min-h-[88px] ${
                     isActive
-                      ? "bg-white dark:bg-[#111622] border-cobalt/60 shadow-md ring-1 ring-cobalt/20 !opacity-100 !transform-none"
-                      : "bg-white/60 dark:bg-[#111622]/50 border-slate-200/80 dark:border-white/[0.06] hover:border-slate-300 dark:hover:border-white/20"
+                      ? "bg-white dark:bg-[#101520] border-cobalt/60 shadow-md ring-1 ring-cobalt/15 !opacity-100 !transform-none"
+                      : "bg-white/50 dark:bg-[#101520]/40 border-slate-200/70 dark:border-white/[0.05] hover:border-slate-300 dark:hover:border-white/15"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-1 w-full mb-1">
@@ -396,7 +391,7 @@ export function ProjectShowcase() {
                     >
                       {proj.num}
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500">
+                    <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
                       {proj.year}
                     </span>
                   </div>
@@ -411,7 +406,7 @@ export function ProjectShowcase() {
                     {proj.title}
                   </div>
 
-                  {/* Timed Horizontal Progress Bar (Hardware accelerated CSS scaleX) */}
+                  {/* Timed Horizontal Progress Bar */}
                   <div className="w-full h-1 bg-slate-100 dark:bg-white/[0.05] rounded-full overflow-hidden mt-3">
                     {isActive ? (
                       <div
@@ -434,126 +429,124 @@ export function ProjectShowcase() {
 
           {/* 
             MAIN SHOWCASE STAGE:
-            Locked with consistent minimum height (min-h-[520px]) so switching projects
-            produces ZERO layout shift or bouncing on elements below!
+            Generous whitespace, soft atmospheric surface, open metrics, and Live Interactive Architecture on the right!
           */}
-          <div className="w-full rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-4 sm:p-8 lg:p-12 shadow-[0_10px_40px_-10px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_50px_rgba(0,0,0,0.5)] transition-all">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-              {/* Left Column: Project Info & Tradeoffs (Locked min-height for 0 layout shift) */}
-              <div className="lg:col-span-6 flex flex-col justify-between gap-5 sm:gap-6 min-h-[460px] sm:min-h-[500px] lg:min-h-[530px]">
-                <div className="space-y-4">
+          <div className="w-full rounded-3xl bg-white dark:bg-[#101520] border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 lg:p-12 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] transition-all">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              {/* Left Column: Open Editorial Narrative (No Boxed Table Headers) */}
+              <div className="lg:col-span-6 flex flex-col justify-between gap-6 min-h-[460px] sm:min-h-[500px]">
+                <div className="space-y-5">
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="font-mono text-xs font-bold text-cobalt px-2.5 py-0.5 rounded-full bg-cobalt/10 border border-cobalt/20">
-                        {currentProject.num} · CASE STUDY
-                      </span>
-                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
-                        {currentProject.client}
-                      </span>
+                    <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
+                      <span className="font-bold text-cobalt">{currentProject.num} / 05</span>
+                      <span>·</span>
+                      <span>{currentProject.client}</span>
+                      <span>·</span>
+                      <span>{currentProject.role}</span>
                     </div>
                     <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-extrabold text-slate-950 dark:text-white tracking-tight leading-snug">
                       {currentProject.title}
                     </h3>
-                    <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold uppercase tracking-wider mt-1">
+                    <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold mt-1.5">
                       {currentProject.tagline}
                     </p>
                   </div>
 
-                  <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                     {currentProject.overview}
                   </p>
 
-                  {/* Metrics Grid */}
-                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06]">
+                  {/* Open Key Metrics Row (Breathing whitespace, subtle top/bottom hairline only) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-slate-100 dark:border-white/[0.06]">
                     {currentProject.metrics.map((m, i) => (
                       <div key={i} className="flex flex-col gap-0.5">
-                        <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
                           {m.label}
                         </span>
-                        <span className="text-xs sm:text-sm font-heading font-bold text-slate-800 dark:text-slate-200">
+                        <span className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
                           {m.value}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Key Engineering Bullets */}
-                  <div className="space-y-2">
-                    <span className="text-xs font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 font-semibold">
-                      Technical Highlights
-                    </span>
-                    <ul className="space-y-2">
-                      {currentProject.bulletPoints.map((bp, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
-                        >
-                          <span className="text-cobalt text-xs mt-0.5">✦</span>
-                          <span>{bp}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Clean Numbered Engineering Specs (Open Spacing) */}
+                  <div className="space-y-3 pt-1">
+                    {currentProject.bulletPoints.map((bp, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
+                      >
+                        <span className="font-mono text-xs text-cobalt/80 font-bold shrink-0 mt-0.5">
+                          0{i + 1}
+                        </span>
+                        <span>{bp}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Tags & Action Buttons */}
+                {/* Subtle Stack & Repository Footer */}
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100 dark:border-white/[0.06]">
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-2">
                     {currentProject.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-slate-400 border border-slate-200/80 dark:border-white/[0.08]"
+                        className="text-xs font-mono px-2.5 py-1 rounded-full bg-slate-100/80 dark:bg-white/[0.04] text-slate-600 dark:text-slate-400"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {currentProject.githubUrl && (
-                      <a
-                        href={currentProject.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`View ${currentProject.title} on GitHub`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.08] text-slate-800 dark:text-white text-xs font-mono font-semibold hover:bg-cobalt hover:text-white transition-colors"
-                      >
-                        <Github size={13} />
-                        <span>Repo</span>
-                        <ArrowUpRight size={11} className="opacity-70" />
-                      </a>
-                    )}
-                  </div>
+                  {currentProject.githubUrl && (
+                    <a
+                      href={currentProject.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`View ${currentProject.title} on GitHub`}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs font-mono font-semibold hover:bg-cobalt dark:hover:bg-cobalt dark:hover:text-white transition-colors"
+                    >
+                      <Github size={13} />
+                      <span>Source Code</span>
+                      <ArrowUpRight size={11} />
+                    </a>
+                  )}
                 </div>
               </div>
 
-              {/* Right Column: Web & Mobile Mockup Frame */}
-              <div className="lg:col-span-6 w-full flex flex-col justify-between gap-4 min-h-[460px] sm:min-h-[500px] lg:min-h-[530px]">
-                {/* View Mode Controller Switch: Desktop / Mobile / Simulator */}
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
-                  <div className="inline-flex items-center p-1 rounded-full bg-slate-100 dark:bg-[#141B28] border border-slate-200 dark:border-white/10">
+              {/* Right Column: Interactive Architecture Visualizer by Default! */}
+              <div className="lg:col-span-6 w-full flex flex-col justify-between gap-4 min-h-[460px] sm:min-h-[500px]">
+                {/* Mode Controller: Interactive Architecture (Default) / Desktop / Mobile */}
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 dark:bg-[#161D2B] border border-slate-200/80 dark:border-white/[0.07]">
                     <button
-                      onClick={() => {
-                        setShowSimulator(false);
-                        setDeviceView("desktop");
-                      }}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold transition-all ${
-                        !showSimulator && deviceView === "desktop"
-                          ? "bg-white dark:bg-cobalt text-slate-900 dark:text-white shadow-sm"
+                      onClick={() => setRightMode("simulator")}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
+                        rightMode === "simulator"
+                          ? "bg-cobalt text-white shadow-sm"
+                          : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                      }`}
+                    >
+                      <Zap size={12} />
+                      <span>Live Architecture</span>
+                    </button>
+                    <button
+                      onClick={() => setRightMode("desktop")}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
+                        rightMode === "desktop"
+                          ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
                           : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
                       <Monitor size={12} />
-                      <span>Desktop</span>
+                      <span>Desktop Preview</span>
                     </button>
                     <button
-                      onClick={() => {
-                        setShowSimulator(false);
-                        setDeviceView("mobile");
-                      }}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold transition-all ${
-                        !showSimulator && deviceView === "mobile"
-                          ? "bg-white dark:bg-cobalt text-slate-900 dark:text-white shadow-sm"
+                      onClick={() => setRightMode("mobile")}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
+                        rightMode === "mobile"
+                          ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
                           : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
@@ -562,38 +555,23 @@ export function ProjectShowcase() {
                     </button>
                   </div>
 
-                  {/* Simulator Mode Toggle */}
-                  <button
-                    onClick={() => setShowSimulator(!showSimulator)}
-                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-mono font-semibold border transition-all ${
-                      showSimulator
-                        ? "bg-cobalt text-white border-cobalt"
-                        : "bg-slate-100 dark:bg-white/[0.05] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-cobalt"
-                    }`}
-                  >
-                    <Zap size={12} />
-                    <span>{showSimulator ? "Exit Simulator" : "Simulator ⌁"}</span>
-                  </button>
+                  <span className="text-xs font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">
+                    Interactive Telemetry
+                  </span>
                 </div>
 
-                {/* Display Either the Interactive Simulator OR the Web/Mobile Mockup */}
-                {showSimulator ? (
-                  <div className="w-full">
-                    {currentProject.id === "pergas" && <PergasInteractiveSimulator />}
-                    {currentProject.id === "cleanbrilliant" && <CleanBrilliantSimulator />}
-                    {currentProject.id === "codex" && <CodexRAGSimulator />}
-                    {currentProject.id === "bidforgood" && <BidForGoodInteractiveSimulator />}
-                    {currentProject.id === "tabayyun" && <TabayyunInteractiveSimulator />}
-                  </div>
-                ) : (
-                  <div className="w-full relative flex items-center justify-center my-auto">
-                    {deviceView === "desktop" ? (
-                      <DesktopBrowserMockup project={currentProject} />
-                    ) : (
-                      <MobilePhoneMockup project={currentProject} />
-                    )}
-                  </div>
-                )}
+                {/* Render Active Right-Column View */}
+                <div className="w-full my-auto">
+                  {rightMode === "simulator" && (
+                    <ProjectInteractiveVisualizer project={currentProject} />
+                  )}
+                  {rightMode === "desktop" && (
+                    <DesktopBrowserMockup project={currentProject} />
+                  )}
+                  {rightMode === "mobile" && (
+                    <MobilePhoneMockup project={currentProject} />
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -603,231 +581,124 @@ export function ProjectShowcase() {
   );
 }
 
-// -------------------------------------------------------------
-// REALISTIC BROWSER MOCKUP (Inspired by Image 3)
-// -------------------------------------------------------------
-function DesktopBrowserMockup({ project }: { project: ProjectData }) {
-  return (
-    <div className="w-full max-w-full rounded-2xl bg-slate-900 text-slate-100 border border-slate-800 shadow-2xl overflow-hidden font-sans">
-      {/* Browser Chrome Header */}
-      <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-slate-950 border-b border-slate-800 text-xs">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#5fc98e]" />
-        </div>
-
-        {/* Address Bar */}
-        <div className="flex-1 max-w-[150px] sm:max-w-xs mx-auto py-0.5 sm:py-1 px-2.5 sm:px-3 rounded-full bg-slate-900 border border-slate-800 text-[10px] sm:text-[11px] font-mono text-slate-400 text-center truncate">
-          https://{project.domain}
-        </div>
-
-        <div className="w-6 sm:w-10" />
-      </div>
-
-      {/* Mockup Screen Content */}
-      <div className="p-3.5 sm:p-5 bg-slate-900 min-h-[290px] sm:min-h-[340px] flex flex-col justify-between">
-        <div>
-          <div className="flex flex-wrap items-center justify-between gap-1 pb-2.5 sm:pb-3 mb-3 border-b border-slate-800">
-            <span className="font-heading font-extrabold text-xs sm:text-sm text-white truncate max-w-[190px] sm:max-w-none">
-              {project.title}
-            </span>
-            <span className="text-[9px] sm:text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-cobalt/20 text-cobalt font-semibold">
-              LIVE SYSTEM
-            </span>
-          </div>
-
-          {/* Screenshot / Architecture Viewport with Havu Grayscale-to-Full-Color Sheen */}
-          <div className="group/screen relative w-full h-28 sm:h-32 rounded-xl overflow-hidden border border-slate-800/90 mb-3 bg-slate-950">
-            <div className="sheen-media-card w-full h-full flex flex-col items-center justify-center p-3 text-center bg-gradient-to-br from-slate-900/95 via-[#0c1424] to-slate-950">
-              <div className="absolute inset-0 isometric-grid-bg opacity-30 pointer-events-none" />
-              <div className="relative z-10 flex flex-col items-center gap-1 max-w-xs">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cobalt/20 text-cobalt border border-cobalt/30 font-bold uppercase tracking-wider">
-                  {project.domain}
-                </span>
-                <span className="text-xs font-heading font-bold text-slate-200">
-                  {project.tagline}
-                </span>
-                <span className="text-[9px] font-mono text-slate-400">
-                  [Drop Screenshot Here · Hover for Vivid Sheen]
-                </span>
-              </div>
-              <div className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/70 border border-white/10 text-[9px] font-mono text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>ACTIVE</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
-            <div className="p-2 sm:p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
-              <span className="text-[9px] sm:text-[10px] text-slate-400 block font-mono">STATUS</span>
-              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1 mt-0.5">
-                <CheckCircle2 size={12} /> Production Verified
-              </span>
-            </div>
-            <div className="p-2 sm:p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
-              <span className="text-[9px] sm:text-[10px] text-slate-400 block font-mono">STACK</span>
-              <span className="text-xs font-bold text-slate-200 truncate mt-0.5 block">
-                {project.tags.slice(0, 2).join(" · ")}
-              </span>
-            </div>
-          </div>
-
-          <div className="p-2.5 sm:p-3 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1 font-mono text-[10px] sm:text-[11px] text-slate-300">
-            <div className="text-cobalt font-bold">&gt; ARCHITECTURAL SPECIFICATION:</div>
-            <div className="text-slate-400 leading-relaxed text-[10px] sm:text-[11px] break-words">
-              {project.bulletPoints[0]}
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-2.5 sm:pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-slate-400">
-          <span>Singapore SGT Hosted</span>
-          <span className="text-emerald-400 font-semibold">100% SLA</span>
-        </div>
-      </div>
-    </div>
-  );
+function ProjectInteractiveVisualizer({ project }: { project: ProjectData }) {
+  if (project.id === "pergas") return <PergasInteractiveSimulator />;
+  if (project.id === "cleanbrilliant") return <CleanBrilliantSimulator />;
+  if (project.id === "codex") return <CodexRAGSimulator />;
+  if (project.id === "bidforgood") return <BidForGoodInteractiveSimulator />;
+  return <TabayyunInteractiveSimulator />;
 }
 
 // -------------------------------------------------------------
-// REALISTIC MOBILE PHONE MOCKUP (Inspired by Image 3)
-// -------------------------------------------------------------
-function MobilePhoneMockup({ project }: { project: ProjectData }) {
-  return (
-    <div className="w-full max-w-[260px] sm:max-w-[280px] rounded-[36px] bg-slate-950 border-[5px] sm:border-[6px] border-slate-800 shadow-2xl overflow-hidden font-sans p-2 mx-auto">
-      {/* Phone Speaker & Dynamic Island Notch */}
-      <div className="w-20 sm:w-24 h-3.5 sm:h-4 bg-slate-900 rounded-full mx-auto mb-2 flex items-center justify-center">
-        <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-slate-800 mr-2" />
-        <div className="w-6 sm:w-8 h-1 bg-slate-800 rounded-full" />
-      </div>
-
-      <div className="rounded-[24px] bg-slate-900 p-4 min-h-[360px] flex flex-col justify-between text-slate-100">
-        <div>
-          <div className="text-[10px] font-mono text-cobalt font-bold uppercase mb-1">
-            {project.num} · MOBILE VIEW
-          </div>
-          <h4 className="font-heading font-extrabold text-sm text-white mb-2 leading-tight">
-            {project.title}
-          </h4>
-
-          {/* Mobile Screenshot Slot with Sheen */}
-          <div className="group/screen relative w-full h-24 rounded-xl overflow-hidden border border-slate-800 mb-2.5 bg-slate-950">
-            <div className="sheen-media-card w-full h-full flex flex-col items-center justify-center p-2 text-center bg-gradient-to-br from-slate-900 via-[#0c1424] to-slate-950">
-              <span className="text-[9px] font-mono text-cobalt font-bold uppercase tracking-wider">
-                {project.id}.app
-              </span>
-              <span className="text-[10px] font-heading font-bold text-white mt-0.5 line-clamp-1">
-                {project.title}
-              </span>
-              <span className="text-[8px] font-mono text-slate-400 mt-0.5">
-                [Screenshot Drop-in]
-              </span>
-            </div>
-          </div>
-
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 mb-2.5 space-y-0.5">
-            <span className="text-[9px] font-mono text-slate-400 block">KEY OUTCOME</span>
-            <span className="text-xs font-bold text-emerald-400 block">
-              {project.metrics[0].value}
-            </span>
-          </div>
-
-          <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-[10px] font-mono text-slate-400 leading-snug">
-            {project.overview.slice(0, 95)}...
-          </div>
-        </div>
-
-        {/* Mobile App Navigation Simulation */}
-        <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-around text-[10px] font-mono text-slate-400">
-          <span className="text-cobalt font-bold">Portal</span>
-          <span>Logs</span>
-          <span>Audit</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// -------------------------------------------------------------
-// SIMULATOR 1: PERGAS (Playwright Test Runner + Schema Inspector)
+// SIMULATOR 1: PERGAS (Interactive PDPA Sanitizer + Playwright Runner)
 // -------------------------------------------------------------
 function PergasInteractiveSimulator() {
   const [testState, setTestState] = useState<"idle" | "running" | "done">("done");
+  const [sampleIdx, setSampleIdx] = useState(0);
+
+  const SAMPLES = [
+    { rawNric: "S9912345Z", masked: "S****345Z", role: "MEMBER_TIER_GOLD", access: "PORTAL_SCOPED" },
+    { rawNric: "T0284912E", masked: "T****912E", role: "ADMIN_AUDITOR", access: "RBAC_VERIFIED" },
+    { rawNric: "S8840192B", masked: "S****192B", role: "EVENT_DELEGATE", access: "ZOHO_SYNCED" },
+  ];
 
   const runTests = () => {
     setTestState("running");
+    setSampleIdx((i) => (i + 1) % SAMPLES.length);
     setTimeout(() => {
       setTestState("done");
-    }, 900);
+    }, 650);
   };
 
   const TEST_SPECS = [
-    { name: "nric_server_scrubbing_pdpa.spec.ts", time: "34ms" },
-    { name: "rbac_admin_escalation_denied.spec.ts", time: "22ms" },
-    { name: "zoho_event_booking_idempotent.spec.ts", time: "48ms" },
-    { name: "supabase_schema_fk_integrity.spec.ts", time: "29ms" },
-    { name: "membership_tier_renewal_flow.spec.ts", time: "55ms" },
+    { name: "nric_server_scrubbing_pdpa.spec.ts", time: "34ms", status: "PASS" },
+    { name: "rbac_admin_escalation_denied.spec.ts", time: "22ms", status: "PASS" },
+    { name: "zoho_event_booking_idempotent.spec.ts", time: "48ms", status: "PASS" },
+    { name: "supabase_schema_fk_integrity.spec.ts", time: "29ms", status: "PASS" },
   ];
 
+  const activeSample = SAMPLES[sampleIdx];
+
   return (
-    <div className="w-full rounded-2xl bg-slate-900 text-slate-100 border border-slate-800 shadow-xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-950/80 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
-          <span className="text-[11px] text-slate-400 ml-2 font-mono">
-            pergas-platform // playwright-runner
+    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+        <div className="flex items-center gap-2.5">
+          <ShieldCheck size={15} className="text-emerald-400" />
+          <span className="text-xs font-semibold text-slate-200">
+            pergas-core // pdpa-gate &amp; e2e-runner
           </span>
         </div>
         <button
           onClick={runTests}
           disabled={testState === "running"}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-white hover:bg-cobalt/90 transition-colors font-semibold shadow-sm"
         >
-          <Play size={10} />
-          <span>{testState === "running" ? "Running..." : "Run 20 Suites"}</span>
+          <Play size={11} />
+          <span>{testState === "running" ? "Verifying..." : "Simulate Payload"}</span>
         </button>
       </div>
 
-      <div className="p-4 sm:p-5 min-h-[290px] flex flex-col justify-between">
-        {testState === "running" ? (
-          <div className="flex flex-col items-center justify-center py-10 gap-3 text-slate-400">
-            <div className="w-5 h-5 border-2 border-cobalt border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs">Executing 20 regression scenarios...</span>
+      <div className="p-5 sm:p-6 space-y-5">
+        {/* Visual Pipeline Diagram: Raw Input -> SSR Scrubbing -> Supabase RLS */}
+        <div className="p-4 rounded-xl bg-[#111827] border border-slate-800/90 space-y-3">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>SINGAPORE PDPA SERVER-SIDE SANITIZATION</span>
+            <span className="text-emerald-400 font-semibold">ZERO PII LEAK</span>
           </div>
-        ) : (
-          <div className="space-y-2">
-            {TEST_SPECS.map((spec, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between py-1.5 px-2.5 rounded bg-slate-950/40 border border-slate-800/80"
-              >
-                <div className="flex items-center gap-2 truncate">
-                  <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                  <span className="text-slate-300 truncate text-[11px]">
-                    {spec.name}
-                  </span>
-                </div>
-                <span className="text-slate-500 text-[10px] shrink-0 font-mono">
-                  {spec.time}
-                </span>
+          <div className="grid grid-cols-3 gap-2.5 items-center">
+            <div className="p-3 rounded-lg bg-[#0B0F17] border border-red-500/25">
+              <div className="text-xs text-slate-500">CLIENT PAYLOAD</div>
+              <div className="text-xs sm:text-sm font-bold text-red-400 mt-1">
+                {activeSample.rawNric}
               </div>
-            ))}
-            <div className="text-[11px] text-emerald-400 pt-2 flex items-center justify-between">
-              <span>20 passed (100% pass rate)</span>
-              <span className="text-slate-500">Duration: 1.84s</span>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <span className="text-xs text-cobalt font-bold">SSR Scrub</span>
+              <div className="w-full h-[2px] bg-gradient-to-r from-red-500/40 via-cobalt to-emerald-500/60 my-1.5 rounded-full" />
+              <span className="text-xs text-slate-500">{activeSample.role}</span>
+            </div>
+            <div className="p-3 rounded-lg bg-[#0B0F17] border border-emerald-500/30">
+              <div className="text-xs text-slate-500">POSTGRES RLS</div>
+              <div className="text-xs sm:text-sm font-bold text-emerald-400 mt-1">
+                {activeSample.masked}
+              </div>
             </div>
           </div>
-        )}
+        </div>
 
-        <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-          <span className="flex items-center gap-1 text-emerald-400">
-            <ShieldCheck size={12} /> Server-Side PDPA Scrubbing Active
-          </span>
-          <span className="font-mono text-slate-500">Supabase 10+ Tables</span>
+        {/* Playwright Suite Telemetry */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-400 pb-1">
+            <span>PLAYWRIGHT E2E REGRESSION MATRIX (20 SUITES)</span>
+            <span className="text-emerald-400 font-semibold">100% PASS</span>
+          </div>
+          {testState === "running" ? (
+            <div className="flex items-center justify-center py-8 gap-3 text-slate-400">
+              <div className="w-4 h-4 border-2 border-cobalt border-t-transparent rounded-full animate-spin" />
+              <span>Running 20 automated security &amp; schema assertions...</span>
+            </div>
+          ) : (
+            <div className="space-y-1.5">
+              {TEST_SPECS.map((spec, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between py-2 px-3 rounded-lg bg-[#111827]/70 border border-slate-800/70"
+                >
+                  <div className="flex items-center gap-2 truncate">
+                    <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
+                    <span className="text-slate-200 truncate">{spec.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-slate-500">{spec.time}</span>
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-bold">
+                      {spec.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -835,54 +706,74 @@ function PergasInteractiveSimulator() {
 }
 
 // -------------------------------------------------------------
-// SIMULATOR 2: CLEAN BRILLIANT (C# / .NET Layout Engine)
+// SIMULATOR 2: CLEAN BRILLIANT (C# / .NET Layout Persistence Engine)
 // -------------------------------------------------------------
 function CleanBrilliantSimulator() {
-  const [widgets, setWidgets] = useState(["Emissions Gauge", "Scope 1/2 Tracker", "Grid Carbon Intensity"]);
+  const [widgets, setWidgets] = useState([
+    { id: "w-01", title: "Scope 1 & 2 Carbon Telemetry", span: "col-span-2", kpi: "142.8 tCO2e" },
+    { id: "w-02", title: "Grid Intensity", span: "col-span-1", kpi: "0.408 kg/kWh" },
+    { id: "w-03", title: "ESG Audit Trail", span: "col-span-1", kpi: "ACID Verified" },
+  ]);
+  const [commitCount, setCommitCount] = useState(14);
 
   const reorderWidgets = () => {
-    setWidgets((w) => [...w.slice(1), w[0]]);
+    setWidgets((w) => [w[1], w[2], w[0]]);
+    setCommitCount((c) => c + 1);
   };
 
   return (
-    <div className="w-full rounded-2xl bg-slate-900 text-slate-100 border border-slate-800 shadow-xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-950/80 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
-          <span className="text-[11px] text-slate-400 ml-2 font-mono">
-            dotnet // table-data-gateway
+    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+        <div className="flex items-center gap-2.5">
+          <Database size={15} className="text-cobalt" />
+          <span className="text-xs font-semibold text-slate-200">
+            aspnet-core // jsonb-layout-engine
           </span>
         </div>
         <button
           onClick={reorderWidgets}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-cobalt/20 text-cobalt border border-cobalt/30 hover:bg-cobalt/30 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-white hover:bg-cobalt/90 transition-colors font-semibold"
         >
-          <Activity size={10} />
-          <span>Reorder Layout</span>
+          <Activity size={12} />
+          <span>Permute Grid State</span>
         </button>
       </div>
 
-      <div className="p-4 sm:p-5 min-h-[290px] flex flex-col justify-between">
-        <div className="space-y-2.5">
-          <div className="text-[11px] text-slate-400 pb-1 border-b border-slate-800">
-            JSONB Layout State Transition (Unit of Work)
+      <div className="p-5 sm:p-6 space-y-5">
+        {/* Visual Bento Grid Preview */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>LIVE DASHBOARD WIDGET MATRIX (STRATEGY + BUILDER)</span>
+            <span className="text-cobalt font-semibold">TX #{commitCount}</span>
           </div>
-          {widgets.map((widget, i) => (
-            <div
-              key={i}
-              className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 flex items-center justify-between"
-            >
-              <span className="text-white font-bold">{widget}</span>
-              <span className="text-[10px] text-slate-500">Slot: #{i + 1}</span>
-            </div>
-          ))}
+          <div className="grid grid-cols-2 gap-2.5">
+            {widgets.map((w, i) => (
+              <div
+                key={w.id}
+                className={`${w.span} p-3.5 rounded-xl bg-[#111827] border border-slate-800 flex items-center justify-between transition-all`}
+              >
+                <div>
+                  <span className="text-xs text-slate-500">SLOT 0{i + 1} · {w.id}</span>
+                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5">{w.title}</div>
+                </div>
+                <span className="px-2.5 py-1 rounded-md bg-cobalt/15 text-cobalt font-bold border border-cobalt/25">
+                  {w.kpi}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-          <span className="text-emerald-400">Parameterized Npgsql Query</span>
-          <span>BCE Architecture</span>
+        {/* Serialized PostgreSQL JSONB Payload Inspector */}
+        <div className="p-3.5 rounded-xl bg-[#111827]/80 border border-slate-800/80 space-y-1.5">
+          <div className="flex items-center justify-between text-xs text-slate-400">
+            <span>POSTGRESQL HYBRID JSONB PERSISTENCE (UNIT OF WORK)</span>
+            <span className="text-emerald-400">PARAMETERIZED SQL</span>
+          </div>
+          <pre className="text-xs text-slate-300 overflow-x-auto leading-relaxed">
+{`UPDATE dashboard_layouts SET widget_order = '${JSON.stringify(widgets.map((w) => w.id))}'::jsonb
+WHERE tenant_id = @p0; -- 0 SQLi surface`}
+          </pre>
         </div>
       </div>
     </div>
@@ -893,55 +784,76 @@ function CleanBrilliantSimulator() {
 // SIMULATOR 3: CODEX (Multimodal RAG with Gemini & pgvector)
 // -------------------------------------------------------------
 function CodexRAGSimulator() {
-  const [queryState, setQueryState] = useState<"idle" | "searching" | "done">("done");
+  const [activeQueryIdx, setActiveQueryIdx] = useState(0);
 
-  const runQuery = () => {
-    setQueryState("searching");
-    setTimeout(() => {
-      setQueryState("done");
-    }, 700);
-  };
+  const QUERIES = [
+    {
+      prompt: "Locate thermal throttle spike above 45°C in telemetry stream",
+      timestamp: "00:14:32",
+      similarity: "0.948",
+      modality: "Gemini Vision + Audio Frame",
+      finding: "Detected battery cell #3 thermal anomaly during high-load discharge.",
+    },
+    {
+      prompt: "Extract architecture latency bottleneck from system review",
+      timestamp: "00:38:15",
+      similarity: "0.921",
+      modality: "Transcript + Slide OCR",
+      finding: "Lazy async connection pooling reduced FastAPI timeout rate to 0%.",
+    },
+  ];
+
+  const current = QUERIES[activeQueryIdx];
 
   return (
-    <div className="w-full rounded-2xl bg-slate-900 text-slate-100 border border-slate-800 shadow-xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-950/80 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
-          <span className="text-[11px] text-slate-400 ml-2 font-mono">
-            codex // multimodal-rag
+    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+        <div className="flex items-center gap-2.5">
+          <Sparkles size={15} className="text-cobalt" />
+          <span className="text-xs font-semibold text-slate-200">
+            codex-rag // pgvector &amp; gemini-multimodal
           </span>
         </div>
         <button
-          onClick={runQuery}
-          className="px-2.5 py-1 rounded bg-cobalt/20 text-cobalt border border-cobalt/30 hover:bg-cobalt/30 transition-colors"
+          onClick={() => setActiveQueryIdx((i) => (i + 1) % QUERIES.length)}
+          className="px-3 py-1 rounded-lg bg-cobalt text-white hover:bg-cobalt/90 transition-colors font-semibold"
         >
-          {queryState === "searching" ? "Searching..." : "Vector Search"}
+          Switch Semantic Query
         </button>
       </div>
 
-      <div className="p-4 sm:p-5 min-h-[290px] flex flex-col justify-between">
-        <div className="space-y-3">
-          <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-[11px] text-slate-300">
-            <span className="text-cobalt font-bold">&gt; Semantic Prompt:</span> &quot;Find
-            moments where battery temperature exceeded 45C&quot;
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
-            <div className="flex justify-between text-[11px] text-white font-bold">
-              <span>Timestamp Match: 00:14:32</span>
-              <span className="text-emerald-400">Cosine Sim: 0.942</span>
-            </div>
-            <div className="text-[10px] text-slate-400">
-              Gemini Vision frame analysis confirmed thermal throttle spike in video telemetry.
-            </div>
+      <div className="p-5 sm:p-6 space-y-4">
+        <div className="p-3.5 rounded-xl bg-[#111827] border border-slate-800">
+          <div className="text-xs text-slate-400 mb-1">MULTIMODAL QUERY VECTOR (768-DIM)</div>
+          <div className="text-xs sm:text-sm text-white font-bold">
+            &ldquo;{current.prompt}&rdquo;
           </div>
         </div>
 
-        <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-          <span>Lazy Async Connections</span>
-          <span className="text-emerald-400">-30% DB Overhead</span>
+        {/* Video Timeline Scrubber Visual */}
+        <div className="p-4 rounded-xl bg-[#111827] border border-slate-800 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-emerald-400 font-bold">
+              MATCH @ {current.timestamp}
+            </span>
+            <span className="px-2 py-0.5 rounded bg-cobalt/20 text-cobalt font-bold">
+              Cosine Sim: {current.similarity}
+            </span>
+          </div>
+
+          {/* Visual Timeline Bar with Highlighted Frame Marker */}
+          <div className="relative w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+            <div
+              className="absolute top-0 bottom-0 w-12 bg-gradient-to-r from-cobalt to-emerald-400 rounded-full transition-all duration-500"
+              style={{ left: activeQueryIdx === 0 ? "28%" : "64%" }}
+            />
+          </div>
+
+          <p className="text-xs text-slate-300 leading-relaxed">{current.finding}</p>
+          <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+            <span>Modality: {current.modality}</span>
+            <span className="text-emerald-400 font-semibold">S3 Tiering: -30% DB Cost</span>
+          </div>
         </div>
       </div>
     </div>
@@ -949,61 +861,61 @@ function CodexRAGSimulator() {
 }
 
 // -------------------------------------------------------------
-// SIMULATOR 4: BIDFORGOOD (Defensive Security & CI/CD Pipeline)
+// SIMULATOR 4: BIDFORGOOD (Defensive Security & Concurrency Lock)
 // -------------------------------------------------------------
 function BidForGoodInteractiveSimulator() {
   const [currentBid, setCurrentBid] = useState(450);
+  const [txId, setTxId] = useState(8042);
 
   const placeBid = () => {
     setCurrentBid((b) => b + 25);
+    setTxId((t) => t + 1);
   };
 
   return (
-    <div className="w-full rounded-2xl bg-slate-900 text-slate-100 border border-slate-800 shadow-xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-950/80 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
-          <span className="text-[11px] text-slate-400 ml-2 font-mono">
-            bidforgood // defensive-runtime
+    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+        <div className="flex items-center gap-2.5">
+          <Lock size={15} className="text-emerald-400" />
+          <span className="text-xs font-semibold text-slate-200">
+            bidforgood // acid-concurrency-guard
           </span>
         </div>
-        <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
-          CI/CD GREEN
+        <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
+          0 HIGH CVEs
         </span>
       </div>
 
-      <div className="p-4 sm:p-5 flex flex-col justify-between min-h-[290px]">
-        <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-xs">Active Charity Lot #104</span>
-            <span className="text-xs font-bold text-white">${currentBid} SGD</span>
+      <div className="p-5 sm:p-6 space-y-4">
+        <div className="p-4 rounded-xl bg-[#111827] border border-slate-800 flex items-center justify-between">
+          <div>
+            <div className="text-xs text-slate-400">CHARITY LOT #104 · SERIALIZABLE LOCK</div>
+            <div className="text-xl sm:text-2xl font-bold text-white mt-0.5">
+              ${currentBid} SGD
+            </div>
           </div>
-
           <button
             onClick={placeBid}
-            className="w-full py-1.5 rounded-lg bg-cobalt hover:bg-cobalt-dark text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-cobalt hover:bg-cobalt/90 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-md"
           >
-            <Zap size={12} />
-            <span>Bid +$25 (Pessimistic Lock)</span>
+            <Zap size={13} />
+            <span>Atomic Bid +$25</span>
           </button>
-
-          <div className="text-[10px] text-slate-400 space-y-1 pt-1 border-t border-slate-800/80">
-            <div className="flex justify-between">
-              <span>CSRF Handshake Token:</span>
-              <span className="text-emerald-400">VALID (SHA256)</span>
-            </div>
-            <div className="flex justify-between">
-              <span>SQL Sanitization:</span>
-              <span className="text-emerald-400">PARAMETERIZED</span>
-            </div>
-          </div>
         </div>
 
-        <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
-          <span>Concurrency Guard: Serializable</span>
-          <span className="text-emerald-400 font-bold">0 High CVEs</span>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="p-3.5 rounded-xl bg-[#111827] border border-slate-800">
+            <div className="text-xs text-slate-400">ROW LOCK TX</div>
+            <div className="text-xs font-bold text-emerald-400 mt-1">
+              SELECT ... FOR UPDATE #{txId}
+            </div>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#111827] border border-slate-800">
+            <div className="text-xs text-slate-400">CSRF &amp; SQLi DEFENSE</div>
+            <div className="text-xs font-bold text-emerald-400 mt-1">
+              HMAC-SHA256 Verified
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1015,62 +927,148 @@ function BidForGoodInteractiveSimulator() {
 // -------------------------------------------------------------
 function TabayyunInteractiveSimulator() {
   const [isScanning, setIsScanning] = useState(false);
+  const [itemIdx, setItemIdx] = useState(0);
+
+  const ITEMS = [
+    { label: "E471 (Mono-diglycerides)", conf: "96.4%", status: "VERIFIED PLANT-ORIGIN", latency: "118ms" },
+    { label: "Whey Powder (Rennet)", conf: "93.8%", status: "FLAGGED FOR REVIEW", latency: "134ms" },
+  ];
 
   const handleScan = () => {
     setIsScanning(true);
     setTimeout(() => {
       setIsScanning(false);
-    }, 800);
+      setItemIdx((i) => (i + 1) % ITEMS.length);
+    }, 550);
   };
 
+  const active = ITEMS[itemIdx];
+
   return (
-    <div className="w-full rounded-2xl bg-slate-900 text-slate-100 border border-slate-800 shadow-xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-950/80 border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
-          <span className="text-[11px] text-slate-400 ml-2 font-mono">
-            wasm-edge-scanner // runtime-local
+    <div className="w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
+      <div className="flex items-center justify-between px-5 py-3.5 bg-[#0F1522] border-b border-slate-800/80">
+        <div className="flex items-center gap-2.5">
+          <Cpu size={15} className="text-cobalt" />
+          <span className="text-xs font-semibold text-slate-200">
+            tabayyun-wasm // yolov8n + tesseract-ocr
           </span>
         </div>
-        <span className="text-[10px] px-2 py-0.5 rounded bg-cobalt/20 text-cobalt font-bold">
+        <span className="px-2.5 py-0.5 rounded bg-cobalt/20 text-cobalt font-bold">
           0 BYTES EGRESS
         </span>
       </div>
 
-      <div className="p-4 sm:p-5 flex flex-col justify-between min-h-[290px]">
-        <div className="relative rounded-xl bg-slate-950 border border-slate-800 p-3.5 space-y-2">
+      <div className="p-5 sm:p-6 space-y-4">
+        {/* Bounding Box Vision Viewport */}
+        <div className="relative rounded-xl bg-[#111827] border border-slate-800 p-4 overflow-hidden">
           {isScanning && (
             <div className="absolute inset-x-0 h-0.5 bg-cobalt shadow-[0_0_12px_#3b82f6] animate-pulse top-1/2" />
           )}
-
-          <div className="p-3 rounded-lg bg-slate-900/90 border border-slate-700/80 space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-white">YOLOv8n + Tesseract.js</span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400">
-                WASM IN-BROWSER
+          <div className="border-2 border-dashed border-emerald-400/70 rounded-lg p-3.5 bg-[#0B0F17]/80">
+            <div className="flex items-center justify-between text-xs">
+              <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
+                YOLOv8 BBOX: {active.conf}
               </span>
+              <span className="text-slate-400">WASM Latency: {active.latency}</span>
             </div>
-            <div className="text-[10px] text-slate-400">
-              Heuristic OCR Post-Processing Accuracy: 90%
+            <div className="text-sm font-bold text-white mt-2">{active.label}</div>
+            <div className="text-xs text-cobalt font-semibold mt-1">
+              OCR Classification: {active.status}
             </div>
           </div>
         </div>
 
-        <div className="pt-3 flex flex-col gap-2">
-          <button
-            onClick={handleScan}
-            disabled={isScanning}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-cobalt text-white font-semibold text-xs hover:bg-cobalt-dark transition-colors"
-          >
-            <Cpu size={13} />
-            <span>{isScanning ? "Processing In-Browser..." : "Simulate WASM Inference"}</span>
-          </button>
-          <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-            <span>Dynamic Resolution Scaling</span>
-            <span className="text-emerald-400 font-bold">Zero iOS Crash</span>
+        <button
+          onClick={handleScan}
+          disabled={isScanning}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cobalt text-white font-semibold text-xs hover:bg-cobalt/90 transition-colors"
+        >
+          <Cpu size={13} />
+          <span>{isScanning ? "Running On-Device WASM..." : "Run On-Device Vision Frame"}</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// REALISTIC BROWSER MOCKUP
+// -------------------------------------------------------------
+function DesktopBrowserMockup({ project }: { project: ProjectData }) {
+  return (
+    <div className="w-full max-w-full rounded-2xl bg-[#0B0F17] text-slate-100 border border-slate-800 shadow-2xl overflow-hidden font-sans">
+      <div className="flex items-center justify-between px-4 py-3 bg-[#0F1522] border-b border-slate-800 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
+        </div>
+        <div className="flex-1 max-w-xs mx-auto py-1 px-3 rounded-md bg-[#0B0F17] border border-slate-800 text-xs font-mono text-slate-400 text-center truncate">
+          https://{project.domain}
+        </div>
+        <div className="w-8" />
+      </div>
+
+      <div className="p-5 bg-[#0B0F17] min-h-[300px] flex flex-col justify-between">
+        <div className="group/screen relative w-full h-44 rounded-xl overflow-hidden border border-slate-800/90 mb-4 bg-slate-950">
+          <div className="sheen-media-card w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-slate-900/95 via-[#0c1424] to-slate-950">
+            <div className="relative z-10 flex flex-col items-center gap-1.5 max-w-xs">
+              <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-cobalt/20 text-cobalt border border-cobalt/30 font-bold uppercase tracking-wider">
+                {project.domain}
+              </span>
+              <span className="text-sm font-heading font-bold text-slate-200 mt-1">
+                {project.title}
+              </span>
+              <span className="text-xs font-mono text-slate-400">
+                {project.tagline}
+              </span>
+            </div>
           </div>
+        </div>
+
+        <div className="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800/80">
+          <span>{project.client}</span>
+          <span className="text-emerald-400 font-semibold">{project.metrics[0].value}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// REALISTIC MOBILE PHONE MOCKUP
+// -------------------------------------------------------------
+function MobilePhoneMockup({ project }: { project: ProjectData }) {
+  return (
+    <div className="w-full max-w-[270px] rounded-[36px] bg-slate-950 border-[5px] border-slate-800 shadow-2xl overflow-hidden font-sans p-2 mx-auto">
+      <div className="w-24 h-4 bg-slate-900 rounded-full mx-auto mb-2 flex items-center justify-center">
+        <div className="w-2 h-2 rounded-full bg-slate-800 mr-2" />
+        <div className="w-8 h-1 bg-slate-800 rounded-full" />
+      </div>
+
+      <div className="rounded-[24px] bg-slate-900 p-4 min-h-[340px] flex flex-col justify-between text-slate-100">
+        <div>
+          <div className="text-xs font-mono text-cobalt font-bold uppercase mb-1">
+            {project.num} · MOBILE VIEW
+          </div>
+          <h4 className="font-heading font-extrabold text-sm text-white mb-2 leading-tight">
+            {project.title}
+          </h4>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 mb-3 space-y-1">
+            <span className="text-xs font-mono text-slate-400 block">VERIFIED METRIC</span>
+            <span className="text-xs font-bold text-emerald-400 block">
+              {project.metrics[0].value}
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            {project.overview}
+          </p>
+        </div>
+
+        <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-around text-xs font-mono text-slate-400">
+          <span className="text-cobalt font-bold">Portal</span>
+          <span>Telemetry</span>
+          <span>Audit</span>
         </div>
       </div>
     </div>

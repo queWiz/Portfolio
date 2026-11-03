@@ -12,31 +12,31 @@ const config: Config = {
     extend: {
       colors: {
         ceramic: {
-          bg: "#F8F9FA",
-          subtle: "#F1F3F5",
-          border: "#E2E8F0",
-          card: "#FFFFFF",
-          text: "#0F172A",
-          muted: "#64748B",
+          bg: "var(--bg)",
+          subtle: "var(--bg-subtle)",
+          border: "var(--border)",
+          card: "var(--surface-card)",
+          text: "var(--text-primary)",
+          muted: "var(--text-muted)",
         },
         obsidian: {
-          bg: "#080C14",
-          subtle: "#101520",
-          border: "rgba(255, 255, 255, 0.08)",
-          card: "#111622",
-          text: "#EFF3F8",
-          muted: "#8C9BAE",
+          bg: "var(--bg)",
+          subtle: "var(--bg-subtle)",
+          border: "var(--border)",
+          card: "var(--surface-card)",
+          text: "var(--text-primary)",
+          muted: "var(--text-muted)",
         },
         cobalt: {
-          DEFAULT: "#2563EB",
-          dark: "#1D4ED8",
-          light: "#3B82F6",
-          soft: "rgba(37, 99, 235, 0.1)",
+          DEFAULT: "rgb(var(--accent-rgb) / <alpha-value>)",
+          dark: "rgb(var(--accent-dark-rgb) / <alpha-value>)",
+          light: "rgb(var(--accent-light-rgb) / <alpha-value>)",
+          soft: "var(--cobalt-soft)",
         },
         emerald: {
           DEFAULT: "#10B981",
           soft: "rgba(16, 185, 129, 0.1)",
-        }
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
@@ -44,9 +44,9 @@ const config: Config = {
         mono: ["var(--font-mono)", "monospace"],
       },
       animation: {
-        "scroll": "scroll 40s linear infinite",
+        scroll: "scroll 40s linear infinite",
         "pulse-subtle": "pulseSubtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "float": "float 6s ease-in-out infinite",
+        float: "float 6s ease-in-out infinite",
       },
       keyframes: {
         scroll: {

@@ -1,302 +1,209 @@
 "use client";
 
 import { useState } from "react";
-import { Cpu } from "lucide-react";
+import { ShieldCheck, Cpu, Database, CheckCircle2, Sparkles } from "lucide-react";
+
+interface PipelineStage {
+  id: string;
+  step: string;
+  title: string;
+  subtitle: string;
+  badge: string;
+  summary: string;
+  contract: string;
+  icon: typeof Cpu;
+}
+
+const PIPELINE_STAGES: PipelineStage[] = [
+  {
+    id: "edge",
+    step: "STAGE 01",
+    title: "Client & WASM Edge Gate",
+    subtitle: "In-Browser Inference & Zero Egress",
+    badge: "0B EGRESS",
+    summary:
+      "Untrusted inputs and camera frames are validated at the edge. For Tabayyun, YOLOv8n and Tesseract OCR run entirely inside WebAssembly memory with zero network transmission.",
+    contract: `{\n  "stage": "01_CLIENT_EDGE_GATE",\n  "runtime": "WebAssembly (SIMD + WebGL)",\n  "models": ["YOLOv8n.onnx", "Tesseract.wasm"],\n  "network_egress_bytes": 0,\n  "latency_p95": "118ms"\n}`,
+    icon: Cpu,
+  },
+  {
+    id: "sanitization",
+    step: "STAGE 02",
+    title: "SSR RBAC & PDPA Scrubbing",
+    subtitle: "Server-Side Identity & PII Masking",
+    badge: "PDPA COMPLIANT",
+    summary:
+      "Before any payload reaches application logic, Next.js Server Components enforce Role-Based Access Control (RBAC) and scrub sensitive Singapore NRIC/PII fields.",
+    contract: `{\n  "stage": "02_SSR_PDPA_SANITIZER",\n  "auth_guard": "Next.js App Router SSR RBAC",\n  "pii_scrubbing": "NRIC_REGEX_HMAC_MASK",\n  "sql_protection": "Parameterized ADO.NET / Npgsql",\n  "csrf_token": "SHA256_VERIFIED"\n}`,
+    icon: ShieldCheck,
+  },
+  {
+    id: "storage",
+    step: "STAGE 03",
+    title: "Relational & Vector Persistence",
+    subtitle: "PostgreSQL + pgvector + ACID Locks",
+    badge: "-30% DB COST",
+    summary:
+      "Persists verified state across 10+ interconnected Supabase PostgreSQL tables, hybrid JSONB layouts (Unit of Work), and pgvector HNSW embeddings with AWS S3 media tiering.",
+    contract: `{\n  "stage": "03_RELATIONAL_VECTOR_CORE",\n  "engine": "PostgreSQL 16 + pgvector HNSW",\n  "isolation_level": "SERIALIZABLE (Pessimistic Lock)",\n  "schema_pattern": "Hybrid Relational + JSONB",\n  "storage_optimization": "-30% overhead via AWS S3"\n}`,
+    icon: Database,
+  },
+  {
+    id: "verification",
+    step: "STAGE 04",
+    title: "Playwright 20/20 Regression Gate",
+    subtitle: "Deterministic CI/CD Verification",
+    badge: "100% PASS",
+    summary:
+      "Every pull request triggers GitHub Actions CI and 20 automated Playwright end-to-end regression suites asserting RBAC boundaries, schema integrity, and idempotent APIs.",
+    contract: `{\n  "stage": "04_PLAYWRIGHT_AUDIT_GATE",\n  "ci_pipeline": "GitHub Actions Matrix",\n  "e2e_suites": 20,\n  "pass_rate": "100%",\n  "high_cves": 0\n}`,
+    icon: CheckCircle2,
+  },
+  {
+    id: "research",
+    step: "STAGE 05",
+    title: "ACM Benchmarking & Feedback",
+    subtitle: "Peer-Reviewed Empirical Telemetry",
+    badge: "2x ACM PAPERS",
+    summary:
+      "Production insights feed back into empirical research benchmarks — including TakeoverBench and YOLOv8 driver supervision published at ACM AutomotiveUI '26.",
+    contract: `{\n  "stage": "05_EMPIRICAL_BENCHMARK_LOOP",\n  "venue": "ACM AutomotiveUI Adjunct '26 (Sweden)",\n  "dois": [\n    "10.1145/3828158.3833210",\n    "10.1145/3828158.3834806"\n  ],\n  "feedback_loop": "CLOSED_LOOP_ACTIVE"\n}`,
+    icon: Sparkles,
+  },
+];
 
 export function ArchitectureLoopSection() {
-  const [activeStep, setActiveStep] = useState<number | null>(null);
-
-  const STEPS = [
-    { name: "REQUIREMENTS", desc: "Pergas client workflows & PDPA constraints", angle: 270 },
-    { name: "ARCHITECTURE", desc: "Single-domain Next.js SSR + server-side RBAC", angle: 345 },
-    { name: "VERIFICATION", desc: "Playwright 20/20 regression suites (100% pass)", angle: 55 },
-    { name: "DEPLOYMENT", desc: "Supabase PostgreSQL + Zoho event APIs", angle: 125 },
-    { name: "KNOWLEDGE", desc: "TakeoverBench & ACM research benchmarks", angle: 195 },
-  ];
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const activeStage = PIPELINE_STAGES[selectedIdx];
 
   return (
     <div className="w-full">
-      {/* Section Header: Merging Tabayyun Philosophy with Verified Engineering */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
+      {/* Clean Section Header */}
+      <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/80 dark:border-white/[0.08] text-xs font-mono">
+        <div className="flex items-center gap-2.5">
+          <span className="text-cobalt font-bold">02 / 06</span>
+          <span className="text-slate-400">·</span>
+          <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
+            Philosophy in Practice
+          </span>
+        </div>
+        <span className="text-slate-400 dark:text-slate-500 hidden sm:inline">
+          CLOSED-LOOP VERIFICATION ARCHITECTURE
+        </span>
+      </div>
+
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <div className="flex items-center gap-3 mb-2.5">
-            <span className="w-8 h-0.5 bg-cobalt" />
-            <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
-              02 // PHILOSOPHY IN PRACTICE
-            </span>
-          </div>
           <h2 className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white">
             Tabayyun (تَبَيَّنُوا): Continuous Verification.
           </h2>
         </div>
         <div className="max-w-md">
-          <p className="text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Rooted in <strong className="text-slate-900 dark:text-white">Al-Hujurat 49:6</strong> — the
-            mandate to investigate and verify before accepting. In software engineering, this means
-            zero blind trust in client inputs, deterministic regression testing, and PDPA privacy compliance.
+            mandate to investigate and verify before accepting. Click any stage in the pipeline below to inspect how untrusted inputs are verified end-to-end.
           </p>
         </div>
       </div>
 
-      {/* Main 3-Column Diagram Stage */}
-      <div className="rounded-3xl bg-white dark:bg-[#111622] border border-slate-200/90 dark:border-white/[0.08] p-5 sm:p-8 lg:p-10 shadow-[0_10px_40px_-10px_rgba(15,23,42,0.06)] dark:shadow-[0_16px_50px_rgba(0,0,0,0.5)]">
-        {/* Unified Top Header Baseline for all 3 columns */}
-        <div className="hidden lg:grid grid-cols-12 gap-8 border-b border-slate-200/80 dark:border-white/[0.06] pb-3 mb-6">
-          <div className="col-span-4">
-            <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
-              01 — ACTORS (CLIENT &amp; USERS)
-            </span>
+      {/* Decision #3: Interactive SVG Pipeline Schematic + Live Contract Inspector */}
+      <div className="rounded-3xl bg-white dark:bg-[#101520] border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] space-y-8">
+        {/* SVG Connected Pipeline Nodes */}
+        <div className="relative">
+          {/* Desktop Horizontal SVG Connector Line with Animated Data Pulse */}
+          <div className="hidden lg:block absolute top-1/2 left-8 right-8 -translate-y-1/2 h-[2px] bg-slate-200 dark:bg-white/[0.08] pointer-events-none z-0">
+            <div
+              className="h-full bg-gradient-to-r from-cobalt via-emerald-400 to-cobalt transition-all duration-500"
+              style={{ width: `${((selectedIdx + 1) / PIPELINE_STAGES.length) * 100}%` }}
+            />
           </div>
-          <div className="col-span-5 text-center">
-            <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
-              02 — TABAYYUN OPERATING LOOP
-            </span>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 relative z-10">
+            {PIPELINE_STAGES.map((stage, idx) => {
+              const Icon = stage.icon;
+              const isSelected = idx === selectedIdx;
+
+              return (
+                <button
+                  key={stage.id}
+                  onClick={() => setSelectedIdx(idx)}
+                  className={`text-left p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between min-h-[128px] ${
+                    isSelected
+                      ? "bg-white dark:bg-[#161F30] border-cobalt shadow-lg ring-2 ring-cobalt/20 -translate-y-0.5"
+                      : "bg-slate-50/90 dark:bg-[#0B0F17]/90 border-slate-200/80 dark:border-white/[0.07] hover:border-cobalt/40"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2 w-full mb-3">
+                    <span
+                      className={`text-xs font-mono font-bold ${
+                        isSelected ? "text-cobalt" : "text-slate-400 dark:text-slate-500"
+                      }`}
+                    >
+                      {stage.step}
+                    </span>
+                    <span
+                      className={`text-xs font-mono px-2 py-0.5 rounded font-semibold ${
+                        isSelected
+                          ? "bg-cobalt/15 text-cobalt"
+                          : "bg-slate-200/70 dark:bg-white/[0.05] text-slate-600 dark:text-slate-400"
+                      }`}
+                    >
+                      {stage.badge}
+                    </span>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Icon
+                        size={15}
+                        className={isSelected ? "text-cobalt shrink-0" : "text-slate-400 shrink-0"}
+                      />
+                      <h3 className="text-sm font-heading font-bold text-slate-950 dark:text-white leading-tight">
+                        {stage.title}
+                      </h3>
+                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                      {stage.subtitle}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
-          <div className="col-span-3">
-            <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
-              03 — ACCUMULATION (COMPOUNDING)
+
+          {/* Closed-Loop Return Vector Path (SVG) */}
+          <div className="hidden lg:flex items-center justify-between px-6 pt-4 text-xs font-mono text-slate-400 dark:text-slate-500">
+            <span>┌── CLOSED-LOOP EMPIRICAL FEEDBACK (AL-HUJURAT 49:6 VERIFICATION)</span>
+            <span className="text-cobalt font-semibold">
+              ACTIVE NODE: {activeStage.step} ({activeStage.title.toUpperCase()}) ──┘
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Column 1: 01 — ACTORS (4 cols) */}
-          <div className="lg:col-span-4 flex flex-col space-y-4">
-            <div className="lg:hidden border-b border-slate-200/80 dark:border-white/[0.06] pb-2 mb-2">
-              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
-                01 — ACTORS
-              </span>
+        {/* Selected Stage Details + Live Telemetry Contract */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-4 border-t border-slate-100 dark:border-white/[0.06]">
+          <div className="lg:col-span-6 space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-cobalt font-bold uppercase">
+              <span>{activeStage.step} SPECIFICATION</span>
+              <span>·</span>
+              <span>{activeStage.subtitle}</span>
             </div>
-
-            {/* Actor 1: Who Builds */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] flex items-start gap-3.5 hover:border-cobalt/40 transition-colors">
-              <div className="shrink-0 pt-0.5 text-cobalt">
-                {/* 8-bit Robot */}
-                <svg viewBox="0 0 14 14" shapeRendering="crispEdges" className="w-7 h-7">
-                  <rect x="6" y="0" width="2" height="2" fill="currentColor" />
-                  <rect x="3" y="2" width="8" height="5" fill="currentColor" />
-                  <rect x="4" y="3" width="2" height="2" fill="#FFFFFF" />
-                  <rect x="8" y="3" width="2" height="2" fill="#FFFFFF" />
-                  <rect x="2" y="7" width="10" height="4" fill="currentColor" />
-                  <rect x="3" y="11" width="3" height="3" fill="currentColor" />
-                  <rect x="8" y="11" width="3" height="3" fill="currentColor" />
-                </svg>
-              </div>
-              <div>
-                <h4 className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
-                  Who builds
-                </h4>
-                <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
-                  Systems &amp; Software Engineer
-                </p>
-                <span className="text-[11px] text-slate-600 dark:text-slate-300 block mt-1 leading-snug">
-                  Next.js App Router, Supabase (PostgreSQL), Playwright, C#/.NET Core.
-                </span>
-              </div>
-            </div>
-
-            {/* Actor 2: Who Decides */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] flex items-start gap-3.5 hover:border-cobalt/40 transition-colors">
-              <div className="shrink-0 pt-0.5 text-emerald-500">
-                {/* 8-bit Leader */}
-                <svg viewBox="0 0 14 14" shapeRendering="crispEdges" className="w-7 h-7">
-                  <rect x="4" y="1" width="6" height="5" fill="currentColor" />
-                  <rect x="5" y="3" width="1" height="1" fill="#FFFFFF" />
-                  <rect x="8" y="3" width="1" height="1" fill="#FFFFFF" />
-                  <rect x="2" y="6" width="10" height="5" fill="currentColor" />
-                  <rect x="4" y="11" width="2" height="3" fill="currentColor" />
-                  <rect x="8" y="11" width="2" height="3" fill="currentColor" />
-                </svg>
-              </div>
-              <div>
-                <h4 className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
-                  Who decides
-                </h4>
-                <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
-                  Real Clients &amp; Partners
-                </p>
-                <span className="text-[11px] text-slate-600 dark:text-slate-300 block mt-1 leading-snug">
-                  Pergas (Singapore NGO), Enterprise ESG Stakeholders, Academic PIs.
-                </span>
-              </div>
-            </div>
-
-            {/* Actor 3: Who Uses */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] flex items-start gap-3.5 hover:border-cobalt/40 transition-colors">
-              <div className="shrink-0 pt-0.5 text-amber-500">
-                {/* 8-bit Users */}
-                <svg viewBox="0 0 16 14" shapeRendering="crispEdges" className="w-7 h-7">
-                  <rect x="2" y="2" width="4" height="4" fill="currentColor" />
-                  <rect x="1" y="6" width="6" height="6" fill="currentColor" />
-                  <rect x="10" y="2" width="4" height="4" fill="currentColor" />
-                  <rect x="9" y="6" width="6" height="6" fill="currentColor" />
-                </svg>
-              </div>
-              <div>
-                <h4 className="text-xs sm:text-sm font-heading font-bold text-slate-900 dark:text-white">
-                  Who uses
-                </h4>
-                <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
-                  Members &amp; Automated Systems
-                </p>
-                <span className="text-[11px] text-slate-600 dark:text-slate-300 block mt-1 leading-snug">
-                  4,000+ NGO members, community donors, and autonomous vehicle simulators.
-                </span>
-              </div>
-            </div>
+            <h4 className="text-xl sm:text-2xl font-heading font-extrabold text-slate-950 dark:text-white">
+              {activeStage.title}
+            </h4>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              {activeStage.summary}
+            </p>
           </div>
 
-          {/* Column 2: 02 — TABAYYUN OPERATING LOOP (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center my-4 lg:my-0">
-            <div className="lg:hidden w-full text-center border-b border-slate-200/80 dark:border-white/[0.06] pb-2 mb-4">
-              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
-                02 — TABAYYUN OPERATING LOOP
-              </span>
+          <div className="lg:col-span-6 rounded-2xl bg-[#0B0F17] border border-slate-800 p-5 font-mono text-xs text-slate-200 shadow-xl">
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 text-xs">
+              <span className="text-cobalt font-bold">VERIFICATION CONTRACT // JSON</span>
+              <span className="text-emerald-400 font-semibold">{activeStage.badge}</span>
             </div>
-
-            {/* Circular Orbit Loop with Ample Radius to Prevent Overlap */}
-            <div className="relative w-[340px] sm:w-[380px] h-[340px] sm:h-[380px] flex items-center justify-center">
-              {/* Outer Dashed Orbit Ring */}
-              <div className="absolute inset-2 rounded-full border border-dashed border-slate-300 dark:border-white/20 animate-[spin_60s_linear_infinite]" />
-
-              {/* Orbiting Pulses */}
-              <div className="absolute inset-2 rounded-full animate-[spin_14s_linear_infinite] pointer-events-none">
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cobalt shadow-[0_0_12px_rgba(37,99,235,0.8)]" />
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full bg-emerald-400" />
-              </div>
-
-              {/* Central Core Box (Compact to Guarantee 0 Overlap) */}
-              <div className="relative z-10 w-32 sm:w-36 rounded-2xl bg-white dark:bg-[#141B28] border-2 border-cobalt/80 p-3 shadow-xl text-center">
-                <div className="w-5 h-5 mx-auto mb-1 rounded bg-cobalt/10 text-cobalt flex items-center justify-center">
-                  <Cpu size={12} />
-                </div>
-                <h4 className="text-[11px] font-heading font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
-                  TABAYYUN CORE
-                </h4>
-                <div className="text-[9px] font-mono text-cobalt font-semibold mt-0.5">
-                  Zero Blind Trust
-                </div>
-                <div className="text-[8px] font-mono text-slate-400 mt-1.5 pt-1.5 border-t border-slate-100 dark:border-white/10 leading-tight">
-                  PDPA · 20 Suites · Relational
-                </div>
-              </div>
-
-              {/* Orbiting Step Nodes (Well-Spaced at 160px Radius) */}
-              {STEPS.map((s, idx) => {
-                const rad = (s.angle * Math.PI) / 180;
-                const r = 158; // Generous radius ensuring pills never collide with center box
-                const x = Math.cos(rad) * r;
-                const y = Math.sin(rad) * r;
-
-                const isCurrent = activeStep === idx;
-
-                return (
-                  <div
-                    key={s.name}
-                    onMouseEnter={() => setActiveStep(idx)}
-                    onMouseLeave={() => setActiveStep(null)}
-                    className="absolute cursor-pointer transition-transform hover:scale-110 z-20"
-                    style={{
-                      transform: `translate(${x}px, ${y}px)`,
-                    }}
-                  >
-                    <div
-                      className={`px-2.5 py-1 rounded-md text-[9px] font-mono uppercase tracking-wider transition-all shadow-sm ${
-                        isCurrent
-                          ? "bg-cobalt text-white scale-105 shadow-md ring-1 ring-cobalt/40"
-                          : "bg-white dark:bg-[#161F30] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/15"
-                      }`}
-                    >
-                      {s.name}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Loop Interactive Descriptor */}
-            <div className="mt-3 text-center min-h-[20px]">
-              <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
-                {activeStep !== null
-                  ? `> ${STEPS[activeStep].desc}`
-                  : "Hover any orbit node to inspect verified pipeline stage"}
-              </span>
-            </div>
-          </div>
-
-          {/* Column 3: 03 — ACCUMULATION (3 cols) */}
-          <div className="lg:col-span-3 flex flex-col space-y-3.5">
-            <div className="lg:hidden border-b border-slate-200/80 dark:border-white/[0.06] pb-2 mb-2">
-              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-widest">
-                03 — ACCUMULATION
-              </span>
-            </div>
-
-            <div>
-              <h4 className="text-sm sm:text-base font-heading font-bold text-slate-900 dark:text-white mb-0.5">
-                It compounds every lap.
-              </h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-mono">
-                Real-client platforms and testbenches continuously harden code reliability.
-              </p>
-            </div>
-
-            {/* Stacked Laps: Lap 3 / Lap 2 / Lap 1 */}
-            <div className="space-y-2.5">
-              {/* Lap 3 */}
-              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] flex items-center justify-between hover:border-cobalt/40 transition-colors">
-                <div>
-                  <div className="text-[9px] font-mono text-cobalt font-bold uppercase">
-                    Lap 03 · Research Rigor
-                  </div>
-                  <div className="text-xs font-heading font-bold text-slate-900 dark:text-white mt-0.5">
-                    ACM AutomotiveUI &apos;26
-                  </div>
-                  <div className="text-[10px] font-mono text-slate-400">
-                    2x Peer-Reviewed Papers
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-slate-400 px-2 py-0.5 rounded bg-slate-200/50 dark:bg-white/10">
-                  L3
-                </span>
-              </div>
-
-              {/* Lap 2 */}
-              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] flex items-center justify-between hover:border-cobalt/40 transition-colors">
-                <div>
-                  <div className="text-[9px] font-mono text-cobalt font-bold uppercase">
-                    Lap 02 · Defensive Security
-                  </div>
-                  <div className="text-xs font-heading font-bold text-slate-900 dark:text-white mt-0.5">
-                    100% Playwright Pass
-                  </div>
-                  <div className="text-[10px] font-mono text-slate-400">
-                    Server-Side PDPA Scrubbing
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-slate-400 px-2 py-0.5 rounded bg-slate-200/50 dark:bg-white/10">
-                  L2
-                </span>
-              </div>
-
-              {/* Lap 1 */}
-              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#141B28] border border-slate-200/80 dark:border-white/[0.06] flex items-center justify-between hover:border-cobalt/40 transition-colors">
-                <div>
-                  <div className="text-[9px] font-mono text-cobalt font-bold uppercase">
-                    Lap 01 · Client Delivery
-                  </div>
-                  <div className="text-xs font-heading font-bold text-slate-900 dark:text-white mt-0.5">
-                    Pergas Members Platform
-                  </div>
-                  <div className="text-[10px] font-mono text-slate-400">
-                    Replaced fragmented Telegram/cards
-                  </div>
-                </div>
-                <span className="text-xs font-mono font-bold text-slate-400 px-2 py-0.5 rounded bg-slate-200/50 dark:bg-white/10">
-                  L1
-                </span>
-              </div>
-            </div>
+            <pre className="overflow-x-auto leading-relaxed text-slate-300">
+              {activeStage.contract}
+            </pre>
           </div>
         </div>
       </div>

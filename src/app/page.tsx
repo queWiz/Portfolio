@@ -48,7 +48,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#111622]/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm backdrop-blur-md"
               >
                 <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
-                <span className="text-[11px] font-mono font-semibold tracking-[0.18em] uppercase text-slate-600 dark:text-slate-300">
+                <span className="text-xs font-mono font-semibold tracking-[0.16em] uppercase text-slate-600 dark:text-slate-300">
                   Software &amp; Data Engineer · SIT Singapore
                 </span>
               </motion.div>
@@ -115,7 +115,7 @@ export default function Home() {
               >
                 <span className="magnetic-inner flex items-center gap-2">
                   <TerminalIcon size={14} className="text-cobalt" />
-                  <span>LAUNCH CLI ⌁</span>
+                  <span>LAUNCH CLI</span>
                 </span>
               </a>
 
@@ -160,29 +160,36 @@ export default function Home() {
         id="projects"
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-24 z-10"
       >
+        {/* Structural Editorial Index Bar (01 / 06) */}
+        <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/90 dark:border-white/[0.08] text-xs font-mono">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2 py-0.5 rounded bg-cobalt/10 text-cobalt font-bold border border-cobalt/20">
+              01 / 06
+            </span>
+            <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
+              Selected Systems
+            </span>
+          </div>
+          <span className="text-slate-400 dark:text-slate-500">
+            PRODUCTION ARCHITECTURES · 2024 — 2026
+          </span>
+        </div>
+
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 pb-8 border-b border-slate-200/80 dark:border-white/[0.08]">
-          <div>
-            <div className="flex items-center gap-3 mb-2.5">
-              <span className="w-8 h-0.5 bg-cobalt" />
-              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
-                SELECTED WORKS · 2024 — 2026
-              </span>
-            </div>
-            <div className="overflow-hidden pb-1 -mb-1">
-              <motion.h2
-                initial={{ y: "100%", opacity: 0 }}
-                whileInView={{ y: "0%", opacity: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
-              >
-                Engineered Systems &amp;<br />Client Platforms.
-              </motion.h2>
-            </div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+          <div className="overflow-hidden pb-1 -mb-1">
+            <motion.h2
+              initial={{ y: "100%", opacity: 0 }}
+              whileInView={{ y: "0%", opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
+            >
+              Engineered Systems &amp;<br />Client Platforms.
+            </motion.h2>
           </div>
           <p className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
-            Four production architectures delivered for real-world Singapore clients,
+            Production architectures delivered for real-world Singapore clients,
             offline-first edge devices, and event-driven data streaming.
           </p>
         </div>
@@ -201,25 +208,32 @@ export default function Home() {
         id="terminal"
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-20 z-10"
       >
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-slate-200/80 dark:border-white/[0.08]">
-          <div>
-            <div className="flex items-center gap-3 mb-2.5">
-              <span className="w-8 h-0.5 bg-cobalt" />
-              <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
-                DEVELOPER CONSOLE
-              </span>
-            </div>
-            <div className="overflow-hidden pb-1 -mb-1">
-              <motion.h2
-                initial={{ y: "100%", opacity: 0 }}
-                whileInView={{ y: "0%", opacity: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
-              >
-                Interactive Candidate Terminal.
-              </motion.h2>
-            </div>
+        {/* Structural Editorial Index Bar (03 / 06) */}
+        <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/90 dark:border-white/[0.08] text-xs font-mono">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2 py-0.5 rounded bg-cobalt/10 text-cobalt font-bold border border-cobalt/20">
+              03 / 06
+            </span>
+            <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
+              Developer Console
+            </span>
+          </div>
+          <span className="text-slate-400 dark:text-slate-500">
+            INTERACTIVE DOSSIER · CLI
+          </span>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="overflow-hidden pb-1 -mb-1">
+            <motion.h2
+              initial={{ y: "100%", opacity: 0 }}
+              whileInView={{ y: "0%", opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl sm:text-4xl font-heading font-extrabold tracking-tight text-slate-950 dark:text-white"
+            >
+              Interactive Candidate Terminal.
+            </motion.h2>
           </div>
           <p className="text-xs font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
             Direct CLI access to candidate background, stack proficiencies, target roles,
@@ -246,10 +260,18 @@ export default function Home() {
         id="honors"
         className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 pb-24 z-10"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <span className="w-8 h-0.5 bg-cobalt" />
-          <span className="text-xs font-mono text-cobalt font-bold uppercase tracking-[0.25em]">
-            CREDENTIALS &amp; DISTINCTIONS
+        {/* Structural Editorial Index Bar (06 / 06) */}
+        <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/90 dark:border-white/[0.08] text-xs font-mono">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2 py-0.5 rounded bg-cobalt/10 text-cobalt font-bold border border-cobalt/20">
+              06 / 06
+            </span>
+            <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
+              Credentials &amp; Distinctions
+            </span>
+          </div>
+          <span className="text-slate-400 dark:text-slate-500">
+            ACADEMIC HONORS &amp; CERTIFICATIONS
           </span>
         </div>
         <TrophyList />
