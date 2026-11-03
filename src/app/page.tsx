@@ -9,7 +9,7 @@ import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
 import { ApproachSection } from "@/components/ui/ApproachSection";
 import { TerminalSection } from "@/components/ui/Terminal";
 import { PublicationsSection } from "@/components/ui/PublicationsSection";
-import { TrophyList } from "@/components/ui/TrophyList";
+import { RecognitionSection } from "@/components/ui/TrophyList";
 import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
 import { AboutSection } from "@/components/ui/AboutSection";
 import { Footer } from "@/components/ui/Footer";
@@ -43,37 +43,13 @@ export default function Home() {
       {/* --- ABOUT (+ experience) --- */}
       <AboutSection />
 
-      {/* --- PEER-REVIEWED PUBLICATIONS --- */}
-      <section
-        id="publications"
-        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-16 z-10"
-      >
-        <PublicationsSection />
-      </section>
+      {/* --- RESEARCH --- */}
+      <PublicationsSection />
 
-      {/* --- HONORS & CREDENTIALS --- */}
-      <section
-        id="honors"
-        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 pb-24 z-10"
-      >
-        {/* Structural Editorial Index Bar (06 / 06) */}
-        <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/90 dark:border-white/[0.08] text-xs font-mono">
-          <div className="flex items-center gap-2.5">
-            <span className="px-2 py-0.5 rounded bg-cobalt/10 text-cobalt font-bold border border-cobalt/20">
-              06 / 06
-            </span>
-            <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
-              Credentials &amp; Distinctions
-            </span>
-          </div>
-          <span className="text-slate-400 dark:text-slate-500">
-            ACADEMIC HONORS &amp; CERTIFICATIONS
-          </span>
-        </div>
-        <TrophyList />
-      </section>
+      {/* --- RECOGNITION --- */}
+      <RecognitionSection />
 
-      {/* --- HAVU-STYLE INTERACTIVE PIXEL BREAKOUT GAME --- */}
+      {/* --- ARCADE (easter egg: click the walking engineer) --- */}
       <section className="w-full z-10">
         <PixelBreakoutGame />
       </section>

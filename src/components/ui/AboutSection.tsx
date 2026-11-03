@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { PixelPortrait } from "@/components/mascot/PixelPortrait";
@@ -16,7 +17,7 @@ const EMAIL = "ualqarni70@gmail.com";
 const HISTORY = [
   { period: "2024 — now", title: "Bachelor of ICT, Software Engineering", org: "Singapore Institute of Technology", note: "Software engineering with a focus on data and distributed systems." },
   { period: "Sep — Nov 2021", title: "Software Engineer Intern", org: "Aktus MU Kreativ", note: "Built an offline-first attendance PWA and a pricing model that raised revenue by 15%." },
-  { period: "2018 — 2021", title: "Diploma in Information Technology", org: "Nanyang Polytechnic", note: "Director's List, top 15% of the cohort." },
+  { period: "2019 — 2021", title: "Diploma in Information Technology", org: "Nanyang Polytechnic", note: "Director's List (top 15% of the cohort), with distinctions in Network Engineering and UX Design." },
 ];
 
 const SIDE = [
@@ -28,6 +29,51 @@ const SIDE = [
 const STACK = ["TypeScript", "Python", "SQL", "C#", "Next.js", "React", "FastAPI", "PostgreSQL", "Docker", "Playwright"];
 
 const UNMASK = [0.16, 1, 0.3, 1] as const;
+
+// TEST: real photo banner. Set to false to go back to the pixel-portrait banner.
+const USE_PHOTO = true;
+
+function PhotoBanner() {
+  const reduce = useReducedMotion();
+  return (
+    <div className="relative h-[460px] sm:h-[600px] overflow-hidden">
+      <motion.div
+        className="absolute inset-0"
+        // settles from a slight zoom as the card opens
+        initial={reduce ? false : { scale: 1.12 }}
+        whileInView={{ scale: 1 }}
+        viewport={VIEWPORT}
+        transition={{ duration: 1.6, ease: UNMASK }}
+      >
+        <Image
+          src="/about/uwais.webp"
+          alt="Uwais standing in front of a wall covered in colourful graffiti, wearing a black cap, glasses and a black T-shirt"
+          fill
+          sizes="(min-width: 700px) 672px, 100vw"
+          className="object-cover object-[52%_30%]"
+        />
+      </motion.div>
+    </div>
+  );
+}
+
+function PixelBanner() {
+  const reduce = useReducedMotion();
+  return (
+    <div className="group relative flex h-[240px] sm:h-[300px] items-end justify-center overflow-hidden bg-accent">
+      <div aria-hidden className="absolute bottom-[-30%] left-1/2 h-[90%] w-[70%] -translate-x-1/2 rounded-full bg-white/15 blur-3xl" />
+      <motion.div
+        initial={reduce ? false : { y: 60 }}
+        whileInView={{ y: 0 }}
+        viewport={VIEWPORT}
+        transition={{ type: "spring", stiffness: 110, damping: 16, delay: 0.5 }}
+        className="relative w-[190px] sm:w-[230px] transition-transform duration-500 ease-out group-hover:-translate-y-2"
+      >
+        <PixelPortrait className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)]" />
+      </motion.div>
+    </div>
+  );
+}
 
 function Label({ children }: { children: React.ReactNode }) {
   return <h3 className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">{children}</h3>;
@@ -54,22 +100,9 @@ export function AboutSection() {
         transition={{ duration: 1.3, ease: UNMASK }}
         className="mx-auto max-w-2xl overflow-hidden rounded-[32px] border border-line bg-surface"
       >
-        {/* Portrait banner */}
-        <div className="group relative flex h-[240px] sm:h-[300px] items-end justify-center overflow-hidden bg-accent">
-          {/* soft light behind the head */}
-          <div aria-hidden className="absolute bottom-[-30%] left-1/2 h-[90%] w-[70%] -translate-x-1/2 rounded-full bg-white/15 blur-3xl" />
-          <motion.div
-            initial={reduce ? false : { y: 60 }}
-            whileInView={{ y: 0 }}
-            viewport={VIEWPORT}
-            transition={{ type: "spring", stiffness: 110, damping: 16, delay: 0.5 }}
-            className="relative w-[190px] sm:w-[230px] transition-transform duration-500 ease-out group-hover:-translate-y-2"
-          >
-            <PixelPortrait className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)]" />
-          </motion.div>
-        </div>
+        {USE_PHOTO ? <PhotoBanner /> : <PixelBanner />}
 
-        <div className="px-6 py-9 sm:px-10 sm:py-11">
+        <div className={`relative bg-surface px-6 py-9 sm:px-10 sm:py-11 ${USE_PHOTO ? "-mt-8 rounded-t-[28px]" : ""}`}>
           <motion.p {...rise(0.2)} className="font-mono text-[12px] uppercase tracking-[0.08em] text-accent">
             About
           </motion.p>

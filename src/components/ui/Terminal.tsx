@@ -23,6 +23,7 @@ const SECTIONS: Record<string, string> = {
   experience: "about",
   research: "publications",
   honors: "honors",
+  contact: "contact",
 };
 
 const STATIC: Record<string, string> = {

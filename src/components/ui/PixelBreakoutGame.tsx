@@ -212,16 +212,14 @@ export function PixelBreakoutGame() {
   return (
     <div
       ref={arcadeRef}
-      className="w-full relative border-t border-slate-200/80 dark:border-white/[0.08] bg-slate-50/50 dark:bg-[#070A10] select-none transition-colors duration-300"
+      className="w-full relative border-t border-line select-none"
     >
       {/* Subtle baseline track indicator */}
       <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 py-5 relative flex items-center justify-between">
-        <div className="flex items-center gap-3 text-slate-400 dark:text-slate-500 font-mono text-[11px]">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="uppercase tracking-widest hidden sm:inline">
-            SYSTEM STATUS: SECURE &amp; VERIFIED
-          </span>
-          <span className="uppercase tracking-widest sm:hidden">SYS OK</span>
+        <div className="flex items-center gap-2 text-muted font-mono text-[12px]">
+          <span aria-hidden>↳</span>
+          <span className="hidden sm:inline">There&apos;s an arcade down here. Catch the little engineer.</span>
+          <span className="sm:hidden">Catch the engineer.</span>
         </div>
 
         {/* Walking Mascot Area: The Sole Trigger for Secret Arcade */}
@@ -231,7 +229,7 @@ export function PixelBreakoutGame() {
           onClick={handleMascotClick}
           role="button"
           tabIndex={0}
-          aria-label={isOpen ? "Collapse Arcade" : "Secret System Terminal"}
+          aria-label={isOpen ? "Close the arcade" : "Open the arcade"}
         >
           {/* Exclamation mark on shocked state */}
           {isShocked && (
@@ -247,7 +245,7 @@ export function PixelBreakoutGame() {
           {/* Speech Bubble on hover */}
           {!isShocked && (
             <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded bg-slate-900 text-white font-mono text-[10px] tracking-wider border border-white/20 pointer-events-none shadow-md">
-              {isOpen ? "CLICK TO COLLAPSE" : "RUN DIAGNOSTIC"}
+              {isOpen ? "Close the arcade" : "Play a game?"}
             </div>
           )}
 
@@ -263,9 +261,7 @@ export function PixelBreakoutGame() {
 
         {/* Right baseline status indicator */}
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono text-slate-400 dark:text-slate-600 tracking-widest hidden sm:inline">
-            SIT // RUNTIME: VERIFIED
-          </span>
+          <span className="hidden sm:inline font-mono text-[12px] text-muted">Breakout · Flappy</span>
         </div>
       </div>
 
