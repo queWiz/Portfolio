@@ -18,9 +18,9 @@ export const THEME_STORAGE_KEY = "portfolio-theme";
 
 /**
  * Runs in <head> before first paint so a saved dark theme never flashes light.
- * Falls back to the OS preference when nothing is stored.
+ * Light is the default; only an explicit choice (the toggle) switches to dark.
  */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}})();`;
+export const themeInitScript = `(function(){try{if(localStorage.getItem("${THEME_STORAGE_KEY}")==="dark")document.documentElement.classList.add("dark")}catch(e){}})();`;
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");

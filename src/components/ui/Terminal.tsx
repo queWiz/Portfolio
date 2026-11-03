@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useTheme } from "@/components/ThemeProvider";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { EASE_OUT, VIEWPORT, revealBlur } from "@/lib/motion";
 
 /**
@@ -20,7 +19,8 @@ const SECTIONS: Record<string, string> = {
   home: "home",
   work: "projects",
   "how-i-work": "approach",
-  experience: "experience",
+  about: "about",
+  experience: "about",
   research: "publications",
   honors: "honors",
 };
@@ -65,7 +65,7 @@ github    https://github.com/queWiz
           https://github.com/ooWise
 linkedin  https://linkedin.com/in/ualqarni
 I usually reply within a day (SGT, UTC+8).`,
-  ls: `work/  how-i-work/  experience/  research/  honors/  resume.pdf`,
+  ls: `work/  how-i-work/  about/  research/  honors/  resume.pdf`,
   whoami: `You're a visitor. I'm Uwais. Nice to meet you.`,
 };
 
@@ -323,18 +323,17 @@ export function InteractiveTerminal() {
 export function TerminalSection() {
   return (
     <section id="terminal" className="w-full max-w-6xl px-5 sm:px-10 lg:px-0 pt-28 pb-24 scroll-mt-20">
-      <SectionHeader
-        index="03"
-        eyebrow="Terminal"
-        title="Prefer a shell?"
-        titleMuted="Everything here works from the command line too."
-        aside={
-          <>
-            Type <code className="font-mono text-ink">help</code>, or tap a command. <kbd className="font-mono text-ink">↑</kbd>/<kbd className="font-mono text-ink">↓</kbd> recall history,{" "}
-            <kbd className="font-mono text-ink">Tab</kbd> completes, and <code className="font-mono text-ink">cd work</code> jumps around the page.
-          </>
-        }
-      />
+      <div className="mx-auto mb-10 max-w-xl text-center">
+        <motion.p initial="hidden" whileInView="show" viewport={VIEWPORT} variants={revealBlur(0)} className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">
+          Terminal
+        </motion.p>
+        <motion.h2 initial="hidden" whileInView="show" viewport={VIEWPORT} variants={revealBlur(0.1)} className="mt-3 text-[2.25rem] leading-[1.05] sm:text-[3rem] font-semibold tracking-[-0.04em] text-ink">
+          Prefer a shell?
+        </motion.h2>
+        <motion.p initial="hidden" whileInView="show" viewport={VIEWPORT} variants={revealBlur(0.2)} className="mt-3 text-[15px] leading-relaxed text-ink-2">
+          Everything on this page works from the command line too. Try <code className="font-mono text-ink">help</code> or <code className="font-mono text-ink">cd about</code>.
+        </motion.p>
+      </div>
       <motion.div initial="hidden" whileInView="show" viewport={VIEWPORT} variants={revealBlur(0.1)}>
         <InteractiveTerminal />
       </motion.div>

@@ -2,7 +2,8 @@
 
 import { TopNavbar } from "@/components/ui/LayoutFeatures";
 import { Hero } from "@/components/ui/Hero";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { WorkHeader } from "@/components/ui/WorkHeader";
+import { PROJECTS } from "@/components/projects/data";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
 import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
 import { ApproachSection } from "@/components/ui/ApproachSection";
@@ -10,7 +11,7 @@ import { TerminalSection } from "@/components/ui/Terminal";
 import { PublicationsSection } from "@/components/ui/PublicationsSection";
 import { TrophyList } from "@/components/ui/TrophyList";
 import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
-import { HavuExperienceSection } from "@/components/ui/HavuExperienceSection";
+import { AboutSection } from "@/components/ui/AboutSection";
 import { Footer } from "@/components/ui/Footer";
 
 export default function Home() {
@@ -28,13 +29,7 @@ export default function Home() {
 
       {/* --- WORK --- */}
       <section id="projects" className="w-full max-w-6xl px-5 sm:px-10 lg:px-0 pt-28 pb-24 scroll-mt-20">
-        <SectionHeader
-          index="01"
-          eyebrow="Work"
-          title="Selected work,"
-          titleMuted="from client platforms to on-device AI."
-          aside={<>Five projects from the last two years, from real screens to small interactive sketches. Open any card for the full story.</>}
-        />
+        <WorkHeader count={PROJECTS.length} />
 
         <ProjectShowcase />
       </section>
@@ -45,8 +40,8 @@ export default function Home() {
       {/* --- TERMINAL --- */}
       <TerminalSection />
 
-      {/* --- HAVU-STYLE STICKY EXPERIENCE TIMELINE & LIVE ACTIVITY --- */}
-      <HavuExperienceSection />
+      {/* --- ABOUT (+ experience) --- */}
+      <AboutSection />
 
       {/* --- PEER-REVIEWED PUBLICATIONS --- */}
       <section

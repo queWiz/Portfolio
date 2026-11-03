@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Amiri, Geist, Geist_Mono } from "next/font/google";
+import { Amiri, Geist, Geist_Mono, Mrs_Saint_Delafield, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
 
@@ -20,6 +20,10 @@ const amiri = Amiri({
   variable: "--font-arabic",
   preload: false,
 });
+
+// PARKED: pixel vs signature name treatment; remove the unused font once decided.
+const pixel = Pixelify_Sans({ subsets: ["latin"], weight: ["600"], variable: "--font-pixel", preload: false });
+const signature = Mrs_Saint_Delafield({ subsets: ["latin"], weight: ["400"], variable: "--font-signature", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-indol-eight-45.vercel.app"),
@@ -49,7 +53,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className={`${geist.variable} ${geistMono.variable} ${amiri.variable} font-sans antialiased`}>
+      <body className={`${geist.variable} ${geistMono.variable} ${amiri.variable} ${pixel.variable} ${signature.variable} font-sans antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

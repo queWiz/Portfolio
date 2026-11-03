@@ -8,7 +8,7 @@ import { EASE_OUT } from "@/lib/motion";
 
 const LINKS = [
   { href: "#projects", label: "Work" },
-  { href: "#experience", label: "Experience" },
+  { href: "#about", label: "About" },
   { href: "#publications", label: "Research", hideOnPhone: true },
   { href: "#terminal", label: "Terminal", desktopOnly: true },
 ] as { href: string; label: string; hideOnPhone?: boolean; desktopOnly?: boolean }[];

@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { EASE_OUT, VIEWPORT, revealBlur } from "@/lib/motion";
 
 /**
@@ -36,12 +35,11 @@ export function ApproachSection() {
 
   return (
     <section id="approach" className="w-full max-w-6xl px-5 sm:px-10 lg:px-0 pt-28 pb-24 scroll-mt-20">
-      <SectionHeader index="02" eyebrow="How I work" title="Verify before you trust," titleMuted="the one principle behind what I build." />
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         {/* The word, pinned while the principles scroll past */}
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
+            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">How I work</p>
             <motion.p
               lang="ar"
               dir="rtl"
@@ -70,7 +68,17 @@ export function ApproachSection() {
         </div>
 
         {/* Principles */}
-        <ol className="lg:col-span-7 border-t border-line">
+        <div className="lg:col-span-7">
+        <motion.h2
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          variants={revealBlur(0.2)}
+          className="mb-10 text-[2.25rem] leading-[1.02] sm:text-[3.25rem] font-semibold tracking-[-0.04em] text-ink"
+        >
+          Verify before you trust.
+        </motion.h2>
+        <ol className="border-t border-line">
           {PRINCIPLES.map((p, i) => (
             <motion.li
               key={p.title}
@@ -102,6 +110,7 @@ export function ApproachSection() {
             </motion.li>
           ))}
         </ol>
+        </div>
       </div>
     </section>
   );

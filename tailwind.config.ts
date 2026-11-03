@@ -58,6 +58,8 @@ const config: Config = {
         heading: ["var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
         arabic: ["var(--font-arabic)", "serif"],
+        pixel: ["var(--font-pixel)", "monospace"],
+        signature: ["var(--font-signature)", "cursive"],
       },
       transitionTimingFunction: {
         out: "cubic-bezier(0.22, 1, 0.36, 1)",

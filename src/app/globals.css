@@ -147,33 +147,8 @@ body {
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: rgb(var(--muted));
 }
 
-/* ==========================================================================
-   HAVU ZERO-LAG MOTION SYSTEM
-   Strictly composite-only properties (transform, opacity). Zero reflow.
-   ========================================================================== */
-
-/* 1. Shift-to-Right + Sibling Dimming (CSS :has() / pure CSS) */
-@media (hover: hover) and (pointer: fine) {
-  .sibling-focus-group:hover > .sibling-item:not(:hover) {
-    opacity: 0.45;
-    filter: grayscale(25%);
-    transform: scale(0.995);
-    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-                filter 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .sibling-item {
-    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-                filter 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-  }
-  .sibling-item:hover {
-    opacity: 1;
-    transform: translate3d(6px, 0, 0);
-  }
-}
+/* Terminal-style block cursor */
+@keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
