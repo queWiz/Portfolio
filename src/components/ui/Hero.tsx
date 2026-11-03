@@ -3,8 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { RevealText } from "@/components/motion/RevealText";
-import { HeroPixelBaseline, HeroPixelDrone } from "@/components/ui/HeroPixelStage";
+import { HeroPixelBaseline } from "@/components/ui/HeroPixelStage";
 import { revealBlur } from "@/lib/motion";
+import { BadgeMascot } from "@/components/mascot/Mascots";
+
 
 const EMAIL = "ualqarni70@gmail.com";
 
@@ -27,7 +29,7 @@ export function Hero() {
       id="home"
       className="relative w-full min-h-[92svh] flex flex-col pt-28 sm:pt-32 pb-8 px-5 sm:px-10 lg:px-16 isolate"
     >
-      {/* One soft warm glow behind the drone; the paper grain does the rest. */}
+      {/* One soft warm glow behind the badge; the paper grain does the rest. */}
       <div
         aria-hidden
         className="absolute right-[8%] top-[22%] -z-10 h-[420px] w-[520px] rounded-full bg-accent/[0.045] dark:bg-accent/[0.03] blur-3xl pointer-events-none"
@@ -99,7 +101,7 @@ export function Hero() {
         </div>
 
         <div className="lg:col-span-4">
-          <HeroPixelDrone />
+          <BadgeMascot />
         </div>
       </div>
 

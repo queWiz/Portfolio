@@ -40,5 +40,3 @@ export const revealBlur = (delay = 0): Variants => ({
   show: { opacity: 1, y: 0, filter: "blur(0px)", transition: revealTransition(delay) },
 });
 
-/** Springy settle used for physical objects (the drone, draggable bits). */
-export const SPRING_SOFT = { type: "spring", stiffness: 140, damping: 14, mass: 0.9 } as const;

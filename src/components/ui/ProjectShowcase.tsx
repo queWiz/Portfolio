@@ -1,1076 +1,256 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  ShieldCheck,
-  Cpu,
-  Github,
-  Play,
-  CheckCircle2,
-  Zap,
-  Activity,
-  ArrowUpRight,
-  Monitor,
-  Smartphone,
-  Layers,
-  LayoutGrid,
-  Database,
-  Lock,
-  Sparkles,
-} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Github, X } from "lucide-react";
+import { PROJECTS, type Project } from "@/components/projects/data";
+import { ProjectMockup } from "@/components/projects/ProjectMockups";
+import { ProjectShots, layoutOf } from "@/components/projects/ProjectVisual";
+import { EASE_OUT, VIEWPORT } from "@/lib/motion";
 
-interface ProjectData {
-  num: string;
-  id: string;
-  title: string;
-  tagline: string;
-  role: string;
-  client: string;
-  year: string;
-  domain: string;
-  tags: string[];
-  metrics: { label: string; value: string }[];
-  overview: string;
-  bulletPoints: string[];
-  githubUrl?: string;
-  demoUrl?: string;
-}
-
-const PROJECTS: ProjectData[] = [
-  {
-    num: "01",
-    id: "pergas",
-    title: "Pergas Members Platform",
-    tagline: "Enterprise Member & Admin Digital Platform",
-    role: "Lead Technical Delivery",
-    client: "Pergas (Singapore NGO)",
-    year: "2026",
-    domain: "pergas.org.sg",
-    tags: ["Next.js (App Router)", "Supabase", "PostgreSQL", "Playwright", "PDPA"],
-    metrics: [
-      { label: "Regression Pass", value: "100% (20 Suites)" },
-      { label: "Relational Schema", value: "10+ Tables" },
-      { label: "Data Compliance", value: "Server-side PDPA" },
-      { label: "Architecture", value: "SSR + RBAC" },
-    ],
-    overview:
-      "Led technical delivery for Pergas, a registered Singapore NGO, replacing fragmented Telegram, email, and physical card workflows with a unified, high-integrity digital platform.",
-    bulletPoints: [
-      "Architected full-stack Member and Admin portals on a single domain using Next.js App Router with server-side Role-Based Access Control (RBAC).",
-      "Integrated Zoho Backstage and Google Maps APIs for event registration, ticketing, and merchant discovery.",
-      "Designed and deployed a relational Supabase (PostgreSQL) schema spanning 10+ interconnected tables, enforcing data integrity across tiers.",
-      "Authored a Playwright test suite achieving 100% pass rate across 20 regression scenarios; implemented server-side NRIC scrubbing for PDPA compliance.",
-    ],
-    githubUrl: "https://github.com/queWiz/Pergas-Members-Integrated-System",
-  },
-  {
-    num: "02",
-    id: "cleanbrilliant",
-    title: "Clean Brilliant Carbon Analytics",
-    tagline: "Layout Persistence & Enterprise Analytics Engine",
-    role: "Backend & Systems Architect",
-    client: "Enterprise Carbon Reporting",
-    year: "2025",
-    domain: "cleanbrilliant.carbon.io",
-    tags: ["C# / .NET Core", "ASP.NET Core", "PostgreSQL", "JSONB", "Table Data Gateway"],
-    metrics: [
-      { label: "Architecture", value: "BCE Pattern" },
-      { label: "Schema", value: "Relational + JSONB" },
-      { label: "Security", value: "Parameterized SQL" },
-      { label: "State Model", value: "Unit of Work" },
-    ],
-    overview:
-      "Built the Dashboard Customization & Layout Persistence Engine for an enterprise C#/.NET web application, applying Table Data Gateway and Unit of Work patterns against PostgreSQL.",
-    bulletPoints: [
-      "Designed a hybrid relational + JSONB schema to persist flexible, schema-less dashboard layouts with full ACID transactional integrity.",
-      "Developed complete layout lifecycle logic (add, remove, reorder, auto-pack widgets) using Strategy, Builder, and Serialization design patterns.",
-      "Implemented parameterized ADO.NET/Npgsql queries to eliminate SQL injection risks across high-concurrency analytical reads.",
-      "Built MVC controller endpoints including a drag-and-drop reordering API consuming dynamic JSON payloads in ASP.NET Core.",
-    ],
-    githubUrl: "https://github.com/queWiz",
-  },
-  {
-    num: "03",
-    id: "codex",
-    title: "Codex Multimodal RAG Engine",
-    tagline: "AI Video Knowledge & Semantic Q&A Platform",
-    role: "AI & Systems Engineer",
-    client: "AI Video Intelligence Lab",
-    year: "2026",
-    domain: "codex-rag.internal",
-    tags: ["Python", "FastAPI", "Gemini API", "pgvector", "PostgreSQL", "AWS S3"],
-    metrics: [
-      { label: "Search Infra", value: "pgvector HNSW" },
-      { label: "Cost Delta", value: "-30% DB Overhead" },
-      { label: "Concurrency", value: "Async FastAPI" },
-      { label: "Multimodal", value: "Gemini Vision" },
-    ],
-    overview:
-      "Architected a multimodal Retrieval-Augmented Generation (RAG) pipeline using the Gemini API and pgvector embeddings for semantic insight extraction across video, audio, and documents.",
-    bulletPoints: [
-      "Tuned the chunking, embedding, and vector search retrieval pipeline through iterative experimentation to maximize semantic-search relevance.",
-      "Developed a fault-tolerant asynchronous FastAPI backend with lazy database connections to prevent timeouts during large video chunking.",
-      "Deployed pipeline with AWS S3 for media storage, cutting database infrastructure costs by 30% through optimized storage tiering.",
-      "Supported Q&A-style precise timestamp retrieval across hour-long video files with multimodal context verification.",
-    ],
-    githubUrl: "https://github.com/queWiz",
-  },
-  {
-    num: "04",
-    id: "bidforgood",
-    title: "BidForGood Defensive Auction",
-    tagline: "Secure Real-Time Auction & Concurrency Engine",
-    role: "Full-Stack Security Lead",
-    client: "Community Charity Platform",
-    year: "2026",
-    domain: "bidforgood.charity.sg",
-    tags: ["TypeScript", "Node.js", "PostgreSQL", "GitHub Actions CI/CD", "CSRF"],
-    metrics: [
-      { label: "CI/CD Pipeline", value: "GitHub Actions CI" },
-      { label: "Defense In-Depth", value: "CSRF & SQLi Proof" },
-      { label: "Concurrency", value: "ACID Safe Locks" },
-      { label: "Security Audit", value: "Zero High CVEs" },
-    ],
-    overview:
-      "A defensive charity auction application engineered to guarantee transactional integrity during high-frequency concurrent bidding while shielding against web attack vectors.",
-    bulletPoints: [
-      "Engineered automated GitHub Actions CI/CD pipelines enforcing linting, secret scanning, and regression tests on every pull request.",
-      "Implemented strict defensive SQL parameterization and anti-CSRF token handshakes to block injection and cross-site forgery exploits.",
-      "Designed pessimistic locking mechanisms in PostgreSQL to eliminate race conditions during split-second auction bid increments.",
-      "Hardened API endpoints with rate limiters and session verification middleware to prevent automated bidding bots.",
-    ],
-    githubUrl: "https://github.com/queWiz/BidForGood",
-  },
-  {
-    num: "05",
-    id: "tabayyun",
-    title: "Tabayyun Hybrid AI Food Scanner",
-    tagline: "Zero-Egress In-Browser Vision & OCR Verification",
-    role: "Solo Architect",
-    client: "Edge AI / Computer Vision",
-    year: "2025",
-    domain: "tabayyun-edge.app",
-    tags: ["WebAssembly (WASM)", "TensorFlow.js", "YOLOv8n", "Tesseract.js OCR"],
-    metrics: [
-      { label: "Network Egress", value: "0 Bytes (Offline)" },
-      { label: "Inference Latency", value: "<150ms WASM" },
-      { label: "Accuracy", value: "90% Ground-Truth" },
-      { label: "Privacy SLA", value: "100% On-Device" },
-    ],
-    overview:
-      "A hybrid computer-vision pipeline combining YOLOv8n object detection with Tesseract.js OCR, compiled to WebAssembly for real-time, on-device inference in an offline-first PWA.",
-    bulletPoints: [
-      "Optimized model inference performance on mobile hardware through dynamic resolution scaling, drastically reducing RAM overhead and iOS crash rates.",
-      "Designed and evaluated a custom heuristic post-processing algorithm to correct OCR errors, iteratively testing against ground-truth labels to achieve 90% accuracy.",
-      "Engineered an offline-first Progressive Web App architecture with zero telemetry, ensuring complete on-device privacy.",
-      "Sub-150ms inference times on commodity consumer hardware without requiring dedicated cloud GPU acceleration.",
-    ],
-    githubUrl: "https://github.com/queWiz",
-  },
-];
-
-const SLIDE_DURATION = 7500;
+/** Leo-style unmask: the card opens out of an inset clip while rising. */
+const UNMASK_EASE = [0.16, 1, 0.3, 1] as const;
 
 export function ProjectShowcase() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  // Decision #1: Interactive Architecture Simulator is now the DEFAULT hero visual!
-  const [rightMode, setRightMode] = useState<"simulator" | "desktop" | "mobile">("simulator");
-  const [viewLayout, setViewLayout] = useState<"carousel" | "stacked">("carousel");
+  const [open, setOpen] = useState<Project | null>(null);
+  const opener = useRef<HTMLElement | null>(null);
 
-  const currentProject = PROJECTS[currentIndex];
+  const show = (p: Project, el: HTMLElement) => {
+    opener.current = el;
+    setOpen(p);
+  };
+  const close = useCallback(() => {
+    setOpen(null);
+    // Return focus to the card that opened the dialog.
+    requestAnimationFrame(() => opener.current?.focus());
+  }, []);
+
+  const [featured, ...rest] = PROJECTS;
+
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-14">
+        <ProjectCard project={featured} order={0} featured onOpen={show} />
+        {rest.map((p, i) => (
+          <ProjectCard key={p.id} project={p} order={i + 1} onOpen={show} />
+        ))}
+      </div>
+
+      <AnimatePresence>{open && <CaseStudy project={open} onClose={close} />}</AnimatePresence>
+    </>
+  );
+}
+
+function ProjectCard({
+  project,
+  order,
+  featured,
+  onOpen,
+}: {
+  project: Project;
+  order: number;
+  featured?: boolean;
+  onOpen: (p: Project, el: HTMLElement) => void;
+}) {
+  const reduce = useReducedMotion();
+  // Cards in the same row start a beat apart.
+  const delay = featured ? 0 : ((order - 1) % 2) * 0.12;
+
+  return (
+    <article className={`group/card ${featured ? "md:col-span-2" : ""}`}>
+      <motion.div
+        initial={reduce ? false : { clipPath: "inset(14% 7% 0% 7% round 28px)", y: 56, opacity: 0 }}
+        whileInView={{ clipPath: "inset(0% 0% 0% 0% round 28px)", y: 0, opacity: 1 }}
+        viewport={VIEWPORT}
+        transition={{ duration: 1.3, ease: UNMASK_EASE, delay }}
+        style={{ background: project.tint }}
+        className={`relative overflow-hidden rounded-[28px] border border-line/60 ${panelPadding(project, featured)}`}
+      >
+        <Visual project={project} featured={featured} />
+      </motion.div>
+
+      <motion.button
+        type="button"
+        onClick={(e) => onOpen(project, e.currentTarget)}
+        initial={reduce ? false : { opacity: 0, y: 12, filter: "blur(6px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={VIEWPORT}
+        transition={{ duration: 0.8, ease: EASE_OUT, delay: delay + 0.35 }}
+        className={`group mt-5 w-full text-left rounded-2xl ${featured ? "md:grid md:grid-cols-12 md:gap-6" : ""}`}
+        aria-haspopup="dialog"
+      >
+        <div className={featured ? "md:col-span-5" : undefined}>
+          <div className="flex items-baseline justify-between gap-4">
+            <h3 className="text-xl sm:text-2xl font-semibold tracking-[-0.025em] text-ink">{project.title}</h3>
+            <span className="shrink-0 font-mono text-[12px] text-muted">{project.year}</span>
+          </div>
+          <p className="mt-1 font-mono text-[12px] text-muted">{project.kind}</p>
+        </div>
+        <div className={featured ? "md:col-span-7" : undefined}>
+          <p className={`text-[15px] leading-relaxed text-ink-2 ${featured ? "mt-3 md:mt-1" : "mt-3"}`}>{project.summary}</p>
+          <span className="mt-3 inline-flex items-center gap-1 text-[14px] font-medium text-ink">
+            <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 ease-out group-hover:bg-[length:100%_1px] group-focus-visible:bg-[length:100%_1px]">
+              Read case study
+            </span>
+            <ArrowUpRight size={15} className="text-muted transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </span>
+        </div>
+      </motion.button>
+    </article>
+  );
+}
+
+function CaseStudy({ project, onClose }: { project: Project; onClose: () => void }) {
+  const closeBtn = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isPaused || viewLayout === "stacked") return;
-
-    const timer = setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % PROJECTS.length);
-    }, SLIDE_DURATION);
-
-    return () => clearTimeout(timer);
-  }, [currentIndex, isPaused, viewLayout]);
-
-  const selectProject = (index: number) => {
-    setCurrentIndex(index);
-  };
+    closeBtn.current?.focus();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      // Keep Tab inside the dialog.
+      if (e.key === "Tab" && panel.current) {
+        const f = panel.current.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])');
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
 
   return (
-    <div
-      className="w-full flex flex-col gap-6"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+    <motion.div
+      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center sm:p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
     >
-      {/* View Switcher Controller */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-1 mb-1">
-        <div className="flex items-center gap-2.5">
-          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">
-            {viewLayout === "carousel"
-              ? `Showing Case Study ${currentProject.num} of 05`
-              : "All 5 Case Studies — Cascading Depth"}
-          </span>
-        </div>
-
-        <div className="inline-flex items-center p-1 rounded-xl bg-slate-200/60 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/[0.07] text-xs font-mono">
+      <button aria-label="Close case study" tabIndex={-1} onClick={onClose} className="absolute inset-0 bg-black/35 dark:bg-black/60 backdrop-blur-sm cursor-default" />
+      <motion.div
+        ref={panel}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`cs-${project.id}`}
+        initial={{ y: 48, opacity: 0, scale: 0.98 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 32, opacity: 0, scale: 0.98 }}
+        transition={{ type: "spring", stiffness: 260, damping: 30 }}
+        className="relative w-full sm:max-w-3xl overflow-hidden rounded-t-[28px] sm:rounded-[28px] border border-line bg-surface shadow-2xl"
+      >
+        {/* The rounded shell clips; this inner layer scrolls, so the scrollbar never crosses the corners. */}
+        <div className="case-scroll max-h-[92svh] overflow-y-auto overscroll-contain">
+        <div className={`relative overflow-hidden ${layoutOf(project) === "phone" ? "px-5 pt-10 sm:px-12" : "px-5 py-10 sm:px-12"}`} style={{ background: project.tint }}>
           <button
-            onClick={() => setViewLayout("carousel")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
-              viewLayout === "carousel"
-                ? "bg-surface dark:bg-surface text-slate-900 dark:text-white shadow-sm"
-                : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
-            }`}
+            ref={closeBtn}
+            onClick={onClose}
+            aria-label="Close"
+            className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-surface/80 text-ink-2 backdrop-blur transition-colors hover:text-ink"
           >
-            <LayoutGrid size={12} />
-            <span>Interactive Stage</span>
+            <X size={16} />
           </button>
-          <button
-            onClick={() => setViewLayout("stacked")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all ${
-              viewLayout === "stacked"
-                ? "bg-surface dark:bg-surface text-slate-900 dark:text-white shadow-sm"
-                : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
-            }`}
-          >
-            <Layers size={12} />
-            <span>Stacked Deep-Dive</span>
-          </button>
-        </div>
-      </div>
-
-      {viewLayout === "stacked" ? (
-        /* ==============================================================
-           STACKING STICKY SECTIONS DEEP-DIVE
-           Clean, breathing elevated surfaces with live simulators mounted
-           ============================================================== */
-        <div className="w-full flex flex-col gap-10 relative pb-10">
-          {PROJECTS.map((proj, idx) => (
-            <div
-              key={proj.id}
-              style={{
-                top: `calc(5rem + ${idx * 20}px)`,
-                zIndex: idx + 5,
-              }}
-              className="sticky w-full rounded-3xl bg-surface/95 dark:bg-surface/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.07)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.65)] transition-all duration-300"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                {/* Left Column: Open Editorial Narrative */}
-                <div className="lg:col-span-6 flex flex-col justify-between gap-6">
-                  <div>
-                    <div className="flex items-center gap-3 text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
-                      <span className="font-bold text-cobalt">{proj.num}</span>
-                      <span>·</span>
-                      <span>{proj.client}</span>
-                      <span>·</span>
-                      <span>{proj.year}</span>
-                    </div>
-                    <h3 className="text-2xl sm:text-3xl font-heading font-semibold text-slate-950 dark:text-white tracking-[-0.035em] leading-snug">
-                      {proj.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold mt-1">
-                      {proj.tagline}
-                    </p>
-                  </div>
-
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {proj.overview}
-                  </p>
-
-                  {/* Open, Breathing Metrics Row (No Boxed Spreadsheet Cells) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-slate-100 dark:border-white/[0.06]">
-                    {proj.metrics.map((m, i) => (
-                      <div key={i} className="flex flex-col gap-0.5">
-                        <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
-                          {m.label}
-                        </span>
-                        <span className="text-xs sm:text-sm font-heading font-semibold text-slate-900 dark:text-white">
-                          {m.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Clean Numbered Engineering Specs (Open Spacing, No Box Dividers) */}
-                  <div className="space-y-3">
-                    {proj.bulletPoints.map((bp, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
-                      >
-                        <span className="font-mono text-xs text-cobalt/80 font-bold shrink-0 mt-0.5">
-                          0{i + 1}
-                        </span>
-                        <span>{bp}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Tags and Action Links */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                    <div className="flex flex-wrap gap-2">
-                      {proj.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="text-xs font-mono text-slate-500 dark:text-slate-400"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {proj.githubUrl && (
-                      <a
-                        href={proj.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`View ${proj.title} on GitHub`}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/[0.06] text-slate-800 dark:text-white text-xs font-mono font-semibold hover:bg-cobalt hover:text-white transition-colors"
-                      >
-                        <Github size={13} />
-                        <span>Source</span>
-                        <ArrowUpRight size={11} className="opacity-70" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                {/* Right Column: Live Interactive Architecture Simulator Mounted Directly */}
-                <div className="lg:col-span-6 w-full flex flex-col gap-4">
-                  <ProjectInteractiveVisualizer project={proj} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        /* ==============================================================
-           INTERACTIVE CAROUSEL VIEW (DEFAULT)
-           Breathing Dribbble/Linear aesthetic + Live Interactive Simulators by default
-           ============================================================== */
-        <>
-          {/* Mobile Top Quick Switcher */}
-          <div className="sm:hidden flex items-center justify-between gap-2 px-1 mb-1">
-            <span className="text-xs font-mono text-cobalt font-bold">
-              PROJECT {currentProject.num} OF 05
-            </span>
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => selectProject((currentIndex - 1 + PROJECTS.length) % PROJECTS.length)}
-                aria-label="Previous Project"
-                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-slate-200 bg-surface/80 dark:bg-white/5 active:scale-95 transition-transform"
-              >
-                ← Prev
-              </button>
-              <button
-                onClick={() => selectProject((currentIndex + 1) % PROJECTS.length)}
-                aria-label="Next Project"
-                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-700 dark:text-slate-200 bg-surface/80 dark:bg-white/5 active:scale-95 transition-transform"
-              >
-                Next →
-              </button>
-            </div>
-          </div>
-
-          {/* Selector Tabs */}
-          <div className="tab-sibling-focus flex sm:grid sm:grid-cols-5 gap-2.5 overflow-x-auto snap-x scrollbar-none pb-2 pt-1 -mx-1 px-1">
-            {PROJECTS.map((proj, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <button
-                  key={proj.id}
-                  onClick={() => selectProject(idx)}
-                  className={`tab-sibling-item text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 relative overflow-hidden flex flex-col justify-between shrink-0 sm:shrink min-w-[145px] sm:min-w-0 snap-start min-h-[82px] sm:min-h-[88px] ${
-                    isActive
-                      ? "bg-surface dark:bg-surface border-cobalt/60 shadow-md ring-1 ring-cobalt/15 !opacity-100 !transform-none"
-                      : "bg-surface/50 dark:bg-surface/40 border-slate-200/70 dark:border-white/[0.05] hover:border-slate-300 dark:hover:border-white/15"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-1 w-full mb-1">
-                    <span
-                      className={`text-xs font-mono font-bold ${
-                        isActive ? "text-cobalt" : "text-slate-400 dark:text-slate-500"
-                      }`}
-                    >
-                      {proj.num}
-                    </span>
-                    <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
-                      {proj.year}
-                    </span>
-                  </div>
-
-                  <div
-                    className={`text-xs sm:text-sm font-heading font-semibold truncate leading-tight ${
-                      isActive
-                        ? "text-slate-900 dark:text-white"
-                        : "text-slate-600 dark:text-slate-400"
-                    }`}
-                  >
-                    {proj.title}
-                  </div>
-
-                  {/* Timed Horizontal Progress Bar */}
-                  <div className="w-full h-1 bg-slate-100 dark:bg-white/[0.05] rounded-full overflow-hidden mt-3">
-                    {isActive ? (
-                      <div
-                        key={currentIndex}
-                        className="h-full bg-cobalt rounded-full animate-progress-fill"
-                        style={{ animationPlayState: isPaused ? "paused" : "running" }}
-                      />
-                    ) : (
-                      <div
-                        className={`h-full ${
-                          idx < currentIndex ? "bg-slate-300 dark:bg-white/20 w-full" : "w-0"
-                        }`}
-                      />
-                    )}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* 
-            MAIN SHOWCASE STAGE:
-            Generous whitespace, soft atmospheric surface, open metrics, and Live Interactive Architecture on the right!
-          */}
-          <div className="w-full rounded-3xl bg-surface dark:bg-surface border border-slate-200/80 dark:border-white/[0.07] p-6 sm:p-10 lg:p-12 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.05)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)] transition-all">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-              {/* Left Column: Open Editorial Narrative (No Boxed Table Headers) */}
-              <div className="lg:col-span-6 flex flex-col justify-between gap-6 min-h-[460px] sm:min-h-[500px]">
-                <div className="space-y-5">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono text-slate-500 dark:text-slate-400 mb-3">
-                      <span className="font-bold text-cobalt">{currentProject.num} / 05</span>
-                      <span>·</span>
-                      <span>{currentProject.client}</span>
-                      <span>·</span>
-                      <span>{currentProject.role}</span>
-                    </div>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-semibold text-slate-950 dark:text-white tracking-[-0.035em] leading-snug">
-                      {currentProject.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-mono text-cobalt font-semibold mt-1.5">
-                      {currentProject.tagline}
-                    </p>
-                  </div>
-
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {currentProject.overview}
-                  </p>
-
-                  {/* Open Key Metrics Row (Breathing whitespace, subtle top/bottom hairline only) */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-slate-100 dark:border-white/[0.06]">
-                    {currentProject.metrics.map((m, i) => (
-                      <div key={i} className="flex flex-col gap-0.5">
-                        <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
-                          {m.label}
-                        </span>
-                        <span className="text-xs sm:text-sm font-heading font-semibold text-slate-900 dark:text-white">
-                          {m.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Clean Numbered Engineering Specs (Open Spacing) */}
-                  <div className="space-y-3 pt-1">
-                    {currentProject.bulletPoints.map((bp, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
-                      >
-                        <span className="font-mono text-xs text-cobalt/80 font-bold shrink-0 mt-0.5">
-                          0{i + 1}
-                        </span>
-                        <span>{bp}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Subtle Stack & Repository Footer */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100 dark:border-white/[0.06]">
-                  <div className="flex flex-wrap gap-2">
-                    {currentProject.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="text-xs font-mono px-2.5 py-1 rounded-full bg-slate-100/80 dark:bg-white/[0.04] text-slate-600 dark:text-slate-400"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {currentProject.githubUrl && (
-                    <a
-                      href={currentProject.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`View ${currentProject.title} on GitHub`}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-xs font-mono font-semibold hover:bg-cobalt dark:hover:bg-cobalt dark:hover:text-white transition-colors"
-                    >
-                      <Github size={13} />
-                      <span>Source Code</span>
-                      <ArrowUpRight size={11} />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {/* Right Column: Interactive Architecture Visualizer by Default! */}
-              <div className="lg:col-span-6 w-full flex flex-col justify-between gap-4 min-h-[460px] sm:min-h-[500px]">
-                {/* Mode Controller: Interactive Architecture (Default) / Desktop / Mobile */}
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="inline-flex items-center p-1 rounded-xl bg-slate-100 dark:bg-surface border border-slate-200/80 dark:border-white/[0.07]">
-                    <button
-                      onClick={() => setRightMode("simulator")}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
-                        rightMode === "simulator"
-                          ? "bg-cobalt text-on-accent shadow-sm"
-                          : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
-                      }`}
-                    >
-                      <Zap size={12} />
-                      <span>Live Architecture</span>
-                    </button>
-                    <button
-                      onClick={() => setRightMode("desktop")}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
-                        rightMode === "desktop"
-                          ? "bg-surface dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
-                          : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
-                      }`}
-                    >
-                      <Monitor size={12} />
-                      <span>Desktop Preview</span>
-                    </button>
-                    <button
-                      onClick={() => setRightMode("mobile")}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${
-                        rightMode === "mobile"
-                          ? "bg-surface dark:bg-white/10 text-slate-900 dark:text-white shadow-sm"
-                          : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
-                      }`}
-                    >
-                      <Smartphone size={12} />
-                      <span>Mobile</span>
-                    </button>
-                  </div>
-
-                  <span className="text-xs font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">
-                    Interactive Telemetry
-                  </span>
-                </div>
-
-                {/* Render Active Right-Column View */}
-                <div className="w-full my-auto">
-                  {rightMode === "simulator" && (
-                    <ProjectInteractiveVisualizer project={currentProject} />
-                  )}
-                  {rightMode === "desktop" && (
-                    <DesktopBrowserMockup project={currentProject} />
-                  )}
-                  {rightMode === "mobile" && (
-                    <MobilePhoneMockup project={currentProject} />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-function ProjectInteractiveVisualizer({ project }: { project: ProjectData }) {
-  if (project.id === "pergas") return <PergasInteractiveSimulator />;
-  if (project.id === "cleanbrilliant") return <CleanBrilliantSimulator />;
-  if (project.id === "codex") return <CodexRAGSimulator />;
-  if (project.id === "bidforgood") return <BidForGoodInteractiveSimulator />;
-  return <TabayyunInteractiveSimulator />;
-}
-
-// -------------------------------------------------------------
-// SIMULATOR 1: PERGAS (Interactive PDPA Sanitizer + Playwright Runner)
-// -------------------------------------------------------------
-function PergasInteractiveSimulator() {
-  const [testState, setTestState] = useState<"idle" | "running" | "done">("done");
-  const [sampleIdx, setSampleIdx] = useState(0);
-
-  const SAMPLES = [
-    { rawNric: "S9912345Z", masked: "S****345Z", role: "MEMBER_TIER_GOLD", access: "PORTAL_SCOPED" },
-    { rawNric: "T0284912E", masked: "T****912E", role: "ADMIN_AUDITOR", access: "RBAC_VERIFIED" },
-    { rawNric: "S8840192B", masked: "S****192B", role: "EVENT_DELEGATE", access: "ZOHO_SYNCED" },
-  ];
-
-  const runTests = () => {
-    setTestState("running");
-    setSampleIdx((i) => (i + 1) % SAMPLES.length);
-    setTimeout(() => {
-      setTestState("done");
-    }, 650);
-  };
-
-  const TEST_SPECS = [
-    { name: "nric_server_scrubbing_pdpa.spec.ts", time: "34ms", status: "PASS" },
-    { name: "rbac_admin_escalation_denied.spec.ts", time: "22ms", status: "PASS" },
-    { name: "zoho_event_booking_idempotent.spec.ts", time: "48ms", status: "PASS" },
-    { name: "supabase_schema_fk_integrity.spec.ts", time: "29ms", status: "PASS" },
-  ];
-
-  const activeSample = SAMPLES[sampleIdx];
-
-  return (
-    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
-        <div className="flex items-center gap-2.5">
-          <ShieldCheck size={15} className="text-emerald-400" />
-          <span className="text-xs font-semibold text-slate-200">
-            pergas-core // pdpa-gate &amp; e2e-runner
-          </span>
-        </div>
-        <button
-          onClick={runTests}
-          disabled={testState === "running"}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-on-accent hover:bg-cobalt/90 transition-colors font-semibold shadow-sm"
-        >
-          <Play size={11} />
-          <span>{testState === "running" ? "Verifying..." : "Simulate Payload"}</span>
-        </button>
-      </div>
-
-      <div className="p-5 sm:p-6 space-y-5">
-        {/* Visual Pipeline Diagram: Raw Input -> SSR Scrubbing -> Supabase RLS */}
-        <div className="p-4 rounded-xl bg-console-raised border border-slate-800/90 space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>SINGAPORE PDPA SERVER-SIDE SANITIZATION</span>
-            <span className="text-emerald-400 font-semibold">ZERO PII LEAK</span>
-          </div>
-          <div className="grid grid-cols-3 gap-2.5 items-center">
-            <div className="p-3 rounded-lg bg-console border border-red-500/25">
-              <div className="text-xs text-slate-500">CLIENT PAYLOAD</div>
-              <div className="text-xs sm:text-sm font-bold text-red-400 mt-1">
-                {activeSample.rawNric}
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center text-center">
-              <span className="text-xs text-cobalt font-bold">SSR Scrub</span>
-              <div className="w-full h-[2px] bg-gradient-to-r from-red-500/40 via-cobalt to-emerald-500/60 my-1.5 rounded-full" />
-              <span className="text-xs text-slate-500">{activeSample.role}</span>
-            </div>
-            <div className="p-3 rounded-lg bg-console border border-emerald-500/30">
-              <div className="text-xs text-slate-500">POSTGRES RLS</div>
-              <div className="text-xs sm:text-sm font-bold text-emerald-400 mt-1">
-                {activeSample.masked}
-              </div>
-            </div>
-          </div>
+          <Visual project={project} inDialog />
         </div>
 
-        {/* Playwright Suite Telemetry */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400 pb-1">
-            <span>PLAYWRIGHT E2E REGRESSION MATRIX (20 SUITES)</span>
-            <span className="text-emerald-400 font-semibold">100% PASS</span>
-          </div>
-          {testState === "running" ? (
-            <div className="flex items-center justify-center py-8 gap-3 text-slate-400">
-              <div className="w-4 h-4 border-2 border-cobalt border-t-transparent rounded-full animate-spin" />
-              <span>Running 20 automated security &amp; schema assertions...</span>
-            </div>
-          ) : (
-            <div className="space-y-1.5">
-              {TEST_SPECS.map((spec, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between py-2 px-3 rounded-lg bg-console-raised/70 border border-slate-800/70"
-                >
-                  <div className="flex items-center gap-2 truncate">
-                    <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                    <span className="text-slate-200 truncate">{spec.name}</span>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-slate-500">{spec.time}</span>
-                    <span className="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-bold">
-                      {spec.status}
-                    </span>
-                  </div>
+        <div className="px-6 py-8 sm:px-12 sm:py-10">
+          <p className="font-mono text-[12px] text-muted">
+            {project.kind} · {project.year}
+          </p>
+          <h3 id={`cs-${project.id}`} className="mt-2 text-3xl font-semibold tracking-[-0.03em] text-ink">
+            {project.title}
+          </h3>
+          <p className="mt-4 text-[16px] leading-relaxed text-ink-2">{project.overview}</p>
+
+          {project.stats.length > 0 && (
+            <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-line py-6">
+              {project.stats.map((s) => (
+                <div key={s.label}>
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd className="text-3xl font-semibold tracking-tight text-ink">{s.value}</dd>
+                  <dd className="mt-1 text-[13px] text-muted">{s.label}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
           )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
-// -------------------------------------------------------------
-// SIMULATOR 2: CLEAN BRILLIANT (C# / .NET Layout Persistence Engine)
-// -------------------------------------------------------------
-function CleanBrilliantSimulator() {
-  const [widgets, setWidgets] = useState([
-    { id: "w-01", title: "Scope 1 & 2 Carbon Telemetry", span: "col-span-2", kpi: "142.8 tCO2e" },
-    { id: "w-02", title: "Grid Intensity", span: "col-span-1", kpi: "0.408 kg/kWh" },
-    { id: "w-03", title: "ESG Audit Trail", span: "col-span-1", kpi: "ACID Verified" },
-  ]);
-  const [commitCount, setCommitCount] = useState(14);
-
-  const reorderWidgets = () => {
-    setWidgets((w) => [w[1], w[2], w[0]]);
-    setCommitCount((c) => c + 1);
-  };
-
-  return (
-    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
-        <div className="flex items-center gap-2.5">
-          <Database size={15} className="text-cobalt" />
-          <span className="text-xs font-semibold text-slate-200">
-            aspnet-core // jsonb-layout-engine
-          </span>
-        </div>
-        <button
-          onClick={reorderWidgets}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cobalt text-on-accent hover:bg-cobalt/90 transition-colors font-semibold"
-        >
-          <Activity size={12} />
-          <span>Permute Grid State</span>
-        </button>
-      </div>
-
-      <div className="p-5 sm:p-6 space-y-5">
-        {/* Visual Bento Grid Preview */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>LIVE DASHBOARD WIDGET MATRIX (STRATEGY + BUILDER)</span>
-            <span className="text-cobalt font-semibold">TX #{commitCount}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-2.5">
-            {widgets.map((w, i) => (
-              <div
-                key={w.id}
-                className={`${w.span} p-3.5 rounded-xl bg-console-raised border border-slate-800 flex items-center justify-between transition-all`}
-              >
-                <div>
-                  <span className="text-xs text-slate-500">SLOT 0{i + 1} · {w.id}</span>
-                  <div className="text-xs sm:text-sm font-bold text-white mt-0.5">{w.title}</div>
-                </div>
-                <span className="px-2.5 py-1 rounded-md bg-cobalt/15 text-cobalt font-bold border border-cobalt/25">
-                  {w.kpi}
-                </span>
-              </div>
+          <h4 className="mt-8 text-[13px] font-medium text-ink">What I did · {project.role}</h4>
+          <ul className="mt-3 space-y-3">
+            {project.work.map((w) => (
+              <li key={w} className="flex gap-3 text-[15px] leading-relaxed text-ink-2">
+                <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden />
+                {w}
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
 
-        {/* Serialized PostgreSQL JSONB Payload Inspector */}
-        <div className="p-3.5 rounded-xl bg-console-raised/80 border border-slate-800/80 space-y-1.5">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span>POSTGRESQL HYBRID JSONB PERSISTENCE (UNIT OF WORK)</span>
-            <span className="text-emerald-400">PARAMETERIZED SQL</span>
-          </div>
-          <pre className="text-xs text-slate-300 overflow-x-auto leading-relaxed">
-{`UPDATE dashboard_layouts SET widget_order = '${JSON.stringify(widgets.map((w) => w.id))}'::jsonb
-WHERE tenant_id = @p0; -- 0 SQLi surface`}
-          </pre>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// -------------------------------------------------------------
-// SIMULATOR 3: CODEX (Multimodal RAG with Gemini & pgvector)
-// -------------------------------------------------------------
-function CodexRAGSimulator() {
-  const [activeQueryIdx, setActiveQueryIdx] = useState(0);
-
-  const QUERIES = [
-    {
-      prompt: "Locate thermal throttle spike above 45°C in telemetry stream",
-      timestamp: "00:14:32",
-      similarity: "0.948",
-      modality: "Gemini Vision + Audio Frame",
-      finding: "Detected battery cell #3 thermal anomaly during high-load discharge.",
-    },
-    {
-      prompt: "Extract architecture latency bottleneck from system review",
-      timestamp: "00:38:15",
-      similarity: "0.921",
-      modality: "Transcript + Slide OCR",
-      finding: "Lazy async connection pooling reduced FastAPI timeout rate to 0%.",
-    },
-  ];
-
-  const current = QUERIES[activeQueryIdx];
-
-  return (
-    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
-        <div className="flex items-center gap-2.5">
-          <Sparkles size={15} className="text-cobalt" />
-          <span className="text-xs font-semibold text-slate-200">
-            codex-rag // pgvector &amp; gemini-multimodal
-          </span>
-        </div>
-        <button
-          onClick={() => setActiveQueryIdx((i) => (i + 1) % QUERIES.length)}
-          className="px-3 py-1 rounded-lg bg-cobalt text-on-accent hover:bg-cobalt/90 transition-colors font-semibold"
-        >
-          Switch Semantic Query
-        </button>
-      </div>
-
-      <div className="p-5 sm:p-6 space-y-4">
-        <div className="p-3.5 rounded-xl bg-console-raised border border-slate-800">
-          <div className="text-xs text-slate-400 mb-1">MULTIMODAL QUERY VECTOR (768-DIM)</div>
-          <div className="text-xs sm:text-sm text-white font-bold">
-            &ldquo;{current.prompt}&rdquo;
-          </div>
-        </div>
-
-        {/* Video Timeline Scrubber Visual */}
-        <div className="p-4 rounded-xl bg-console-raised border border-slate-800 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-emerald-400 font-bold">
-              MATCH @ {current.timestamp}
-            </span>
-            <span className="px-2 py-0.5 rounded bg-cobalt/20 text-cobalt font-bold">
-              Cosine Sim: {current.similarity}
-            </span>
-          </div>
-
-          {/* Visual Timeline Bar with Highlighted Frame Marker */}
-          <div className="relative w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
-            <div
-              className="absolute top-0 bottom-0 w-12 bg-gradient-to-r from-cobalt to-emerald-400 rounded-full transition-all duration-500"
-              style={{ left: activeQueryIdx === 0 ? "28%" : "64%" }}
-            />
-          </div>
-
-          <p className="text-xs text-slate-300 leading-relaxed">{current.finding}</p>
-          <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
-            <span>Modality: {current.modality}</span>
-            <span className="text-emerald-400 font-semibold">S3 Tiering: -30% DB Cost</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// -------------------------------------------------------------
-// SIMULATOR 4: BIDFORGOOD (Defensive Security & Concurrency Lock)
-// -------------------------------------------------------------
-function BidForGoodInteractiveSimulator() {
-  const [currentBid, setCurrentBid] = useState(450);
-  const [txId, setTxId] = useState(8042);
-
-  const placeBid = () => {
-    setCurrentBid((b) => b + 25);
-    setTxId((t) => t + 1);
-  };
-
-  return (
-    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
-        <div className="flex items-center gap-2.5">
-          <Lock size={15} className="text-emerald-400" />
-          <span className="text-xs font-semibold text-slate-200">
-            bidforgood // acid-concurrency-guard
-          </span>
-        </div>
-        <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
-          0 HIGH CVEs
-        </span>
-      </div>
-
-      <div className="p-5 sm:p-6 space-y-4">
-        <div className="p-4 rounded-xl bg-console-raised border border-slate-800 flex items-center justify-between">
-          <div>
-            <div className="text-xs text-slate-400">CHARITY LOT #104 · SERIALIZABLE LOCK</div>
-            <div className="text-xl sm:text-2xl font-bold text-white mt-0.5">
-              ${currentBid} SGD
+          {project.shots && project.hasMock && (
+            <div className="mt-10">
+              <h4 className="text-[13px] font-medium text-ink">How it works</h4>
+              <p className="mt-1 text-[13px] text-muted">A small interactive sketch of the idea. Try the controls.</p>
+              <div className="mt-4 rounded-2xl p-5 sm:p-8" style={{ background: project.tint }}>
+                <div className="mx-auto max-w-md">
+                  <ProjectMockup id={project.id} />
+                </div>
+              </div>
             </div>
-          </div>
-          <button
-            onClick={placeBid}
-            className="px-4 py-2.5 rounded-xl bg-cobalt hover:bg-cobalt/90 text-on-accent font-bold text-xs transition-all flex items-center gap-1.5 shadow-md"
-          >
-            <Zap size={13} />
-            <span>Atomic Bid +$25</span>
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-3.5 rounded-xl bg-console-raised border border-slate-800">
-            <div className="text-xs text-slate-400">ROW LOCK TX</div>
-            <div className="text-xs font-bold text-emerald-400 mt-1">
-              SELECT ... FOR UPDATE #{txId}
-            </div>
-          </div>
-          <div className="p-3.5 rounded-xl bg-console-raised border border-slate-800">
-            <div className="text-xs text-slate-400">CSRF &amp; SQLi DEFENSE</div>
-            <div className="text-xs font-bold text-emerald-400 mt-1">
-              HMAC-SHA256 Verified
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// -------------------------------------------------------------
-// SIMULATOR 5: TABAYYUN (Offline WASM YOLOv8 + OCR Scanner)
-// -------------------------------------------------------------
-function TabayyunInteractiveSimulator() {
-  const [isScanning, setIsScanning] = useState(false);
-  const [itemIdx, setItemIdx] = useState(0);
-
-  const ITEMS = [
-    { label: "E471 (Mono-diglycerides)", conf: "96.4%", status: "VERIFIED PLANT-ORIGIN", latency: "118ms" },
-    { label: "Whey Powder (Rennet)", conf: "93.8%", status: "FLAGGED FOR REVIEW", latency: "134ms" },
-  ];
-
-  const handleScan = () => {
-    setIsScanning(true);
-    setTimeout(() => {
-      setIsScanning(false);
-      setItemIdx((i) => (i + 1) % ITEMS.length);
-    }, 550);
-  };
-
-  const active = ITEMS[itemIdx];
-
-  return (
-    <div className="w-full rounded-2xl bg-console text-slate-100 border border-slate-800/90 shadow-2xl overflow-hidden font-mono text-xs">
-      <div className="flex items-center justify-between px-5 py-3.5 bg-console-raised border-b border-slate-800/80">
-        <div className="flex items-center gap-2.5">
-          <Cpu size={15} className="text-cobalt" />
-          <span className="text-xs font-semibold text-slate-200">
-            tabayyun-wasm // yolov8n + tesseract-ocr
-          </span>
-        </div>
-        <span className="px-2.5 py-0.5 rounded bg-cobalt/20 text-cobalt font-bold">
-          0 BYTES EGRESS
-        </span>
-      </div>
-
-      <div className="p-5 sm:p-6 space-y-4">
-        {/* Bounding Box Vision Viewport */}
-        <div className="relative rounded-xl bg-console-raised border border-slate-800 p-4 overflow-hidden">
-          {isScanning && (
-            <div className="absolute inset-x-0 h-0.5 bg-cobalt shadow-[0_0_12px_#3b82f6] animate-pulse top-1/2" />
           )}
-          <div className="border-2 border-dashed border-emerald-400/70 rounded-lg p-3.5 bg-console/80">
-            <div className="flex items-center justify-between text-xs">
-              <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
-                YOLOv8 BBOX: {active.conf}
-              </span>
-              <span className="text-slate-400">WASM Latency: {active.latency}</span>
-            </div>
-            <div className="text-sm font-bold text-white mt-2">{active.label}</div>
-            <div className="text-xs text-cobalt font-semibold mt-1">
-              OCR Classification: {active.status}
-            </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
+            <ul className="flex flex-wrap gap-1.5" aria-label="Stack">
+              {project.stack.map((t) => (
+                <li key={t} className="rounded-full bg-ink/[0.05] px-2.5 py-1 text-[12px] text-ink-2">
+                  {t}
+                </li>
+              ))}
+            </ul>
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition-transform duration-200 ease-out active:scale-[0.97]"
+              >
+                <Github size={14} /> Source <ArrowUpRight size={13} />
+              </a>
+            )}
           </div>
         </div>
-
-        <button
-          onClick={handleScan}
-          disabled={isScanning}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cobalt text-on-accent font-semibold text-xs hover:bg-cobalt/90 transition-colors"
-        >
-          <Cpu size={13} />
-          <span>{isScanning ? "Running On-Device WASM..." : "Run On-Device Vision Frame"}</span>
-        </button>
-      </div>
-    </div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
-// -------------------------------------------------------------
-// REALISTIC BROWSER MOCKUP
-// -------------------------------------------------------------
-function DesktopBrowserMockup({ project }: { project: ProjectData }) {
-  return (
-    <div className="w-full max-w-full rounded-2xl bg-console text-slate-100 border border-slate-800 shadow-2xl overflow-hidden font-sans">
-      <div className="flex items-center justify-between px-4 py-3 bg-console-raised border-b border-slate-800 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f06a6a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#f0b74a]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#5fc98e]" />
-        </div>
-        <div className="flex-1 max-w-xs mx-auto py-1 px-3 rounded-md bg-console border border-slate-800 text-xs font-mono text-slate-400 text-center truncate">
-          https://{project.domain}
-        </div>
-        <div className="w-8" />
-      </div>
-
-      <div className="p-5 bg-console min-h-[300px] flex flex-col justify-between">
-        <div className="group/screen relative w-full h-44 rounded-xl overflow-hidden border border-slate-800/90 mb-4 bg-slate-950">
-          <div className="sheen-media-card w-full h-full flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-slate-900/95 via-console-raised to-slate-950">
-            <div className="relative z-10 flex flex-col items-center gap-1.5 max-w-xs">
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-cobalt/20 text-cobalt border border-cobalt/30 font-bold uppercase tracking-wider">
-                {project.domain}
-              </span>
-              <span className="text-sm font-heading font-semibold text-slate-200 mt-1">
-                {project.title}
-              </span>
-              <span className="text-xs font-mono text-slate-400">
-                {project.tagline}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800/80">
-          <span>{project.client}</span>
-          <span className="text-emerald-400 font-semibold">{project.metrics[0].value}</span>
-        </div>
-      </div>
-    </div>
-  );
+function panelPadding(project: Project, featured?: boolean) {
+  const layout = layoutOf(project);
+  if (featured) return "px-5 py-10 sm:px-12 sm:py-14 lg:py-16";
+  // Every grid card shares one fixed visual height so rows line up whatever the content.
+  // Phone screenshots start near the top and are clipped by the bottom edge (they "rise" out of it).
+  if (layout === "phone") return "flex h-[380px] sm:h-[440px] items-start justify-center px-5 pt-10 sm:px-10";
+  return "flex h-[380px] sm:h-[440px] items-center px-5 sm:px-10";
 }
 
-// -------------------------------------------------------------
-// REALISTIC MOBILE PHONE MOCKUP
-// -------------------------------------------------------------
-function MobilePhoneMockup({ project }: { project: ProjectData }) {
+/** Screenshots when we have them, otherwise the interactive mockup. */
+function Visual({ project, featured, inDialog }: { project: Project; featured?: boolean; inDialog?: boolean }) {
+  if (project.shots?.length) {
+    const wide = layoutOf(project) !== "phone";
+    return (
+      <div className={`mx-auto w-full ${wide ? (featured ? "max-w-3xl" : inDialog ? "max-w-2xl" : "max-w-xl") : ""}`}>
+        <ProjectShots project={project} large={featured} />
+      </div>
+    );
+  }
   return (
-    <div className="w-full max-w-[270px] rounded-[36px] bg-slate-950 border-[5px] border-slate-800 shadow-2xl overflow-hidden font-sans p-2 mx-auto">
-      <div className="w-24 h-4 bg-slate-900 rounded-full mx-auto mb-2 flex items-center justify-center">
-        <div className="w-2 h-2 rounded-full bg-slate-800 mr-2" />
-        <div className="w-8 h-1 bg-slate-800 rounded-full" />
-      </div>
-
-      <div className="rounded-[24px] bg-slate-900 p-4 min-h-[340px] flex flex-col justify-between text-slate-100">
-        <div>
-          <div className="text-xs font-mono text-cobalt font-bold uppercase mb-1">
-            {project.num} · MOBILE VIEW
-          </div>
-          <h4 className="font-heading font-semibold text-sm text-white mb-2 leading-tight">
-            {project.title}
-          </h4>
-          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 mb-3 space-y-1">
-            <span className="text-xs font-mono text-slate-400 block">VERIFIED METRIC</span>
-            <span className="text-xs font-bold text-emerald-400 block">
-              {project.metrics[0].value}
-            </span>
-          </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            {project.overview}
-          </p>
-        </div>
-
-        <div className="pt-2.5 border-t border-slate-800/80 flex items-center justify-around text-xs font-mono text-slate-400">
-          <span className="text-cobalt font-bold">Portal</span>
-          <span>Telemetry</span>
-          <span>Audit</span>
-        </div>
-      </div>
+    <div className={`mx-auto w-full ${featured ? "max-w-xl" : "max-w-md"}`}>
+      <ProjectMockup id={project.id} />
     </div>
   );
 }

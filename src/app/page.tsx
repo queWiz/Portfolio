@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { TopNavbar } from "@/components/ui/LayoutFeatures";
 import { Hero } from "@/components/ui/Hero";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
 import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
 import { ArchitectureLoopSection } from "@/components/ui/ArchitectureLoopSection";
@@ -26,46 +27,16 @@ export default function Home() {
         <InfiniteMarquee />
       </section>
 
-      {/* --- FLAGSHIP PROJECTS: VERTICAL STAGGERED DEEP-DIVES --- */}
-      <section
-        id="projects"
-        className="w-full max-w-7xl px-4 sm:px-10 lg:px-12 py-24 z-10"
-      >
-        {/* Structural Editorial Index Bar (01 / 06) */}
-        <div className="flex items-center justify-between pt-4 mb-6 border-t border-slate-200/90 dark:border-white/[0.08] text-xs font-mono">
-          <div className="flex items-center gap-2.5">
-            <span className="px-2 py-0.5 rounded bg-cobalt/10 text-cobalt font-bold border border-cobalt/20">
-              01 / 06
-            </span>
-            <span className="text-slate-900 dark:text-white font-semibold uppercase tracking-wider">
-              Selected Systems
-            </span>
-          </div>
-          <span className="text-slate-400 dark:text-slate-500">
-            PRODUCTION ARCHITECTURES · 2024 — 2026
-          </span>
-        </div>
+      {/* --- WORK --- */}
+      <section id="projects" className="w-full max-w-6xl px-5 sm:px-10 lg:px-0 pt-28 pb-24 scroll-mt-20">
+        <SectionHeader
+          index="01"
+          eyebrow="Work"
+          title="Selected work,"
+          titleMuted="from client platforms to on-device AI."
+          aside={<>Five projects from the last two years, from real screens to small interactive sketches. Open any card for the full story.</>}
+        />
 
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-          <div className="overflow-hidden pb-1 -mb-1">
-            <motion.h2
-              initial={{ y: "100%", opacity: 0 }}
-              whileInView={{ y: "0%", opacity: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white"
-            >
-              Engineered Systems &amp;<br />Client Platforms.
-            </motion.h2>
-          </div>
-          <p className="text-xs sm:text-sm font-mono text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
-            Production architectures delivered for real-world Singapore clients,
-            offline-first edge devices, and event-driven data streaming.
-          </p>
-        </div>
-
-        {/* Vertical Staggered Case Studies */}
         <ProjectShowcase />
 
         {/* Tabayyun Verification Methodology & Operating Loop */}

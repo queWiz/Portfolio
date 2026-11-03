@@ -23,27 +23,25 @@ const TECHNOLOGIES = [
 ];
 
 export const InfiniteMarquee = () => {
+  // Two identical halves + translateX(-50%) = a seamless loop.
+  const items = [...TECHNOLOGIES, ...TECHNOLOGIES];
   return (
-    <div className="w-full relative overflow-hidden border-y border-slate-200/80 dark:border-white/[0.08] bg-surface/60 dark:bg-paper/60 py-5 backdrop-blur-md">
-      {/* Edge gradient masks for seamless fade */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-44 bg-gradient-to-r from-paper dark:from-paper to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-44 bg-gradient-to-l from-paper dark:from-paper to-transparent z-10" />
-
-      <div className="flex w-max animate-scroll gap-12 sm:gap-16 px-8 hover:[animation-play-state:paused]">
-        {[...TECHNOLOGIES, ...TECHNOLOGIES, ...TECHNOLOGIES].map((tech, i) => (
-          <div
+    <div
+      className="w-full overflow-hidden border-y border-line py-5 [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]"
+      aria-label="Technologies I work with"
+    >
+      <ul className="flex w-max animate-scroll hover:[animation-play-state:paused]">
+        {items.map((tech, i) => (
+          <li
             key={i}
-            className="flex items-center gap-2.5 text-slate-500 dark:text-slate-400 group cursor-default transition-all"
+            aria-hidden={i >= TECHNOLOGIES.length}
+            className="flex shrink-0 items-center gap-2 pr-12 sm:pr-16 text-muted transition-colors duration-300 hover:text-ink"
           >
-            <div className="p-1.5 rounded-md bg-slate-100 dark:bg-white/[0.05] group-hover:text-cobalt group-hover:bg-cobalt/10 transition-colors">
-              {tech.icon}
-            </div>
-            <span className="font-mono text-xs font-semibold tracking-tight text-slate-700 dark:text-slate-200 group-hover:text-cobalt transition-colors">
-              {tech.name}
-            </span>
-          </div>
+            <span className="opacity-70">{tech.icon}</span>
+            <span className="text-[14px] text-ink-2">{tech.name}</span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
