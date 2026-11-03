@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Amiri, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
 
@@ -11,6 +11,14 @@ const geist = Geist({
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
+});
+
+// Arabic display face for the single word in the "How I work" section.
+const amiri = Amiri({
+  subsets: ["arabic"],
+  weight: ["700"],
+  variable: "--font-arabic",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -41,7 +49,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body className={`${geist.variable} ${geistMono.variable} ${amiri.variable} font-sans antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

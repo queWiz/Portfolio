@@ -57,6 +57,7 @@ const config: Config = {
         sans: ["var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
         heading: ["var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
+        arabic: ["var(--font-arabic)", "serif"],
       },
       transitionTimingFunction: {
         out: "cubic-bezier(0.22, 1, 0.36, 1)",

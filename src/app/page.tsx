@@ -6,7 +6,7 @@ import { Hero } from "@/components/ui/Hero";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
 import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
-import { ArchitectureLoopSection } from "@/components/ui/ArchitectureLoopSection";
+import { ApproachSection } from "@/components/ui/ApproachSection";
 import { InteractiveTerminal } from "@/components/ui/Terminal";
 import { PublicationsSection } from "@/components/ui/PublicationsSection";
 import { TrophyList } from "@/components/ui/TrophyList";
@@ -38,12 +38,10 @@ export default function Home() {
         />
 
         <ProjectShowcase />
-
-        {/* Tabayyun Verification Methodology & Operating Loop */}
-        <div className="mt-24">
-          <ArchitectureLoopSection />
-        </div>
       </section>
+
+      {/* --- HOW I WORK (Tabayyun) --- */}
+      <ApproachSection />
 
       {/* --- CANDIDATE INTERACTIVE TERMINAL (CLI) --- */}
       <section
