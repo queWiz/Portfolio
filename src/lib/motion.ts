@@ -33,3 +33,12 @@ export const stagger = (step = 0.06, delayChildren = 0): Variants => ({
 
 /** Reveal once, slightly before the element is fully on screen. */
 export const VIEWPORT = { once: true, margin: "0px 0px -10% 0px" } as const;
+
+/** Leo/Saro-style entrance: fade + rise + de-blur. For hero items and headings. */
+export const revealBlur = (delay = 0): Variants => ({
+  hidden: { opacity: 0, y: 14, filter: "blur(8px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: revealTransition(delay) },
+});
+
+/** Springy settle used for physical objects (the drone, draggable bits). */
+export const SPRING_SOFT = { type: "spring", stiffness: 140, damping: 14, mass: 0.9 } as const;

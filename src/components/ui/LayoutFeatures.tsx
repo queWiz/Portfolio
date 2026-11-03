@@ -1,119 +1,136 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
+import { ArrowUpRight, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
-import { useMagnetic } from "@/hooks/useMagnetic";
-import { Sun, Moon, ArrowUpRight } from "lucide-react";
+import { EASE_OUT } from "@/lib/motion";
+
+const LINKS = [
+  { href: "#projects", label: "Work" },
+  { href: "#experience", label: "Experience" },
+  { href: "#publications", label: "Research", hideOnPhone: true },
+  { href: "#terminal", label: "Terminal", desktopOnly: true },
+] as { href: string; label: string; hideOnPhone?: boolean; desktopOnly?: boolean }[];
+
+function useSingaporeTime() {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-SG", {
+      timeZone: "Asia/Singapore",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 15000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
 
 export function TopNavbar() {
   const { theme, toggleTheme } = useTheme();
-  const [sgtTime, setSgtTime] = useState("");
-  const resumeRef = useMagnetic<HTMLAnchorElement>({ strength: 0.28, textStrength: 0.45 });
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const formatted = new Intl.DateTimeFormat("en-SG", {
-        timeZone: "Asia/Singapore",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      }).format(now);
-      setSgtTime(formatted);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 10000);
-    return () => clearInterval(interval);
-  }, []);
-
+  const reduce = useReducedMotion();
+  const time = useSingaporeTime();
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 24));
 
   return (
-    <>
-      <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-        <nav
-          aria-label="Main Navigation"
-          className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 py-2.5 rounded-full bg-surface/85 dark:bg-surface/85 border border-slate-200/80 dark:border-white/[0.08] shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 max-w-5xl w-full"
+    <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 pointer-events-none">
+      <motion.nav
+        aria-label="Main"
+        initial={reduce ? false : { opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: EASE_OUT }}
+        className={`pointer-events-auto flex items-center gap-1 rounded-full border p-1.5 backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-500 ease-out ${
+          scrolled
+            ? "bg-surface/85 border-line shadow-[0_8px_30px_-12px_rgb(var(--ink)/0.25)]"
+            : "bg-surface/60 border-line/70 shadow-none"
+        }`}
+      >
+        {/* Monogram */}
+        <a
+          href="#home"
+          aria-label="Uwais Alqarni, back to top"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-paper text-[13px] font-semibold tracking-tight transition-transform duration-300 ease-out hover:scale-105"
         >
-          {/* Brandmark */}
-          <a
-            href="#home"
-            className="font-heading font-semibold text-sm sm:text-base tracking-[-0.035em] text-slate-900 dark:text-white flex items-center gap-0.5 group"
-          >
-            ALQARNI
-            <span className="text-cobalt group-hover:scale-125 transition-transform duration-200">
-              .
-            </span>
-          </a>
+          <span>
+            U<span className="text-accent-soft">.</span>
+          </span>
+        </a>
 
-          {/* Center Live Badges */}
-          <div className="hidden md:flex items-center gap-3 text-xs font-mono">
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/80 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06] text-slate-600 dark:text-slate-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-cobalt animate-pulse" />
-              <span>SGT {sgtTime || "UTC+8"}</span>
-            </div>
+        <span className="mx-1 h-4 w-px bg-line hidden sm:block" aria-hidden />
 
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>OPEN TO SWE INTERNSHIP</span>
-            </div>
-          </div>
+        {/* Links with a sliding hover highlight */}
+        <ul className="flex items-center" onMouseLeave={() => setHovered(null)}>
+          {LINKS.map((l) => (
+            <li key={l.href} className={l.desktopOnly ? "hidden md:block" : l.hideOnPhone ? "hidden sm:block" : undefined}>
+              <a
+                href={l.href}
+                onMouseEnter={() => setHovered(l.href)}
+                onFocus={() => setHovered(l.href)}
+                onBlur={() => setHovered(null)}
+                className="relative z-0 block rounded-full px-2 sm:px-3 py-1.5 text-[13px] sm:text-sm text-ink-2 transition-colors duration-200 hover:text-ink"
+              >
+                {hovered === l.href && (
+                  <motion.span
+                    layoutId="nav-hover"
+                    className="absolute inset-0 -z-10 rounded-full bg-ink/[0.07]"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-          {/* Right Navigation & Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href="#projects"
-              className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-cobalt transition-colors px-2 py-1"
+        <span className="mx-1 h-4 w-px bg-line hidden sm:block" aria-hidden />
+
+        {/* Local time */}
+        <span
+          className="hidden sm:flex items-center gap-1.5 px-2 font-mono text-[11px] text-muted tabular-nums"
+          title="Local time in Singapore"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-moss" aria-hidden />
+          SGT {time || "--:--"}
+        </span>
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-ink-2 transition-colors duration-200 hover:bg-ink/[0.07] hover:text-ink"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={theme}
+              initial={{ opacity: 0, rotate: -60, scale: 0.6 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 60, scale: 0.6 }}
+              transition={{ duration: 0.25, ease: EASE_OUT }}
+              className="grid place-items-center"
             >
-              /projects
-            </a>
+              {theme === "light" ? <Moon size={15} /> : <Sun size={15} />}
+            </motion.span>
+          </AnimatePresence>
+        </button>
 
-            <a
-              href="#terminal"
-              className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-cobalt transition-colors px-2 py-1 hidden sm:inline-block"
-            >
-              /cli
-            </a>
-
-            <a
-              href="#experience"
-              className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-cobalt transition-colors px-2 py-1 hidden sm:inline-block"
-            >
-              /track
-            </a>
-
-            {/* Dual Mode Theme Toggle Switch */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle Light and Dark Theme"
-              className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
-            >
-              {theme === "light" ? (
-                <Moon size={15} className="text-slate-700" />
-              ) : (
-                <Sun size={15} className="text-amber-400" />
-              )}
-            </button>
-
-            {/* Magnetic Resume CTA */}
-            <a
-              ref={resumeRef}
-              href="/Resume.pdf"
-              target="_blank"
-              rel="noreferrer"
-              download="Uwais_Alqarni_Resume.pdf"
-              title="Download / View Uwais Alqarni's Resume (PDF)"
-              className="magnetic-btn inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full bg-cobalt text-on-accent text-xs font-mono font-semibold hover:bg-cobalt-dark shadow-sm transition-all"
-            >
-              <span className="magnetic-inner">
-                <span>RESUME</span>
-                <ArrowUpRight size={12} />
-              </span>
-            </a>
-          </div>
-        </nav>
-      </header>
-
-    </>
+        {/* Résumé */}
+        <a
+          href="/Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="group ml-0.5 inline-flex shrink-0 items-center gap-1 rounded-full bg-ink px-3 sm:px-3.5 py-1.5 text-[13px] sm:text-sm font-medium text-paper transition-transform duration-300 ease-out active:scale-[0.97]"
+        >
+          Résumé
+          <ArrowUpRight size={14} className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </a>
+      </motion.nav>
+    </header>
   );
 }

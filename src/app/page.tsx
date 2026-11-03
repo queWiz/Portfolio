@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useMagnetic } from "@/hooks/useMagnetic";
 import { TopNavbar } from "@/components/ui/LayoutFeatures";
-import { HeroPixelDrone, HeroPixelBaseline } from "@/components/ui/HeroPixelStage";
-import { HeroStatusStrip } from "@/components/ui/HeroStatusStrip";
+import { Hero } from "@/components/ui/Hero";
 import { InfiniteMarquee } from "@/components/ui/InfiniteMarquee";
 import { ProjectShowcase } from "@/components/ui/ProjectShowcase";
 import { ArchitectureLoopSection } from "@/components/ui/ArchitectureLoopSection";
@@ -14,139 +12,14 @@ import { TrophyList } from "@/components/ui/TrophyList";
 import { PixelBreakoutGame } from "@/components/ui/PixelBreakoutGame";
 import { HavuExperienceSection } from "@/components/ui/HavuExperienceSection";
 import { Footer } from "@/components/ui/Footer";
-import { Terminal as TerminalIcon } from "lucide-react";
 
 export default function Home() {
-  const cliCtaRef = useMagnetic<HTMLAnchorElement>({ strength: 0.22, textStrength: 0.4 });
-
   return (
     <main className="min-h-screen paper-grain text-ink flex flex-col items-center relative overflow-x-clip transition-colors duration-300">
       {/* Floating Glass Pill Header */}
       <TopNavbar />
 
-      {/* --- HERO SECTION --- */}
-      <section
-        id="home"
-        className="relative w-full min-h-[90vh] flex flex-col items-center justify-between pt-28 pb-8 px-4 sm:px-10 lg:px-16 isolate"
-      >
-
-        {/* Hero Ambient Radial Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-accent/[0.06] blur-3xl pointer-events-none -z-10 rounded-full" />
-
-        {/* Unified Main Hero Content Row */}
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center my-auto">
-          {/* Left Column: Typographic Identity & CTAs (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left z-10">
-            {/* Kicker Overline with Kinetic Mask Reveal */}
-            <div className="overflow-hidden pb-1 -mb-1 mb-6">
-              <motion.div
-                initial={{ y: "110%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 dark:bg-surface/80 border border-slate-200/90 dark:border-white/[0.08] shadow-sm backdrop-blur-md"
-              >
-                <span className="w-2 h-2 rounded-full bg-cobalt animate-pulse" />
-                <span className="text-xs font-mono font-semibold tracking-[0.16em] uppercase text-slate-600 dark:text-slate-300">
-                  Software &amp; Data Engineer · SIT Singapore
-                </span>
-              </motion.div>
-            </div>
-
-            {/* Oversized Brandmark Headline with Kinetic Mask Reveal */}
-            <div className="overflow-hidden pb-2 -mb-2 mb-6">
-              <motion.h1
-                initial={{ y: "115%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                transition={{
-                  duration: 0.75,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: 0.08,
-                }}
-                className="text-4xl sm:text-6xl lg:text-7xl font-heading font-semibold tracking-[-0.035em] text-slate-950 dark:text-white leading-[1.06]"
-              >
-                UWAIS ALQARNI
-                <span className="text-cobalt">
-                  .
-                </span>
-              </motion.h1>
-            </div>
-
-            {/* Lede Paragraph with Kinetic Mask Reveal */}
-            <div className="overflow-hidden pb-1 -mb-1 mb-8">
-              <motion.p
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                transition={{
-                  duration: 0.7,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: 0.18,
-                }}
-                className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-normal leading-relaxed"
-              >
-                Architecting resilient distributed pipelines, edge AI inference engines,
-                and verified full-stack platforms with uncompromising engineering discipline.
-              </motion.p>
-            </div>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.28 }}
-              className="flex flex-wrap items-center gap-3.5 mb-10"
-            >
-              {/* Primary CTA (Preserves pristine .bl text swapper without magnetic pull) */}
-              <a
-                href="#projects"
-                className="btn-nordic px-7 py-3 font-mono text-xs font-bold tracking-wider uppercase"
-              >
-                <span className="bl">
-                  <span>EXPLORE CASE STUDIES ↓</span>
-                  <span>VIEW ARCHITECTURE</span>
-                </span>
-              </a>
-
-              <a
-                ref={cliCtaRef}
-                href="#terminal"
-                className="magnetic-btn inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-300 dark:border-white/[0.12] bg-surface/60 dark:bg-white/[0.04] text-xs font-mono font-bold tracking-wider uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:border-slate-400 transition-all shadow-sm"
-              >
-                <span className="magnetic-inner flex items-center gap-2">
-                  <TerminalIcon size={14} className="text-cobalt" />
-                  <span>LAUNCH CLI</span>
-                </span>
-              </a>
-
-              <a
-                href="mailto:ualqarni70@gmail.com"
-                className="inline-flex items-center gap-1.5 px-5 py-3 rounded-full text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 hover:text-cobalt transition-colors"
-              >
-                <span>Get in Touch ↗</span>
-              </a>
-            </motion.div>
-
-            {/* Real Engineering Status Strip */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="w-full"
-            >
-              <HeroStatusStrip />
-            </motion.div>
-          </div>
-
-          {/* Right Column: Open Floating Havu-Style Pixel Drone (5 cols, seamless in open sky) */}
-          <div className="lg:col-span-5 w-full flex items-center justify-center">
-            <HeroPixelDrone />
-          </div>
-        </div>
-
-        {/* Full-width continuous baseline spanning bottom of entire Hero */}
-        <div className="w-full max-w-7xl mt-6">
-          <HeroPixelBaseline />
-        </div>
-      </section>
+      <Hero />
 
       {/* --- RUNTIME CAPABILITIES MARQUEE --- */}
       <section className="w-full z-10">

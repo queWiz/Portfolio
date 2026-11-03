@@ -1,153 +1,178 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  useVelocity,
+} from "framer-motion";
+import { EASE_OUT, SPRING_SOFT } from "@/lib/motion";
+
+const ACCENT = "rgb(var(--accent))";
+const ACCENT_LIGHT = "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)";
+const ACCENT_PALE = "color-mix(in srgb, rgb(var(--accent)) 32%, #fff)";
+const ACCENT_DEEP = "color-mix(in srgb, rgb(var(--accent)) 55%, #000)";
+const MOSS = "rgb(var(--moss))";
 
 // -------------------------------------------------------------
-// 1. OPEN SKY PIXEL DRONE (Floats freely in the right hero area)
+// 1. PIXEL DRONE
+// Drops in on a spring, idles with a float, and can be dragged:
+// it tilts with drag velocity and springs back home on release.
 // -------------------------------------------------------------
 export function HeroPixelDrone() {
-  const [isScanning, setIsScanning] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const droneRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const [pings, setPings] = useState<number[]>([]);
+  const [hasDragged, setHasDragged] = useState(false);
 
-  // Zero-react-render mouse parallax: directly mutates GPU transform on the DOM node
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || !droneRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 28;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 22;
-    droneRef.current.style.transform = `translate3d(${x}px, ${y - 8}px, 0)`;
-  };
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const xVelocity = useVelocity(x);
+  const tilt = useSpring(useTransform(xVelocity, [-1600, 0, 1600], [-16, 0, 16]), {
+    stiffness: 220,
+    damping: 18,
+  });
+  // Ground shadow shrinks and fades as the drone is lifted away from it.
+  const shadowScale = useTransform(y, [-220, 0, 120], [0.45, 1, 1.12]);
+  const shadowOpacity = useTransform(y, [-220, 0, 120], [0.12, 0.5, 0.6]);
+  const shadowX = useTransform(x, (v) => v * 0.85);
 
-  const handleMouseLeave = () => {
-    if (!droneRef.current) return;
-    droneRef.current.style.transform = `translate3d(0px, 0px, 0)`;
-  };
-
-  const triggerScan = () => {
-    setIsScanning(true);
-    setTimeout(() => setIsScanning(false), 1200);
+  // Framer can report a tap at the end of a drag; ignore taps right after a drag ends.
+  const lastDragEnd = useRef(0);
+  const ping = () => {
+    if (Date.now() - lastDragEnd.current < 300) return;
+    setPings((p) => [...p.slice(-2), Date.now()]);
   };
 
   return (
-    <div
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative w-full h-[320px] sm:h-[380px] lg:h-[440px] flex flex-col items-center justify-center select-none"
-    >
-      {/* Animated Flying Saucer / Drone */}
-      <div
-        ref={droneRef}
-        onClick={triggerScan}
-        title="Click to trigger radar scan"
-        className="relative cursor-pointer transition-transform duration-300 ease-out group will-change-transform"
+    <div className="relative w-full h-[300px] sm:h-[360px] lg:h-[420px] flex items-center justify-center select-none">
+      <motion.div
+        className="relative flex flex-col items-center"
+        initial={reduce ? false : { y: -160, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ ...SPRING_SOFT, delay: 0.5 }}
       >
-        {/* Pulse Radar Scan Wave on Click */}
-        {isScanning && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full border-2 border-cobalt animate-ping pointer-events-none opacity-70" />
-        )}
+        <motion.div
+          drag
+          dragSnapToOrigin
+          dragElastic={0.45}
+          dragTransition={{ bounceStiffness: 240, bounceDamping: 14 }}
+          whileDrag={{ scale: 1.06 }}
+          onDragStart={() => setHasDragged(true)}
+          onDragEnd={() => (lastDragEnd.current = Date.now())}
+          onTap={ping}
+          style={{ x, y, rotate: tilt }}
+          className="relative cursor-grab active:cursor-grabbing touch-none"
+          aria-label="Pixel drone. Drag it around or tap it."
+          role="img"
+        >
+          {/* Radar ping on tap */}
+          <AnimatePresence>
+            {pings.map((id) => (
+              <motion.span
+                key={id}
+                className="absolute left-1/2 top-1/2 -ml-24 -mt-24 h-48 w-48 rounded-full border border-accent/60 pointer-events-none"
+                initial={{ scale: 0.3, opacity: 0.8 }}
+                animate={{ scale: 1.6, opacity: 0 }}
+                transition={{ duration: 0.9, ease: EASE_OUT }}
+                onAnimationComplete={() => setPings((p) => p.filter((v) => v !== id))}
+              />
+            ))}
+          </AnimatePresence>
 
-        {/* 8-bit Retro UFO SVG (Sharp Crisp Pixels, Havu Style) */}
-        <div className="relative flex flex-col items-center">
-          {/* UFO Body */}
-          <svg
-            viewBox="0 0 24 10"
-            shapeRendering="crispEdges"
-            className="w-48 sm:w-56 lg:w-64 h-auto transition-transform group-hover:scale-105 duration-300"
-          >
-            {/* Cockpit Glass Dome */}
-            <rect x="9" y="0" width="6" height="1" style={{ fill: "rgb(var(--accent))" }} />
-            <rect x="8" y="1" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)" }} />
-            <rect x="7" y="2" width="10" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 32%, #fff)" }} />
-            {/* Pilot Eye Pixel */}
-            <rect x="11" y="2" width="2" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 55%, #000)" }} />
-
-            {/* UFO Main Hull */}
-            <rect x="4" y="3" width="16" height="1" fill="currentColor" className="text-slate-800 dark:text-slate-100" />
-            <rect x="2" y="4" width="20" height="1" fill="currentColor" className="text-slate-900 dark:text-white" />
-            <rect x="0" y="5" width="24" height="2" fill="currentColor" className="text-slate-950 dark:text-slate-200" />
-
-            {/* Sensor Lights */}
-            <rect x="3" y="5" width="2" height="1" fill="#EF4444" className="animate-pulse" />
-            <rect x="7" y="5" width="2" height="1" fill="#F59E0B" />
-            <rect x="11" y="5" width="2" height="1" style={{ fill: "rgb(var(--moss))" }} />
-            <rect x="15" y="5" width="2" height="1" style={{ fill: "rgb(var(--accent))" }} />
-            <rect x="19" y="5" width="2" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)" }} className="animate-pulse" />
-
-            {/* Lower Propulsion Ring */}
-            <rect x="2" y="7" width="20" height="1" fill="currentColor" className="text-slate-700 dark:text-slate-300" />
-            <rect x="6" y="8" width="12" height="1" fill="currentColor" className="text-slate-600 dark:text-slate-400" />
-            <rect x="9" y="9" width="6" height="1" style={{ fill: "rgb(var(--accent))" }} />
-          </svg>
-
-          {/* Flickering Plasma Thruster Plume */}
-          <div className="flex justify-center items-start gap-1 mt-0.5">
-            <svg viewBox="0 0 6 4" shapeRendering="crispEdges" className="w-12 h-auto text-cobalt animate-pulse">
-              <rect x="1" y="0" width="4" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)" }} />
-              <rect x="2" y="1" width="2" height="2" style={{ fill: "rgb(var(--accent))" }} />
-              <rect x="2" y="3" width="2" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--accent)) 32%, #fff)" }} />
+          <div className={`flex flex-col items-center ${reduce ? "" : "animate-float"}`}>
+            <svg viewBox="0 0 24 10" shapeRendering="crispEdges" className="w-48 sm:w-56 lg:w-64 h-auto">
+              {/* Cockpit dome */}
+              <rect x="9" y="0" width="6" height="1" style={{ fill: ACCENT }} />
+              <rect x="8" y="1" width="8" height="1" style={{ fill: ACCENT_LIGHT }} />
+              <rect x="7" y="2" width="10" height="1" style={{ fill: ACCENT_PALE }} />
+              <rect x="11" y="2" width="2" height="1" style={{ fill: ACCENT_DEEP }} />
+              {/* Hull */}
+              <rect x="4" y="3" width="16" height="1" fill="currentColor" className="text-ink-2" />
+              <rect x="2" y="4" width="20" height="1" fill="currentColor" className="text-ink" />
+              <rect x="0" y="5" width="24" height="2" fill="currentColor" className="text-ink" />
+              {/* Lights */}
+              <rect x="3" y="5" width="2" height="1" style={{ fill: ACCENT_LIGHT }} />
+              <rect x="7" y="5" width="2" height="1" fill="#E0A23B" />
+              <rect x="11" y="5" width="2" height="1" style={{ fill: MOSS }} />
+              <rect x="15" y="5" width="2" height="1" style={{ fill: ACCENT }} />
+              <rect x="19" y="5" width="2" height="1" style={{ fill: ACCENT_LIGHT }} />
+              {/* Propulsion ring */}
+              <rect x="2" y="7" width="20" height="1" fill="currentColor" className="text-ink-2" />
+              <rect x="6" y="8" width="12" height="1" fill="currentColor" className="text-muted" />
+              <rect x="9" y="9" width="6" height="1" style={{ fill: ACCENT }} />
+            </svg>
+            {/* Thruster */}
+            <svg viewBox="0 0 6 4" shapeRendering="crispEdges" className="mt-0.5 w-12 h-auto animate-pulse">
+              <rect x="1" y="0" width="4" height="1" style={{ fill: ACCENT_LIGHT }} />
+              <rect x="2" y="1" width="2" height="2" style={{ fill: ACCENT }} />
+              <rect x="2" y="3" width="2" height="1" style={{ fill: ACCENT_PALE }} />
             </svg>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Floating Status Pill */}
-        <div className="mt-4 flex items-center justify-center">
-          <span className="px-3 py-1 rounded-full bg-surface/90 dark:bg-surface/90 backdrop-blur-md text-[10px] font-mono text-slate-800 dark:text-slate-200 tracking-widest uppercase flex items-center gap-1.5 shadow-md border border-slate-200 dark:border-white/10 group-hover:border-cobalt transition-colors">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>DEV COMPANION · ACTIVE</span>
-          </span>
-        </div>
-      </div>
+        {/* Ground shadow */}
+        <motion.div
+          aria-hidden
+          style={{ scaleX: shadowScale, opacity: shadowOpacity, x: shadowX }}
+          className="mt-8 h-2.5 w-40 rounded-[50%] bg-ink/40 dark:bg-black/80 blur-[6px]"
+        />
+
+        <motion.p
+          aria-hidden
+          animate={{ opacity: hasDragged ? 0 : 1 }}
+          transition={{ duration: 0.4 }}
+          className="mt-5 font-mono text-[11px] text-muted"
+        >
+          drag me
+        </motion.p>
+      </motion.div>
     </div>
   );
 }
 
 // -------------------------------------------------------------
-// 2. FULL-WIDTH HERO BASELINE (Spans across entire hero bottom)
+// 2. HERO BASELINE: a little robot walks the line and says things.
 // -------------------------------------------------------------
+const ROBOT_LINES = [
+  "Hi! Uwais is open to software engineering internships.",
+  "Two papers at ACM AutoUI '26, Gothenburg.",
+  "Psst. The drone up there can be dragged.",
+  "There's a terminal further down. Type help.",
+  "Made with Next.js, Tailwind and a lot of pixels.",
+];
+
 export function HeroPixelBaseline() {
-  const [activeMessageIdx, setActiveMessageIdx] = useState(0);
+  const reduce = useReducedMotion();
+  const [line, setLine] = useState(0);
   const [walkFrame, setWalkFrame] = useState(0);
   const [walkPos, setWalkPos] = useState(30);
   const [walkDirection, setWalkDirection] = useState<1 | -1>(1);
   const baselineRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(true);
 
-  const STATUS_MESSAGES = [
-    "Playwright 20/20 Suites Passing ✓",
-    "ACM AutomotiveUI '26 (Gothenburg) Verified",
-    "Server-Side NRIC PDPA Scrubbing Active",
-    "Sub-150ms YOLOv8 WASM Inference",
-    "Distributed Schema: 10+ Relational Tables",
-  ];
-
-  // Pause background loop when scrolled away from Hero
+  // Pause loops when the hero is off screen.
   useEffect(() => {
     const el = baselineRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting);
-      },
-      { threshold: 0.05 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), {
+      threshold: 0.05,
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Rotate speech messages every 3.5s (only when in view)
   useEffect(() => {
     if (!isInView) return;
-    const interval = setInterval(() => {
-      setActiveMessageIdx((prev) => (prev + 1) % STATUS_MESSAGES.length);
-    }, 3500);
-    return () => clearInterval(interval);
-  }, [isInView, STATUS_MESSAGES.length]);
+    const id = setInterval(() => setLine((p) => (p + 1) % ROBOT_LINES.length), 4200);
+    return () => clearInterval(id);
+  }, [isInView]);
 
-  // Animate walking robot back and forth along the baseline (only when in view)
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || reduce) return;
     const walkTimer = setInterval(() => {
       setWalkFrame((f) => (f + 1) % 4);
       setWalkPos((pos) => {
@@ -162,58 +187,37 @@ export function HeroPixelBaseline() {
         return pos + walkDirection * 0.7;
       });
     }, 140);
-
     return () => clearInterval(walkTimer);
-  }, [isInView, walkDirection]);
+  }, [isInView, walkDirection, reduce]);
 
   return (
-    <div ref={baselineRef} className="w-full max-w-7xl pt-4 border-t border-slate-200/80 dark:border-white/[0.08] select-none">
+    <div ref={baselineRef} className="w-full pt-4 border-t border-line select-none">
       <div className="relative w-full min-h-[44px] flex items-center justify-between gap-4">
-        {/* Left Station: Engineer Workstation & CRT Monitor */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <svg viewBox="0 0 16 12" shapeRendering="crispEdges" className="w-8 sm:w-9 h-auto text-slate-800 dark:text-slate-200">
-            {/* Monitor Frame */}
-            <rect x="1" y="0" width="14" height="9" fill="currentColor" />
-            {/* Green CRT Screen */}
-            <rect x="2" y="1" width="12" height="7" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 35%, #000)" }} />
-            {/* Code lines */}
-            <rect x="3" y="2" width="6" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
-            <rect x="3" y="4" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
-            <rect x="3" y="6" width="4" height="1" style={{ fill: "rgb(var(--moss))" }} />
-            {/* Stand */}
-            <rect x="7" y="9" width="2" height="2" fill="currentColor" />
-            <rect x="4" y="11" width="8" height="1" fill="currentColor" />
-          </svg>
-          <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:inline">
-            DEV CONSOLE
-          </span>
-        </div>
+        {/* Workstation */}
+        <svg viewBox="0 0 16 12" shapeRendering="crispEdges" className="w-8 h-auto text-ink-2 shrink-0" aria-hidden>
+          <rect x="1" y="0" width="14" height="9" fill="currentColor" />
+          <rect x="2" y="1" width="12" height="7" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 35%, #000)" }} />
+          <rect x="3" y="2" width="6" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
+          <rect x="3" y="4" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
+          <rect x="3" y="6" width="4" height="1" style={{ fill: MOSS }} />
+          <rect x="7" y="9" width="2" height="2" fill="currentColor" />
+          <rect x="4" y="11" width="8" height="1" fill="currentColor" />
+        </svg>
 
-        {/* Center: Walking Pixel Robot along the continuous baseline */}
+        {/* Walking robot */}
         <div
+          aria-hidden
           className="absolute transition-all duration-150 ease-linear flex flex-col items-center pointer-events-none"
-          style={{
-            left: `${walkPos}%`,
-            transform: `scaleX(${walkDirection})`,
-          }}
+          style={{ left: `${walkPos}%`, transform: `scaleX(${walkDirection})` }}
         >
-          {/* 8-bit Walking Robot SVG */}
-          <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 h-auto text-slate-800 dark:text-white">
-            {/* Antenna */}
-            <rect x="5" y="0" width="2" height="1" style={{ fill: "rgb(var(--accent))" }} />
+          <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 h-auto text-ink">
+            <rect x="5" y="0" width="2" height="1" style={{ fill: ACCENT }} />
             <rect x="5" y="1" width="2" height="1" fill="currentColor" />
-
-            {/* Head */}
             <rect x="3" y="2" width="6" height="4" fill="currentColor" />
-            {/* Eyes */}
-            <rect x="4" y="3" width="1" height="1" style={{ fill: "rgb(var(--accent))" }} />
-            <rect x="7" y="3" width="1" height="1" style={{ fill: "rgb(var(--accent))" }} />
-
-            {/* Body */}
+            <rect x="4" y="3" width="1" height="1" style={{ fill: ACCENT }} />
+            <rect x="7" y="3" width="1" height="1" style={{ fill: ACCENT }} />
             <rect x="2" y="6" width="8" height="4" fill="currentColor" />
-            <rect x="4" y="7" width="4" height="2" style={{ fill: "rgb(var(--moss))" }} />
-
-            {/* Dynamic Walking Legs */}
+            <rect x="4" y="7" width="4" height="2" style={{ fill: MOSS }} />
             {walkFrame === 0 && (
               <>
                 <rect x="3" y="10" width="2" height="3" fill="currentColor" />
@@ -249,43 +253,33 @@ export function HeroPixelBaseline() {
           </svg>
         </div>
 
-        {/* Center-Right Telemetry Speech Bubble */}
-        <div className="mx-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface dark:bg-surface border border-slate-200/90 dark:border-white/10 shadow-sm max-w-xs sm:max-w-md truncate">
-          <span className="w-1.5 h-1.5 rounded-full bg-cobalt animate-ping shrink-0" />
-          <span className="text-[10px] sm:text-[11px] font-mono text-slate-700 dark:text-slate-300 truncate">
-            &gt; {STATUS_MESSAGES[activeMessageIdx]}
-          </span>
+        {/* Speech bubble */}
+        <div className="mx-auto max-w-[70%] sm:max-w-md px-3 py-1.5 rounded-full bg-surface border border-line overflow-hidden" aria-live="polite">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.p
+              key={line}
+              initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
+              transition={{ duration: 0.35, ease: EASE_OUT }}
+              className="text-[12px] text-ink-2 truncate"
+            >
+              {ROBOT_LINES[line]}
+            </motion.p>
+          </AnimatePresence>
         </div>
 
-        {/* Right Station: Database Tower */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:inline">
-            SUPABASE DB
-          </span>
-          <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 sm:w-7 h-auto text-slate-800 dark:text-slate-200">
-            <rect x="1" y="0" width="10" height="14" fill="currentColor" />
-            {/* Server Bays */}
-            <rect x="2" y="2" width="8" height="2" fill="#2E2A24" />
-            <rect x="9" y="2" width="1" height="1" style={{ fill: "rgb(var(--accent))" }} className="animate-pulse" />
-            <rect x="2" y="6" width="8" height="2" fill="#2E2A24" />
-            <rect x="9" y="6" width="1" height="1" style={{ fill: "rgb(var(--moss))" }} />
-            <rect x="2" y="10" width="8" height="2" fill="#2E2A24" />
-            <rect x="9" y="10" width="1" height="1" fill="#EF4444" className="animate-ping" />
-          </svg>
-        </div>
+        {/* Server */}
+        <svg viewBox="0 0 12 14" shapeRendering="crispEdges" className="w-6 h-auto text-ink-2 shrink-0" aria-hidden>
+          <rect x="1" y="0" width="10" height="14" fill="currentColor" />
+          <rect x="2" y="2" width="8" height="2" style={{ fill: "rgb(var(--paper))" }} />
+          <rect x="9" y="2" width="1" height="1" style={{ fill: ACCENT }} />
+          <rect x="2" y="6" width="8" height="2" style={{ fill: "rgb(var(--paper))" }} />
+          <rect x="9" y="6" width="1" height="1" style={{ fill: MOSS }} />
+          <rect x="2" y="10" width="8" height="2" style={{ fill: "rgb(var(--paper))" }} />
+          <rect x="9" y="10" width="1" height="1" style={{ fill: ACCENT_LIGHT }} />
+        </svg>
       </div>
-    </div>
-  );
-}
-
-// -------------------------------------------------------------
-// 3. COMBINED EXPORT (For backwards compatibility)
-// -------------------------------------------------------------
-export function HeroPixelStage() {
-  return (
-    <div className="w-full flex flex-col items-center">
-      <HeroPixelDrone />
-      <HeroPixelBaseline />
     </div>
   );
 }
