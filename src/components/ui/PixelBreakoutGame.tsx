@@ -1163,7 +1163,7 @@ function InlineBreakoutStage({ onClose }: { onClose: () => void }) {
               <Keyboard size={12} />
               <span>A / D or arrow keys</span>
             </span>
-            <span className={isBallAttached ? "text-accent" : "text-moss"}>
+            <span className={isBallAttached ? "text-accent" : "text-signal"}>
               {isBallAttached ? "Ready" : "Ball in play"}
             </span>
           </div>

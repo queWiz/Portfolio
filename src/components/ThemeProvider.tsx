@@ -1,5 +1,6 @@
 "use client";
 
+import { THEME_STORAGE_KEY } from "@/lib/initScripts";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 export type Theme = "light" | "dark";
@@ -13,14 +14,6 @@ const ThemeContext = createContext<ThemeContextType>({
   theme: "light",
   toggleTheme: () => {},
 });
-
-export const THEME_STORAGE_KEY = "portfolio-theme";
-
-/**
- * Runs in <head> before first paint so a saved dark theme never flashes light.
- * Light is the default; only an explicit choice (the toggle) switches to dark.
- */
-export const themeInitScript = `(function(){try{if(localStorage.getItem("${THEME_STORAGE_KEY}")==="dark")document.documentElement.classList.add("dark")}catch(e){}})();`;
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");

@@ -6,7 +6,7 @@ import { EASE_OUT } from "@/lib/motion";
 
 const ACCENT = "rgb(var(--accent))";
 const ACCENT_LIGHT = "color-mix(in srgb, rgb(var(--accent)) 60%, #fff)";
-const MOSS = "rgb(var(--moss))";
+const SIGNAL = "rgb(var(--signal))";
 
 // -------------------------------------------------------------
 // HERO BASELINE: a little robot walks the line and says things.
@@ -16,6 +16,7 @@ const ROBOT_LINES = [
   "Two papers at ACM AutoUI '26, Gothenburg.",
   "Psst. Give that name badge a swing.",
   "Poke me. Go on.",
+  "Try clicking the name up there.",
   "There's a terminal further down. Type help.",
   "Made with Next.js, Tailwind and a lot of pixels.",
 ];
@@ -89,10 +90,10 @@ export function HeroPixelBaseline() {
         {/* Workstation */}
         <svg viewBox="0 0 16 12" shapeRendering="crispEdges" className="w-8 h-auto text-ink-2 shrink-0" aria-hidden>
           <rect x="1" y="0" width="14" height="9" fill="currentColor" />
-          <rect x="2" y="1" width="12" height="7" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 35%, #000)" }} />
-          <rect x="3" y="2" width="6" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
-          <rect x="3" y="4" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--moss)) 70%, #fff)" }} />
-          <rect x="3" y="6" width="4" height="1" style={{ fill: MOSS }} />
+          <rect x="2" y="1" width="12" height="7" style={{ fill: "color-mix(in srgb, rgb(var(--signal)) 35%, #000)" }} />
+          <rect x="3" y="2" width="6" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--signal)) 70%, #fff)" }} />
+          <rect x="3" y="4" width="8" height="1" style={{ fill: "color-mix(in srgb, rgb(var(--signal)) 70%, #fff)" }} />
+          <rect x="3" y="6" width="4" height="1" style={{ fill: SIGNAL }} />
           <rect x="7" y="9" width="2" height="2" fill="currentColor" />
           <rect x="4" y="11" width="8" height="1" fill="currentColor" />
         </svg>
@@ -120,7 +121,7 @@ export function HeroPixelBaseline() {
             <rect x="4" y="3" width="1" height="1" style={{ fill: ACCENT }} />
             <rect x="7" y="3" width="1" height="1" style={{ fill: ACCENT }} />
             <rect x="2" y="6" width="8" height="4" fill="currentColor" />
-            <rect x="4" y="7" width="4" height="2" style={{ fill: MOSS }} />
+            <rect x="4" y="7" width="4" height="2" style={{ fill: SIGNAL }} />
             {walkFrame === 0 && (
               <>
                 <rect x="3" y="10" width="2" height="3" fill="currentColor" />
@@ -178,7 +179,7 @@ export function HeroPixelBaseline() {
           <rect x="2" y="2" width="8" height="2" style={{ fill: "rgb(var(--paper))" }} />
           <rect x="9" y="2" width="1" height="1" style={{ fill: ACCENT }} />
           <rect x="2" y="6" width="8" height="2" style={{ fill: "rgb(var(--paper))" }} />
-          <rect x="9" y="6" width="1" height="1" style={{ fill: MOSS }} />
+          <rect x="9" y="6" width="1" height="1" style={{ fill: SIGNAL }} />
           <rect x="2" y="10" width="8" height="2" style={{ fill: "rgb(var(--paper))" }} />
           <rect x="9" y="10" width="1" height="1" style={{ fill: ACCENT_LIGHT }} />
         </svg>

@@ -93,7 +93,7 @@ export function Footer() {
                 transition={{ duration: 0.18 }}
                 className="inline-flex items-center gap-1.5"
               >
-                {copied ? <Check size={14} className="text-moss" /> : <Copy size={14} />}
+                {copied ? <Check size={14} className="text-signal" /> : <Copy size={14} />}
                 {copied ? "Copied" : "Copy"}
               </motion.span>
             </AnimatePresence>
@@ -134,7 +134,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-5">
             <span className="flex items-center gap-1.5 font-mono text-[12px] tabular-nums">
-              <span className="h-1.5 w-1.5 rounded-full bg-moss" aria-hidden />
+              <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
               Singapore, {time || "--:--"}
             </span>
             <a href="#home" className="group inline-flex items-center gap-1 text-ink-2 hover:text-ink">

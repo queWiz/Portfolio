@@ -87,7 +87,7 @@ function CopyBibtex({ text }: { text: string }) {
           transition={{ duration: 0.18 }}
           className="inline-flex items-center gap-1.5"
         >
-          {copied ? <Check size={14} className="text-moss" /> : <Copy size={14} />}
+          {copied ? <Check size={14} className="text-signal" /> : <Copy size={14} />}
           {copied ? "Copied" : "Copy BibTeX"}
         </motion.span>
       </AnimatePresence>

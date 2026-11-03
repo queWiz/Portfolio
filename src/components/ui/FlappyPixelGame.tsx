@@ -1201,7 +1201,7 @@ export function FlappyPixelGame() {
               <Play size={11} />
               <span>Space or click to flap</span>
             </span>
-            <span className={gameState === "playing" ? "text-moss" : "text-accent"}>
+            <span className={gameState === "playing" ? "text-signal" : "text-accent"}>
               {gameState === "playing" ? "In flight" : "Ready"}
             </span>
           </div>

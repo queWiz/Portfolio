@@ -61,7 +61,7 @@ export const PROJECTS: Project[] = [
       { src: "/projects/pergas-member.webp", width: 516, height: 1052, frame: "phone", alt: "Pergas member app home screen with digital card, events, benefits and a member perk carousel" },
     ],
     hasMock: true,
-    tint: tint("moss", 14),
+    tint: tint("signal", 14),
   },
   {
     id: "cleanbrilliant",
@@ -162,6 +162,6 @@ export const PROJECTS: Project[] = [
       { src: "/projects/tabayyun-detect.webp", width: 515, height: 1043, frame: "phone", alt: "Tabayyun scanner on a phone, with a green bounding box labelled Buldak Carbonara around a noodle packet" },
     ],
     hasMock: false,
-    tint: tint("moss", 8),
+    tint: tint("signal", 8),
   },
 ];

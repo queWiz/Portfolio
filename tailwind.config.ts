@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Semantic tokens (palette "M1 · Rust & Moss"). Values live in globals.css
+        // Semantic tokens (palette "Deep Teal & Flare"). Values live in globals.css
         // and switch automatically in dark mode, so new markup needs no `dark:` colour variants.
         paper: token("paper"),
         surface: token("surface"),
@@ -17,40 +17,21 @@ const config: Config = {
         muted: token("muted"),
         line: token("line"),
         accent: { DEFAULT: token("accent"), strong: token("accent-strong"), soft: token("accent-soft") },
-        moss: token("moss"),
+        signal: token("signal"),
         "on-accent": token("on-accent"),
         console: { DEFAULT: token("console"), raised: token("console-raised"), line: token("console-line") },
 
         // Legacy alias: older components still say `cobalt`. Remove once each section is rebuilt.
         cobalt: { DEFAULT: token("accent"), dark: token("accent-strong"), light: token("accent-soft") },
 
-        // Interim warm remaps of Tailwind's cool scales so un-rebuilt sections already match M1.
-        // Section rebuilds should switch to the semantic tokens above.
+        // Remaps of Tailwind's slate/emerald so the few leftover classes (arcade loadout panel) match the palette.
         slate: {
-          50: "#F5F1EA",
-          100: "#EBE5DA",
-          200: "#DDD5C6",
-          300: "#CEC7BA",
-          400: "#9A9387",
-          500: "#6B6458",
-          600: "#4F493F",
-          700: "#3F3B33",
-          800: "#2E2A24",
-          900: "#24211C",
-          950: "#1C1A16",
+          50: "#FCF5EA", 100: "#F7EAD6", 200: "#E6D3B8", 300: "#D9CDB9", 400: "#90AEAD", 500: "#5B6767",
+          600: "#3B6676", 700: "#2F4A53", 800: "#1F3E49", 900: "#16313A", 950: "#0F2229",
         },
         emerald: {
-          50: "#EEF4EF",
-          100: "#DCE8DF",
-          200: "#BCD4C3",
-          300: "#9CC4AA",
-          400: "#86BE9F",
-          500: "#4F8A68",
-          600: "#3A7155",
-          700: "#2F5D46",
-          800: "#264B39",
-          900: "#1D3A2C",
-          950: "#13271D",
+          50: "#EEF3F3", 100: "#DCE7E6", 200: "#C2D5D4", 300: "#A9C2C1", 400: "#90AEAD", 500: "#6F9190",
+          600: "#557776", 700: "#3F5D5C", 800: "#2E4645", 900: "#1F3030", 950: "#132020",
         },
       },
       fontFamily: {

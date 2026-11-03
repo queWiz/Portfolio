@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Amiri, Geist, Geist_Mono, Mrs_Saint_Delafield, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider, themeInitScript } from "@/components/ThemeProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { headInitScript } from "@/lib/initScripts";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -21,7 +22,7 @@ const amiri = Amiri({
   preload: false,
 });
 
-// PARKED: pixel vs signature name treatment; remove the unused font once decided.
+// Hero name: the two treatments alternate per visit (see lib/initScripts.ts).
 const pixel = Pixelify_Sans({ subsets: ["latin"], weight: ["600"], variable: "--font-pixel", preload: false });
 const signature = Mrs_Saint_Delafield({ subsets: ["latin"], weight: ["400"], variable: "--font-signature", preload: false });
 
@@ -51,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: headInitScript }} />
       </head>
       <body className={`${geist.variable} ${geistMono.variable} ${amiri.variable} ${pixel.variable} ${signature.variable} font-sans antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>

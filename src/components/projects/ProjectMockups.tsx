@@ -32,10 +32,10 @@ function Window({ title, chip, children }: { title: string; chip?: ReactNode; ch
   );
 }
 
-function Chip({ children, tone = "muted" }: { children: ReactNode; tone?: "muted" | "moss" | "accent" }) {
+function Chip({ children, tone = "muted" }: { children: ReactNode; tone?: "muted" | "signal" | "accent" }) {
   const tones = {
     muted: "bg-ink/[0.05] text-ink-2",
-    moss: "bg-moss/[0.12] text-moss",
+    signal: "bg-signal/[0.12] text-signal",
     accent: "bg-accent/10 text-accent",
   };
   return (
@@ -69,7 +69,7 @@ function PergasMock() {
     { name: "Member 0517", nric: "S****192B", tier: "Life" },
   ];
   return (
-    <Window title="Members · Admin portal" chip={<Chip tone="moss"><Check size={11} /> 20/20 tests</Chip>}>
+    <Window title="Members · Admin portal" chip={<Chip tone="signal"><Check size={11} /> 20/20 tests</Chip>}>
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="inline-flex rounded-full bg-ink/[0.05] p-0.5 text-[12px]" role="tablist" aria-label="Portal view">
           {(["admin", "member"] as const).map((v) => (
@@ -151,7 +151,7 @@ function CleanBrilliantMock() {
       <div className="mt-3 flex items-center justify-between gap-2 rounded-lg bg-ink/[0.04] px-3 py-2 font-mono text-[11px] text-ink-2">
         <span className="truncate">layout = {JSON.stringify(widgets.map((w) => w.id))}</span>
         <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span key={saves} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="shrink-0 text-moss">
+          <motion.span key={saves} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="shrink-0 text-signal">
             saved #{saves}
           </motion.span>
         </AnimatePresence>
@@ -208,7 +208,7 @@ function CodexMock() {
           <Play size={13} className="text-accent" />
           Jump to <span className="font-mono font-medium">{cur.t}</span>
         </span>
-        <Chip tone="moss">match {cur.score}</Chip>
+        <Chip tone="signal">match {cur.score}</Chip>
       </div>
     </Window>
   );
@@ -229,7 +229,7 @@ function BidForGoodMock() {
     setLog((l) => [{ who: "You", amt: next }, ...l].slice(0, 3));
   };
   return (
-    <Window title="Lot 104 · Signed football" chip={<Chip tone="moss">Row locked</Chip>}>
+    <Window title="Lot 104 · Signed football" chip={<Chip tone="signal">Row locked</Chip>}>
       <div className="flex items-end justify-between gap-3">
         <div>
           <p className="text-[11px] text-muted">Current bid</p>
@@ -259,7 +259,7 @@ function BidForGoodMock() {
               <span className={e.who === "You" ? "font-medium" : "text-ink-2"}>{e.who}</span>
               <span className="flex items-center gap-2 font-mono text-[12px] text-muted">
                 S${e.amt}
-                {idx === 0 && <Check size={12} className="text-moss" />}
+                {idx === 0 && <Check size={12} className="text-signal" />}
               </span>
             </motion.li>
           ))}

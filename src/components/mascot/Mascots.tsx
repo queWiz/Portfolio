@@ -121,7 +121,7 @@ function BadgeFront() {
         <span>SIT · Singapore</span>
         <span className="text-accent">Student</span>
       </div>
-      <div className="mx-5 mt-3 grid h-[136px] items-end justify-items-center overflow-hidden rounded-xl bg-[#DDE4DB]">
+      <div className="mx-5 mt-3 grid h-[136px] items-end justify-items-center overflow-hidden rounded-xl bg-[#D6E2E1]">
         <PixelPortrait className="h-auto w-[100px]" />
       </div>
       <div className="px-5 pt-4">
@@ -129,8 +129,8 @@ function BadgeFront() {
         <p className="mt-0.5 text-[13px] text-ink-2">Software &amp; Data Engineer</p>
       </div>
       <div className="absolute inset-x-0 bottom-0 flex items-center justify-between border-t border-line px-5 py-3">
-        <span className="flex items-center gap-1.5 text-[11px] font-medium text-moss">
-          <span className="h-1.5 w-1.5 rounded-full bg-moss" />
+        <span className="flex items-center gap-1.5 text-[11px] font-medium text-signal">
+          <span className="h-1.5 w-1.5 rounded-full bg-signal" />
           Open to internships
         </span>
         {/* tiny pixel barcode */}

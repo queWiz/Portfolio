@@ -15,7 +15,7 @@ function Sprite({ rows, palette, className }: { rows: string[]; palette: Record<
 }
 
 const ACCENT = "rgb(var(--accent))";
-const MOSS = "rgb(var(--moss))";
+const SIGNAL = "rgb(var(--signal))";
 
 // prettier-ignore
 const MEDAL = [
@@ -32,7 +32,7 @@ const MEDAL = [
   "..GGYYGG..",
   "...GGGG...",
 ];
-const MEDAL_PAL = { R: ACCENT, B: MOSS, G: "#C9932B", Y: "#F1C75B" };
+const MEDAL_PAL = { R: ACCENT, B: SIGNAL, G: "#C9932B", Y: "#F1C75B" };
 
 // prettier-ignore
 const CERT = [
@@ -48,7 +48,7 @@ const CERT = [
   ".........B.B..",
   "........B...B.",
 ];
-const CERT_PAL = { W: "rgb(var(--surface))", L: "rgb(var(--line))", R: ACCENT, B: MOSS };
+const CERT_PAL = { W: "rgb(var(--surface))", L: "rgb(var(--line))", R: ACCENT, B: SIGNAL };
 
 const ITEMS = [
   {

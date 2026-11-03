@@ -7,6 +7,7 @@ import { RevealText } from "@/components/motion/RevealText";
 import { HeroPixelBaseline } from "@/components/ui/HeroPixelStage";
 import { revealBlur } from "@/lib/motion";
 import { BadgeMascot } from "@/components/mascot/Mascots";
+import { NAME_STORAGE_KEY } from "@/lib/initScripts";
 
 const EMAIL = "ualqarni70@gmail.com";
 const NAME = "Uwais Alqarni";
@@ -14,16 +15,8 @@ const NAME = "Uwais Alqarni";
 /** Timeline for the hero cascade (seconds). Nav enters at 0. */
 const T = { pill: 0.1, name: 0.2, lede: 0.45, body: 0.7, actions: 0.82, proof: 0.94 };
 
-// PARKED DECISION (revisit with the palette at the end): signature (default) vs pixel nameplate.
-// Preview the pixel version with ?name=pixel. Remove the loser and its font when decided.
-type NameStyle = "pixel" | "signature";
-function useNamePreview(): NameStyle {
-  const [n, setN] = useState<NameStyle>("signature");
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("name") === "pixel") requestAnimationFrame(() => setN("pixel"));
-  }, []);
-  return n;
-}
+// The name alternates between two treatments on every visit (picked before paint in lib/initScripts.ts)
+// and switches on click. Both are rendered; CSS on html[data-name] shows one.
 
 /* ---------- B. Pixel nameplate that decodes like the terminal ---------- */
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*+=?/<>01";
@@ -51,10 +44,10 @@ function PixelName() {
     return () => clearInterval(id);
   }, [reduce]);
   return (
-    <h1 aria-label={NAME} className="mt-6 font-pixel text-[3.2rem] leading-none sm:text-[4.4rem] lg:text-[5.2rem] text-ink whitespace-pre">
-      <span aria-hidden>{shown}</span>
+    <span aria-hidden className="block pt-6 pb-1 font-pixel text-[3.2rem] leading-none sm:text-[4.4rem] lg:text-[5.2rem] text-ink whitespace-pre">
+      <span>{shown}</span>
       <span aria-hidden className="ml-2 inline-block h-[0.78em] w-[0.12em] translate-y-[0.06em] bg-accent animate-[blink_1.1s_steps(1)_infinite]" />
-    </h1>
+    </span>
   );
 }
 
@@ -62,9 +55,8 @@ function PixelName() {
 function SignatureName() {
   const reduce = useReducedMotion();
   return (
-    <h1 aria-label={NAME} className="mt-4 -mb-2">
+    <span aria-hidden className="block pt-4 -mb-2">
       <motion.span
-        aria-hidden
         className="inline-block -rotate-3 font-signature text-[4.2rem] leading-[1.25] sm:text-[5.4rem] lg:text-[6.2rem] text-accent pr-6"
         initial={reduce ? false : { clipPath: "inset(-20% 100% -20% 0)" }}
         animate={{ clipPath: "inset(-20% 0% -20% 0)" }}
@@ -72,13 +64,39 @@ function SignatureName() {
       >
         {NAME}
       </motion.span>
+    </span>
+  );
+}
+
+/* ---------- The heading: whichever treatment is showing; click to swap ---------- */
+function HeroName() {
+  // Bumping a key remounts that treatment so its intro animation plays again on swap.
+  const [replay, setReplay] = useState({ pixel: 0, signature: 0 });
+  const swap = () => {
+    const root = document.documentElement;
+    const next = root.getAttribute("data-name") === "pixel" ? "signature" : "pixel";
+    root.setAttribute("data-name", next);
+    try { localStorage.setItem(NAME_STORAGE_KEY, next); } catch {}
+    setReplay((r) => ({ ...r, [next]: r[next] + 1 }));
+  };
+  return (
+    <h1>
+      <button
+        type="button"
+        onClick={swap}
+        aria-label={NAME}
+        title="Click to switch styles"
+        className="group/name relative block cursor-pointer text-left focus-visible:rounded-lg"
+      >
+        <span className="name-signature"><SignatureName key={`s${replay.signature}`} /></span>
+        <span className="name-pixel"><PixelName key={`p${replay.pixel}`} /></span>
+      </button>
     </h1>
   );
 }
 
 export function Hero() {
   const reduce = useReducedMotion();
-  const nameStyle = useNamePreview();
   const item = (delay: number) =>
     reduce ? {} : { initial: "hidden" as const, animate: "show" as const, variants: revealBlur(delay) };
 
@@ -95,13 +113,13 @@ export function Hero() {
             {...item(T.pill)}
             className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 pl-2.5 pr-3 py-1 text-[13px] text-ink-2"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-moss" aria-hidden />
+            <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
             <span className="font-medium text-ink">Open to SWE internships</span>
             <span className="h-3 w-px bg-line" aria-hidden />
             <span>Singapore</span>
           </motion.p>
 
-          {nameStyle === "pixel" ? <PixelName /> : <SignatureName />}
+          <HeroName />
               <RevealText
                 as="p"
                 trigger="mount"

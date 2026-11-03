@@ -26,7 +26,7 @@ export function EasterEggs() {
     greeted = true;
     console.log(
       "%c▚▚ hi, curious one ▞▞%c\nYou opened DevTools on a portfolio, so you're my kind of person.\nTry the terminal on the page (type `help`), or press ↑ ↑ ↓ ↓ ← → ← → B A.\nSay hello: ualqarni70@gmail.com",
-      "font: 600 14px ui-monospace, monospace; color: #E8893F;",
+      "font: 600 14px ui-monospace, monospace; color: #E64833;",
       "font: 12px ui-monospace, monospace; color: inherit;"
     );
   }, []);

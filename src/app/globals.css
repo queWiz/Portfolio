@@ -3,51 +3,52 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   DESIGN TOKENS · palette "M1 · Rust & Moss"
+   DESIGN TOKENS · palette "Deep Teal & Flare"
+   Teal leads in light mode, flare orange leads in dark; sage and brown support.
    Stored as "R G B" so Tailwind opacity modifiers work (see tailwind.config.ts).
-   Contrast on paper (WCAG): ink 14.8, ink-2 10.2, muted 5.0, accent 4.9, moss 6.4.
-   Contrast on dark paper:   ink 15.0, ink-2 11.6, muted 6.4, accent 7.2, moss 8.8.
+   Contrast on paper (WCAG): ink 11.5, ink-2 8.0, muted 4.9, accent 8.3, signal 5.1.
+   Contrast on dark paper:   ink 13.8, ink-2 10.4, muted 6.9, accent 5.4, signal 6.9.
    ========================================================================== */
 :root {
-  --paper: 241 236 226;          /* #F1ECE2 */
-  --surface: 248 245 238;        /* #F8F5EE */
-  --ink: 28 26 22;               /* #1C1A16 */
-  --ink-2: 63 59 51;             /* #3F3B33 */
-  --muted: 107 100 88;           /* #6B6458 */
-  --line: 221 213 198;           /* #DDD5C6 */
-  --accent: 168 75 15;           /* #A84B0F rust */
-  --accent-strong: 110 47 7;     /* #6E2F07 */
-  --accent-soft: 232 137 63;     /* #E8893F */
-  --moss: 47 93 70;              /* #2F5D46 */
-  --on-accent: 255 255 255;      /* text on accent fills: 5.7:1 */
-  --arcade-a: 232 137 63;         /* game-screen colours: bright tones for the dark console */
-  --arcade-b: 134 190 159;
-  --arcade-c: 236 230 218;
-  --console: 23 21 18;           /* #171512 code panels stay dark in both themes */
-  --console-raised: 32 29 25;    /* #201D19 */
-  --console-line: 52 48 42;      /* #34302A */
+  --paper: 247 234 214;          /* #F7EAD6 cream */
+  --surface: 252 245 234;        /* #FCF5EA */
+  --ink: 22 49 58;               /* #16313A teal-black */
+  --ink-2: 47 74 83;             /* #2F4A53 */
+  --muted: 91 103 103;           /* #5B6767 */
+  --line: 230 211 184;           /* #E6D3B8 */
+  --accent: 36 72 85;            /* #244855 deep teal */
+  --accent-strong: 23 53 64;     /* #173540 */
+  --accent-soft: 144 174 173;    /* #90AEAD sage */
+  --signal: 180 53 31;           /* #B4351F flare: live/status marks */
+  --on-accent: 255 255 255;      /* #FFFFFF text on accent fills: 9.8:1 */
+  --arcade-a: 230 72 51;         /* #E64833 game-screen colours: bright tones for the dark console */
+  --arcade-b: 144 174 173;       /* #90AEAD */
+  --arcade-c: 251 233 208;       /* #FBE9D0 */
+  --console: 36 72 85;           /* #244855 code panels are teal in light mode */
+  --console-raised: 44 85 100;   /* #2C5564 */
+  --console-line: 59 102 118;    /* #3B6676 */
   --grain: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200.098%20-0.014%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
   color-scheme: light;
 }
 
 .dark {
-  --paper: 20 18 15;             /* #14120F */
-  --surface: 28 26 22;           /* #1C1A16 */
-  --ink: 236 230 218;            /* #ECE6DA */
-  --ink-2: 206 199 186;          /* #CEC7BA */
-  --muted: 157 150 138;          /* #9D968A */
-  --line: 52 48 42;              /* #34302A */
-  --accent: 232 137 63;          /* #E8893F */
-  --accent-strong: 242 174 115;  /* #F2AE73 */
-  --accent-soft: 168 75 15;      /* #A84B0F */
-  --moss: 134 190 159;           /* #86BE9F */
-  --on-accent: 20 18 15;         /* dark text on light accent: 7.2:1 */
-  --arcade-a: 232 137 63;         /* game-screen colours: bright tones for the dark console */
-  --arcade-b: 134 190 159;
-  --arcade-c: 236 230 218;
-  --console: 14 13 11;           /* #0E0D0B */
-  --console-raised: 24 22 19;    /* #181613 */
-  --console-line: 46 42 37;      /* #2E2A25 */
+  --paper: 15 34 41;             /* #0F2229 deep teal */
+  --surface: 22 48 57;           /* #163039 */
+  --ink: 251 233 208;            /* #FBE9D0 cream */
+  --ink-2: 217 205 185;          /* #D9CDB9 */
+  --muted: 144 174 173;          /* #90AEAD sage */
+  --line: 36 72 85;              /* #244855 */
+  --accent: 240 106 82;          /* #F06A52 flare */
+  --accent-strong: 247 154 134;  /* #F79A86 */
+  --accent-soft: 135 79 65;      /* #874F41 brown */
+  --signal: 144 174 173;         /* #90AEAD sage */
+  --on-accent: 15 34 41;         /* #0F2229 dark text on flare: 5.4:1 */
+  --arcade-a: 230 72 51;         /* #E64833 */
+  --arcade-b: 144 174 173;       /* #90AEAD */
+  --arcade-c: 251 233 208;       /* #FBE9D0 */
+  --console: 10 24 29;           /* #0A181D */
+  --console-raised: 17 40 48;    /* #112830 */
+  --console-line: 31 62 73;      /* #1F3E49 */
   --grain: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.084%20-0.012%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E");
   color-scheme: dark;
 }
@@ -62,6 +63,12 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Hero name: one of two treatments, chosen before paint (no attribute = signature). */
+html[data-name="pixel"] .name-signature,
+html:not([data-name="pixel"]) .name-pixel {
+  display: none;
 }
 
 body {

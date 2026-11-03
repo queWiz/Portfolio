@@ -96,7 +96,7 @@ export function TopNavbar() {
           className="hidden sm:flex items-center gap-1.5 px-2 font-mono text-[11px] text-muted tabular-nums"
           title="Local time in Singapore"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-moss" aria-hidden />
+          <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
           SGT {time || "--:--"}
         </span>
 
