@@ -26,23 +26,26 @@ const amiri = Amiri({
 const pixel = Pixelify_Sans({ subsets: ["latin"], weight: ["600"], variable: "--font-pixel", preload: false });
 const signature = Mrs_Saint_Delafield({ subsets: ["latin"], weight: ["400"], variable: "--font-signature", preload: false });
 
+const TITLE = "Uwais Alqarni · Software & Data Engineer";
+const DESCRIPTION =
+  "Software Engineering student at SIT, Singapore. Platforms for real clients, AI that runs offline in the browser, and two papers at ACM AutoUI '26.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-indol-eight-45.vercel.app"),
-  title: "Uwais Alqarni — Software & Data Engineer",
-  description:
-    "Portfolio of Uwais Alqarni — Software Engineering student at Singapore Institute of Technology (SIT). Focused on distributed data systems, edge AI, and verified software architecture.",
+  title: TITLE,
+  description: DESCRIPTION,
   openGraph: {
-    title: "Uwais Alqarni — Software & Data Engineer",
-    description: "Distributed data pipelines, edge AI, and verified architecture.",
+    title: TITLE,
+    description: DESCRIPTION,
     url: "https://portfolio-indol-eight-45.vercel.app",
-    siteName: "Uwais Alqarni Portfolio",
+    siteName: "Uwais Alqarni",
     locale: "en_SG",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Uwais Alqarni — Software & Data Engineer",
-    description: "Distributed data pipelines, edge AI, and verified architecture.",
+    title: TITLE,
+    description: DESCRIPTION,
   },
 };
 

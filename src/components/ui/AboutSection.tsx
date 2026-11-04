@@ -30,13 +30,20 @@ const STACK = ["TypeScript", "Python", "SQL", "C#", "Next.js", "React", "FastAPI
 
 const UNMASK = [0.16, 1, 0.3, 1] as const;
 
-// TEST: real photo banner. Set to false to go back to the pixel-portrait banner.
-const USE_PHOTO = true;
+// The photo is not in the repo. It is hosted separately (Vercel Blob) and its URL comes from an env var,
+// so cloning the repo never gives anyone the file. Without the variable, the pixel-portrait banner shows.
+// Local dev: put the file in public/about/ (gitignored) and set NEXT_PUBLIC_ABOUT_PHOTO_URL=/about/uwais.webp in .env.local.
+const PHOTO_URL = process.env.NEXT_PUBLIC_ABOUT_PHOTO_URL;
+const USE_PHOTO = Boolean(PHOTO_URL);
 
 function PhotoBanner() {
   const reduce = useReducedMotion();
   return (
-    <div className="relative h-[460px] sm:h-[600px] overflow-hidden">
+    <div
+      className="relative h-[460px] sm:h-[600px] overflow-hidden select-none [-webkit-touch-callout:none]"
+      // Discourage casual saving. Anything shown on screen can still be screenshotted.
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <motion.div
         className="absolute inset-0"
         // settles from a slight zoom as the card opens
@@ -46,13 +53,17 @@ function PhotoBanner() {
         transition={{ duration: 1.6, ease: UNMASK }}
       >
         <Image
-          src="/about/uwais.webp"
+          src={PHOTO_URL!}
           alt="Uwais standing in front of a wall covered in colourful graffiti, wearing a black cap, glasses and a black T-shirt"
           fill
           sizes="(min-width: 700px) 672px, 100vw"
-          className="object-cover object-[52%_30%]"
+          quality={85}
+          draggable={false}
+          className="object-cover object-[52%_30%] pointer-events-none"
         />
       </motion.div>
+      {/* Transparent shield so right-click and long-press land on this div, not the image. */}
+      <div aria-hidden className="absolute inset-0" />
     </div>
   );
 }

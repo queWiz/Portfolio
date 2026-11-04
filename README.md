@@ -71,6 +71,10 @@ public/
 
 **Colours.** The palette is "Deep Teal & Flare". Every colour is a CSS variable in `src/app/globals.css`, with light values in `:root` and dark values in `.dark`. Values are stored as `R G B` so Tailwind opacity modifiers like `bg-accent/10` work. Components use the token names (`paper`, `ink`, `accent`, `signal`, `console` and so on) and never hard-code colours, so changing the palette only means editing that file. The games read the same variables, so they follow the theme too.
 
+**About photo.** The photo is not in this repo. It's hosted on Vercel Blob, and the site reads its URL from the `NEXT_PUBLIC_ABOUT_PHOTO_URL` environment variable. If the variable isn't set, the About card shows the pixel-portrait banner instead. For local development, put the image in `public/about/` (gitignored) and add `NEXT_PUBLIC_ABOUT_PHOTO_URL=/about/uwais.webp` to `.env.local`.
+
+**Link preview.** `src/app/opengraph-image.jpg` is the image shown when the link is shared on LinkedIn, WhatsApp, Telegram and similar apps. The alt text is in `opengraph-image.alt.txt`.
+
 **Theme.** Light is the default. Dark mode only turns on through the toggle, and the choice is saved in `localStorage`.
 
 **Head scripts.** The scripts that apply the saved theme and pick the name style live in `src/lib/initScripts.ts`, not in a client component. `layout.tsx` is a server component. If it imports a value from a `"use client"` file, it receives a client reference instead of the string, and the script silently never renders.
